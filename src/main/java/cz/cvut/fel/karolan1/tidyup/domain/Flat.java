@@ -39,22 +39,17 @@ public class Flat implements Serializable {
     @JoinColumn(unique = true)
     private User hasAdmin;
 
-    @OneToMany(mappedBy = "isResidentOf")
+    @OneToMany
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<User> hasResidents = new HashSet<>();
+    private Set<User> residents = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "flat_friend_of",
-               joinColumns = @JoinColumn(name="flats_id", referencedColumnName="ID"),
-               inverseJoinColumns = @JoinColumn(name="friend_ofs_id", referencedColumnName="ID"))
-    private Set<Flat> friendOfs = new HashSet<>();
-
-    @ManyToMany(mappedBy = "friendOfs")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Flat> friendWiths = new HashSet<>();
+    @JoinTable(name = "flat_friends",
+               joinColumns = @JoinColumn(name="flat_id", referencedColumnName="ID"),
+               inverseJoinColumns = @JoinColumn(name="friend_id", referencedColumnName="ID"))
+    private Set<Flat> friends = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -88,28 +83,20 @@ public class Flat implements Serializable {
         this.hasAdmin = user;
     }
 
-    public Set<User> getHasResidents() {
-        return hasResidents;
+    public Set<User> getResidents() {
+        return residents;
     }
 
-    public void setHasResidents(Set<User> users) {
-        this.hasResidents = users;
+    public void setResidents(Set<User> users) {
+        this.residents = users;
     }
 
-    public Set<Flat> getFriendOfs() {
-        return friendOfs;
+    public Set<Flat> getFriends() {
+        return friends;
     }
 
-    public void setFriendOfs(Set<Flat> flats) {
-        this.friendOfs = flats;
-    }
-
-    public Set<Flat> getFriendWiths() {
-        return friendWiths;
-    }
-
-    public void setFriendWiths(Set<Flat> flats) {
-        this.friendWiths = flats;
+    public void setFriends(Set<Flat> flats) {
+        this.friends = flats;
     }
 
     @Override

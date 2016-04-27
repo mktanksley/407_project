@@ -12,10 +12,10 @@ import java.util.List;
  */
 public interface FlatRepository extends JpaRepository<Flat,Long> {
 
-    @Query("select distinct flat from Flat flat left join fetch flat.friendOfs")
+    @Query("select distinct flat from Flat flat left join fetch flat.friends")
     List<Flat> findAllWithEagerRelationships();
 
-    @Query("select flat from Flat flat left join fetch flat.friendOfs where flat.id =:id")
+    @Query("select flat from Flat flat left join fetch flat.friends where flat.id =:id")
     Flat findOneWithEagerRelationships(@Param("id") Long id);
 
 }

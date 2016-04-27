@@ -38,13 +38,13 @@
 
         <div class="form-group">
             <label translate="tidyUpApp.flat.hasAdmin" for="field_hasAdmin">Has Admin</label>
-            <select class="form-control" id="field_hasAdmin" name="hasAdmin" ng-model="vm.flat.hasAdmin" ng-options="user as user.id for user in vm.users track by user.id">
+            <select class="form-control" id="field_hasAdmin" name="hasAdmin" ng-model="vm.flat.hasAdmin" ng-options="user as user.login for user in vm.users track by user.id">
                 <option value=""></option>
             </select>
         </div>
         <div class="form-group">
-            <label translate="tidyUpApp.flat.friendOf" for="field_friendOf">Friend Of</label>
-            <select class="form-control" id="field_friendOf" multiple name="friendOf" ng-model="vm.flat.friendOfs" ng-options="flat as flat.id for flat in vm.flats track by flat.id"></select>
+            <label translate="tidyUpApp.flat.friends" for="field_friends">Friends</label>
+            <select class="form-control" id="field_friends" multiple name="friends" ng-model="vm.flat.friends" ng-options="flat as flat.name for flat in vm.flats track by flat.id"></select>
         </div>
     </div>
     <div class="modal-footer">

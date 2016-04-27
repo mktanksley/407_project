@@ -24,28 +24,28 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="date_created" type="timestamp">
                 <constraints nullable="true" />
             </column>
-            
+
             <column name="has_admin_id" type="bigint">
                 <constraints unique="true"/>
             </column>
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="flat" columnName="date_created" columnDataType="datetime"/>
-        
-        <createTable tableName="flat_friend_of">
-            <column name="friend_ofs_id" type="bigint">
+
+        <createTable tableName="flat_friends">
+            <column name="friend_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="flats_id" type="bigint">
+            <column name="flat_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
         </createTable>
 
-        <addPrimaryKey columnNames="flats_id, friend_ofs_id" tableName="flat_friend_of"/>
-        
+        <addPrimaryKey columnNames="flat_id, friend_id" tableName="flat_friends"/>
+
     </changeSet>
 </databaseChangeLog>

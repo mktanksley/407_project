@@ -7,23 +7,24 @@
         Added the constraints for entity Flat.
     -->
     <changeSet id="20160427120810-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="has_admin_id"
                                  baseTableName="flat"
                                  constraintName="fk_flat_hasadmin_id"
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
 
-        <addForeignKeyConstraint baseColumnNames="flats_id"
-                                 baseTableName="flat_friend_of"
-                                 constraintName="fk_flat_friend_of_flat_id"
+        <addForeignKeyConstraint baseColumnNames="flat_id"
+                                 baseTableName="flat_friends"
+                                 constraintName="fk_flat_friend_id"
                                  referencedColumnNames="id"
                                  referencedTableName="flat"/>
-        <addForeignKeyConstraint baseColumnNames="friend_ofs_id"
-                                 baseTableName="flat_friend_of"
-                                 constraintName="fk_flat_friend_of_flat_id"
+
+        <addForeignKeyConstraint baseColumnNames="friend_id"
+                                 baseTableName="flat_friends"
+                                 constraintName="fk_friends_flat_id"
                                  referencedColumnNames="id"
                                  referencedTableName="flat"/>
-        
+
     </changeSet>
 </databaseChangeLog>

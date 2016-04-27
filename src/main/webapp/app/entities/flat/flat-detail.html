@@ -18,10 +18,10 @@
             {{vm.flat.hasAdmin.id}}
         </dd>
         <hr>
-        <dt><span translate="tidyUpApp.flat.friendOf">Friend Of</span></dt>
+        <dt><span translate="tidyUpApp.flat.friends">Friends</span></dt>
         <dd>
-            <span ng-repeat="friendOf in vm.flat.friendOfs">
-                <a ui-sref="flat-detail({id: {{friendOf.id}}})">{{friendOf.id}}</a>{{$last ? '' : ', '}}
+            <span ng-repeat="friends in vm.flat.friends">
+                <a ui-sref="flat-detail({id: {{friends.id}}})">{{friends.id}}</a>{{$last ? '' : ', '}}
             </span>
         </dd>
         <hr>

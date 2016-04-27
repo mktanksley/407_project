@@ -39,7 +39,7 @@
                     <th><span translate="tidyUpApp.flat.name">Name</span></th>
                     <th><span translate="tidyUpApp.flat.dateCreated">Date Created</span></th>
                     <th><span translate="tidyUpApp.flat.hasAdmin">Has Admin</span></th>
-                    <th><span translate="tidyUpApp.flat.friendOf">Friend Of</span></th>
+                    <th><span translate="tidyUpApp.flat.friends">Friends</span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -52,8 +52,8 @@
                         {{flat.hasAdmin.id}}
                     </td>
                     <td>
-                        <span ng-repeat="friendOf in flat.friendOfs">
-                            <a class="form-control-static" ui-sref="flat-detail({id: {{friendOf.id}}})">{{friendOf.id}}</a>{{$last ? '' : ', '}}
+                        <span ng-repeat="friends in flat.friends">
+                            <a class="form-control-static" ui-sref="flat-detail({id: {{friends.id}}})">{{friends.id}}</a>{{$last ? '' : ', '}}
                         <span>
                     </td>
                     <td class="text-right">

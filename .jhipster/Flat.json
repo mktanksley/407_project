@@ -14,12 +14,12 @@
       "relationshipType": "one-to-many",
       "relationshipName": "hasResidents",
       "otherEntityName": "user",
-      "otherEntityRelationshipName": "isResidentOf"
+      "otherEntityRelationshipName": "flat"
     },
     {
       "relationshipId": 3,
       "relationshipType": "many-to-many",
-      "relationshipName": "friendOf",
+      "relationshipName": "friends",
       "otherEntityName": "flat",
       "otherEntityField": "id",
       "ownerSide": true
@@ -27,10 +27,10 @@
     {
       "relationshipId": 4,
       "relationshipType": "many-to-many",
-      "relationshipName": "friendWith",
+      "relationshipName": "friends",
       "otherEntityName": "flat",
       "ownerSide": false,
-      "otherEntityRelationshipName": "friendOf"
+      "otherEntityRelationshipName": "friends"
     }
   ],
   "fields": [

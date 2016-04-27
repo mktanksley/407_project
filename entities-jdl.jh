@@ -33,10 +33,10 @@ relationship OneToOne {
 relationship OneToMany {
 	User{hasChore} to Chore{isDoneBy}
 	User{hasBadge} to Badge{ownedBy}
-    Flat{hasResidents} to User{isResidentOf}
+    Flat{hasResidents} to User
 }
 relationship ManyToMany {
-	Flat{friendOf} to Flat{friendWith}
+	Flat{friends} to Flat{friends}
 }
 relationship ManyToOne {
 	Chore{isOfType} to TypeOfChore
