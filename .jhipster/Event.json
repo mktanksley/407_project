@@ -1,0 +1,35 @@
+{
+  "relationships": [
+    {
+      "relationshipId": 1,
+      "relationshipType": "many-to-one",
+      "relationshipName": "doneBy",
+      "otherEntityName": "user",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipId": 2,
+      "relationshipType": "many-to-one",
+      "relationshipName": "is",
+      "otherEntityName": "chore",
+      "otherEntityField": "id"
+    }
+  ],
+  "fields": [
+    {
+      "fieldId": 1,
+      "fieldName": "dateTill",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldId": 2,
+      "fieldName": "dateDone",
+      "fieldType": "ZonedDateTime"
+    }
+  ],
+  "changelogDate": "20160427120813",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "no",
+  "entityTableName": "event"
+}

@@ -1,0 +1,48 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myChoreLabel" translate="tidyUpApp.chore.home.createOrEditLabel">Create or edit a Chore</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.chore.id">
+            <label for="id" translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.chore.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="tidyUpApp.chore.date" for="field_date">Date</label>
+                <div class="input-group">
+                    <input id="field_date" type="text" class="form-control" name="date" datetime-picker="{{dateformat}}" ng-model="vm.chore.date" is-open="vm.datePickerOpenStatus.date"
+                      />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('date')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+        </div>
+
+        <div class="form-group">
+            <label translate="tidyUpApp.chore.isOfType" for="field_isOfType">Is Of Type</label>
+            <select class="form-control" id="field_isOfType" name="isOfType" ng-model="vm.chore.isOfType" ng-options="typeOfChore as typeOfChore.id for typeOfChore in vm.typeofchores track by typeOfChore.id">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label translate="tidyUpApp.chore.isDoneBy" for="field_isDoneBy">Is Done By</label>
+            <select class="form-control" id="field_isDoneBy" name="isDoneBy" ng-model="vm.chore.isDoneBy" ng-options="user as user.id for user in vm.users track by user.id">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

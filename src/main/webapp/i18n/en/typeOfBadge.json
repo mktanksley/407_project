@@ -1,0 +1,23 @@
+{
+    "tidyUpApp": {
+        "typeOfBadge" : {
+            "home": {
+                "title": "Type Of Badges",
+                "createLabel": "Create a new Type Of Badge",
+                "createOrEditLabel": "Create or edit a Type Of Badge",
+                "search": "Search for Type Of Badge"
+            },
+            "created": "A new Type Of Badge is created with identifier {{ param }}",
+            "updated": "A Type Of Badge is updated with identifier {{ param }}",
+            "deleted": "A Type Of Badge is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Type Of Badge {{ id }}?"
+            },
+            "detail": {
+                "title": "Type Of Badge"
+            },
+            "name": "Name",
+            "description": "Description"
+        }
+    }
+}

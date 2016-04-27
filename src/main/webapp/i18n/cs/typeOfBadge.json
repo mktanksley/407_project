@@ -1,0 +1,23 @@
+{
+    "tidyUpApp": {
+        "typeOfBadge" : {
+            "home": {
+                "title": "Type Of Badges",
+                "createLabel": "Vytvořit Type Of Badge",
+                "createOrEditLabel": "Vytvořit nebo upravit Type Of Badge",
+                "search": "Vyhledat Type Of Badge"
+            },
+            "created": "Byl vytvořen potomek entity Type Of Badge s identifikátorem {{ param }}",
+            "updated": "Potomek entity Type Of Badge s identifikátorem {{ param }} byl upravený.",
+            "deleted": "Potomek entity Type Of Badge s identifikátorem {{ param }} bol smazaný.",
+            "delete": {
+                "question": "Jste si jisti, že chcete smazat Type Of Badge {{ id }}?"
+            },
+            "detail": {
+                "title": "Type Of Badge"
+            },
+            "name": "Name",
+            "description": "Description"
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "tidyUpApp": {
+        "typeOfChore" : {
+            "home": {
+                "title": "Type Of Chores",
+                "createLabel": "Create a new Type Of Chore",
+                "createOrEditLabel": "Create or edit a Type Of Chore",
+                "search": "Search for Type Of Chore"
+            },
+            "created": "A new Type Of Chore is created with identifier {{ param }}",
+            "updated": "A Type Of Chore is updated with identifier {{ param }}",
+            "deleted": "A Type Of Chore is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Type Of Chore {{ id }}?"
+            },
+            "detail": {
+                "title": "Type Of Chore"
+            },
+            "name": "Name",
+            "description": "Description",
+            "repeatable": "Repeatable",
+            "interval": "Interval",
+            "points": "Points"
+        }
+    }
+}

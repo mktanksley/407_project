@@ -1,0 +1,48 @@
+entity Flat {
+	name String required,
+	dateCreated ZonedDateTime
+}
+
+entity Chore {
+	date ZonedDateTime
+}
+
+entity TypeOfChore {
+	name String required,
+    description String,
+    repeatable Boolean required,
+    interval Integer,
+    points Integer
+}
+
+entity Event {
+	dateTill ZonedDateTime,
+    dateDone ZonedDateTime
+}
+entity Badge {
+	 earnedAt ZonedDateTime
+}
+entity TypeOfBadge {
+	name String required,
+    description String
+}
+
+relationship OneToOne {
+	Flat{hasAdmin} to User
+}
+relationship OneToMany {
+	User{hasChore} to Chore{isDoneBy}
+	User{hasBadge} to Badge{ownedBy}
+    Flat{hasResidents} to User{isResidentOf}
+}
+relationship ManyToMany {
+	Flat{friendOf} to Flat{friendWith}
+}
+relationship ManyToOne {
+	Chore{isOfType} to TypeOfChore
+	Event{doneBy} to User
+	Event{is} to Chore
+	Badge{isOfType} to TypeOfBadge
+}
+
+paginate Event with pagination

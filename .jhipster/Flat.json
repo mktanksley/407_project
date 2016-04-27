@@ -1,0 +1,56 @@
+{
+  "relationships": [
+    {
+      "relationshipId": 1,
+      "relationshipType": "one-to-one",
+      "relationshipName": "hasAdmin",
+      "otherEntityName": "user",
+      "otherEntityField": "id",
+      "ownerSide": true,
+      "otherEntityRelationshipName": "flat"
+    },
+    {
+      "relationshipId": 2,
+      "relationshipType": "one-to-many",
+      "relationshipName": "hasResidents",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "isResidentOf"
+    },
+    {
+      "relationshipId": 3,
+      "relationshipType": "many-to-many",
+      "relationshipName": "friendOf",
+      "otherEntityName": "flat",
+      "otherEntityField": "id",
+      "ownerSide": true
+    },
+    {
+      "relationshipId": 4,
+      "relationshipType": "many-to-many",
+      "relationshipName": "friendWith",
+      "otherEntityName": "flat",
+      "ownerSide": false,
+      "otherEntityRelationshipName": "friendOf"
+    }
+  ],
+  "fields": [
+    {
+      "fieldId": 1,
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 2,
+      "fieldName": "dateCreated",
+      "fieldType": "ZonedDateTime"
+    }
+  ],
+  "changelogDate": "20160427120810",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "entityTableName": "flat"
+}

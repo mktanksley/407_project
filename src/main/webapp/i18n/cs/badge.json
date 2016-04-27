@@ -1,0 +1,24 @@
+{
+    "tidyUpApp": {
+        "badge" : {
+            "home": {
+                "title": "Badges",
+                "createLabel": "Vytvořit Badge",
+                "createOrEditLabel": "Vytvořit nebo upravit Badge",
+                "search": "Vyhledat Badge"
+            },
+            "created": "Byl vytvořen potomek entity Badge s identifikátorem {{ param }}",
+            "updated": "Potomek entity Badge s identifikátorem {{ param }} byl upravený.",
+            "deleted": "Potomek entity Badge s identifikátorem {{ param }} bol smazaný.",
+            "delete": {
+                "question": "Jste si jisti, že chcete smazat Badge {{ id }}?"
+            },
+            "detail": {
+                "title": "Badge"
+            },
+            "earnedAt": "Earned At",
+            "isOfType": "Is Of Type",
+            "ownedBy": "Owned By"
+        }
+    }
+}

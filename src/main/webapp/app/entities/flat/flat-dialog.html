@@ -1,0 +1,58 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myFlatLabel" translate="tidyUpApp.flat.home.createOrEditLabel">Create or edit a Flat</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.flat.id">
+            <label for="id" translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.flat.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="tidyUpApp.flat.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                    ng-model="vm.flat.name"
+                    required />
+            <div ng-show="editForm.name.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.name.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="tidyUpApp.flat.dateCreated" for="field_dateCreated">Date Created</label>
+                <div class="input-group">
+                    <input id="field_dateCreated" type="text" class="form-control" name="dateCreated" datetime-picker="{{dateformat}}" ng-model="vm.flat.dateCreated" is-open="vm.datePickerOpenStatus.dateCreated"
+                      />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('dateCreated')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+        </div>
+
+        <div class="form-group">
+            <label translate="tidyUpApp.flat.hasAdmin" for="field_hasAdmin">Has Admin</label>
+            <select class="form-control" id="field_hasAdmin" name="hasAdmin" ng-model="vm.flat.hasAdmin" ng-options="user as user.id for user in vm.users track by user.id">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label translate="tidyUpApp.flat.friendOf" for="field_friendOf">Friend Of</label>
+            <select class="form-control" id="field_friendOf" multiple name="friendOf" ng-model="vm.flat.friendOfs" ng-options="flat as flat.id for flat in vm.flats track by flat.id"></select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

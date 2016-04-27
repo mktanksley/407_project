@@ -1,0 +1,33 @@
+
+<div>
+    <h2><span translate="tidyUpApp.event.detail.title">Event</span> {{vm.event.id}}</h2>
+    <hr>
+    <dl class="dl-horizontal">
+        <dt><span translate="tidyUpApp.event.dateTill">Date Till</span></dt>
+        <dd>
+            <span>{{vm.event.dateTill | date:'medium'}}</span>
+        </dd>
+        <hr>
+        <dt><span translate="tidyUpApp.event.dateDone">Date Done</span></dt>
+        <dd>
+            <span>{{vm.event.dateDone | date:'medium'}}</span>
+        </dd>
+        <hr>
+        <dt><span translate="tidyUpApp.event.doneBy">Done By</span></dt>
+        <dd>
+            {{vm.event.doneBy.id}}
+        </dd>
+        <hr>
+        <dt><span translate="tidyUpApp.event.is">Is</span></dt>
+        <dd>
+            <a ui-sref="chore-detail({id:vm.event.is.id})">{{vm.event.is.id}}</a>
+        </dd>
+        <hr>
+    </dl>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>
