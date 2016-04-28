@@ -18,8 +18,8 @@ spring:
         livereload:
             enabled: false
     datasource:
-        url: jdbc:postgresql://localhost:5432/
-        name: tidyup
+        url: jdbc:postgresql://localhost:5432/tidyup_prod
+        name:
         username: tidyup
         password: 7h15155up3rP455w0rdF0r71dyUp
     jpa:

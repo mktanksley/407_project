@@ -47,5 +47,17 @@
 
         <addPrimaryKey columnNames="flat_id, friend_id" tableName="flat_friends"/>
 
+        <!-- FLAT-RESIDENTS -->
+        <createTable tableName="flat_residents">
+            <column name="flat_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="flat_id, user_id" tableName="flat_residents"/>
+
     </changeSet>
 </databaseChangeLog>

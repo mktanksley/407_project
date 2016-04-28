@@ -18,8 +18,8 @@ spring:
         livereload:
             enabled: false # we use gulp + BrowserSync for livereload
     datasource:
-        url: jdbc:postgresql://localhost:5432/
-        name: tidyup_dev
+        url: jdbc:postgresql://localhost:5432/tidyup_dev
+        name:
         username: tidyup
         password: 7h15155up3rP455w0rdF0r71dyUp
     jpa:

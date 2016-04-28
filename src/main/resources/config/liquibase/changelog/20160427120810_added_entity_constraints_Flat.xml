@@ -26,5 +26,17 @@
                                  referencedColumnNames="id"
                                  referencedTableName="flat"/>
 
+        <addForeignKeyConstraint baseColumnNames="flat_id"
+                                 baseTableName="flat_residents"
+                                 constraintName="fk_flat_has_resident_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="flat"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="flat_residents"
+                                 constraintName="fk_user_is_resident_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
     </changeSet>
 </databaseChangeLog>
