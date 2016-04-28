@@ -573,10 +573,10 @@
                     <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
                     <diffChangeLogFile>src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                     <driver>org.postgresql.Driver</driver>
-                    <url>jdbc:postgresql://localhost:5432/tidyUp</url>
-                    <defaultSchemaName></defaultSchemaName>
-                    <username>tidyUp</username>
-                    <password></password>
+                    <url>jdbc:postgresql://localhost:5432/</url>
+                    <defaultSchemaName>tidyup_dev</defaultSchemaName>
+                    <username>tidyup</username>
+                    <password>7h15155up3rP455w0rdF0r71dyUp</password>
                     <referenceUrl>hibernate:spring:cz.cvut.fel.karolan1.tidyup.domain?dialect=org.hibernate.dialect.PostgreSQL82Dialect&amp;hibernate.ejb.naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy</referenceUrl>
                     <verbose>true</verbose>
                     <logging>debug</logging>

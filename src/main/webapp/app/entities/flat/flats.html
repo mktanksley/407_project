@@ -49,11 +49,11 @@
                     <td>{{flat.name}}</td>
                     <td>{{flat.dateCreated | date:'medium'}}</td>
                     <td>
-                        {{flat.hasAdmin.id}}
+                        {{flat.hasAdmin.name}}
                     </td>
                     <td>
                         <span ng-repeat="friends in flat.friends">
-                            <a class="form-control-static" ui-sref="flat-detail({id: {{friends.id}}})">{{friends.id}}</a>{{$last ? '' : ', '}}
+                            <a class="form-control-static" ui-sref="flat-detail({id: {{friends.id}}})">{{friends.name}}</a>{{$last ? '' : ', '}}
                         <span>
                     </td>
                     <td class="text-right">

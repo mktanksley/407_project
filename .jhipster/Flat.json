@@ -23,14 +23,6 @@
       "otherEntityName": "flat",
       "otherEntityField": "id",
       "ownerSide": true
-    },
-    {
-      "relationshipId": 4,
-      "relationshipType": "many-to-many",
-      "relationshipName": "friends",
-      "otherEntityName": "flat",
-      "ownerSide": false,
-      "otherEntityRelationshipName": "friends"
     }
   ],
   "fields": [
