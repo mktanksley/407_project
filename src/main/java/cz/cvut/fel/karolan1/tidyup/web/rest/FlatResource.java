@@ -2,11 +2,13 @@ package cz.cvut.fel.karolan1.tidyup.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import cz.cvut.fel.karolan1.tidyup.domain.Flat;
-import cz.cvut.fel.karolan1.tidyup.repository.FlatRepository;
-import cz.cvut.fel.karolan1.tidyup.repository.search.FlatSearchRepository;
+import cz.cvut.fel.karolan1.tidyup.service.FlatService;
 import cz.cvut.fel.karolan1.tidyup.web.rest.util.HeaderUtil;
+import cz.cvut.fel.karolan1.tidyup.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,10 +36,7 @@ public class FlatResource {
     private final Logger log = LoggerFactory.getLogger(FlatResource.class);
         
     @Inject
-    private FlatRepository flatRepository;
-    
-    @Inject
-    private FlatSearchRepository flatSearchRepository;
+    private FlatService flatService;
     
     /**
      * POST  /flats : Create a new flat.
@@ -55,8 +54,7 @@ public class FlatResource {
         if (flat.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("flat", "idexists", "A new flat cannot already have an ID")).body(null);
         }
-        Flat result = flatRepository.save(flat);
-        flatSearchRepository.save(result);
+        Flat result = flatService.save(flat);
         return ResponseEntity.created(new URI("/api/flats/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("flat", result.getId().toString()))
             .body(result);
@@ -80,8 +78,7 @@ public class FlatResource {
         if (flat.getId() == null) {
             return createFlat(flat);
         }
-        Flat result = flatRepository.save(flat);
-        flatSearchRepository.save(result);
+        Flat result = flatService.save(flat);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("flat", flat.getId().toString()))
             .body(result);
@@ -90,16 +87,20 @@ public class FlatResource {
     /**
      * GET  /flats : get all the flats.
      *
+     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of flats in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
     @RequestMapping(value = "/flats",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Flat> getAllFlats() {
-        log.debug("REST request to get all Flats");
-        List<Flat> flats = flatRepository.findAllWithEagerRelationships();
-        return flats;
+    public ResponseEntity<List<Flat>> getAllFlats(Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Flats");
+        Page<Flat> page = flatService.findAll(pageable); 
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/flats");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -114,7 +115,7 @@ public class FlatResource {
     @Timed
     public ResponseEntity<Flat> getFlat(@PathVariable Long id) {
         log.debug("REST request to get Flat : {}", id);
-        Flat flat = flatRepository.findOneWithEagerRelationships(id);
+        Flat flat = flatService.findOne(id);
         return Optional.ofNullable(flat)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -134,8 +135,7 @@ public class FlatResource {
     @Timed
     public ResponseEntity<Void> deleteFlat(@PathVariable Long id) {
         log.debug("REST request to delete Flat : {}", id);
-        flatRepository.delete(id);
-        flatSearchRepository.delete(id);
+        flatService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("flat", id.toString())).build();
     }
 
@@ -150,11 +150,12 @@ public class FlatResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Flat> searchFlats(@RequestParam String query) {
-        log.debug("REST request to search Flats for query {}", query);
-        return StreamSupport
-            .stream(flatSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public ResponseEntity<List<Flat>> searchFlats(@RequestParam String query, Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to search for a page of Flats for query {}", query);
+        Page<Flat> page = flatService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/flats");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }

@@ -12,7 +12,7 @@
     {
       "relationshipId": 2,
       "relationshipType": "one-to-many",
-      "relationshipName": "hasResidents",
+      "relationshipName": "residents",
       "otherEntityName": "user",
       "otherEntityRelationshipName": "flat"
     },
@@ -42,7 +42,7 @@
   ],
   "changelogDate": "20160427120810",
   "dto": "no",
-  "pagination": "no",
-  "service": "no",
+  "pagination": "pagination",
+  "service": "serviceClass",
   "entityTableName": "flat"
 }

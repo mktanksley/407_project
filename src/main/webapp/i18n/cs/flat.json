@@ -19,7 +19,7 @@
             "name": "Name",
             "dateCreated": "Date Created",
             "hasAdmin": "Has Admin",
-            "hasResidents": "Has Residents",
+            "residents": "Residents",
             "friends": "Spřátelené byty"
         }
     }

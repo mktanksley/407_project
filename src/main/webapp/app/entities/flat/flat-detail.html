@@ -20,8 +20,8 @@
         <hr>
         <dt><span translate="tidyUpApp.flat.friends">Friends</span></dt>
         <dd>
-            <span ng-repeat="friends in vm.flat.friends">
-                <a ui-sref="flat-detail({id: {{friends.id}}})">{{friends.name}}</a>{{$last ? '' : ', '}}
+            <span ng-repeat="friend in vm.flat.friends">
+                <a ui-sref="flat-detail({id: {{friend.id}}})">{{friend.name}}</a>{{$last ? '' : ', '}}
             </span>
         </dd>
         <hr>

@@ -3,6 +3,7 @@ package cz.cvut.fel.karolan1.tidyup.web.rest;
 import cz.cvut.fel.karolan1.tidyup.TidyUpApp;
 import cz.cvut.fel.karolan1.tidyup.domain.Flat;
 import cz.cvut.fel.karolan1.tidyup.repository.FlatRepository;
+import cz.cvut.fel.karolan1.tidyup.service.FlatService;
 import cz.cvut.fel.karolan1.tidyup.repository.search.FlatSearchRepository;
 
 import org.junit.Before;
@@ -59,6 +60,9 @@ public class FlatResourceIntTest {
     private FlatRepository flatRepository;
 
     @Inject
+    private FlatService flatService;
+
+    @Inject
     private FlatSearchRepository flatSearchRepository;
 
     @Inject
@@ -75,8 +79,7 @@ public class FlatResourceIntTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         FlatResource flatResource = new FlatResource();
-        ReflectionTestUtils.setField(flatResource, "flatSearchRepository", flatSearchRepository);
-        ReflectionTestUtils.setField(flatResource, "flatRepository", flatRepository);
+        ReflectionTestUtils.setField(flatResource, "flatService", flatService);
         this.restFlatMockMvc = MockMvcBuilders.standaloneSetup(flatResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -174,8 +177,8 @@ public class FlatResourceIntTest {
     @Transactional
     public void updateFlat() throws Exception {
         // Initialize the database
-        flatRepository.saveAndFlush(flat);
-        flatSearchRepository.save(flat);
+        flatService.save(flat);
+
         int databaseSizeBeforeUpdate = flatRepository.findAll().size();
 
         // Update the flat
@@ -205,8 +208,8 @@ public class FlatResourceIntTest {
     @Transactional
     public void deleteFlat() throws Exception {
         // Initialize the database
-        flatRepository.saveAndFlush(flat);
-        flatSearchRepository.save(flat);
+        flatService.save(flat);
+
         int databaseSizeBeforeDelete = flatRepository.findAll().size();
 
         // Get the flat
@@ -227,8 +230,7 @@ public class FlatResourceIntTest {
     @Transactional
     public void searchFlat() throws Exception {
         // Initialize the database
-        flatRepository.saveAndFlush(flat);
-        flatSearchRepository.save(flat);
+        flatService.save(flat);
 
         // Search the flat
         restFlatMockMvc.perform(get("/api/_search/flats?query=id:" + flat.getId()))

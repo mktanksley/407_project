@@ -34,12 +34,11 @@
     <div class="table-responsive">
         <table class="jh-table table table-striped">
             <thead>
-                <tr>
-                    <th><span translate="global.field.id">ID</span></th>
-                    <th><span translate="tidyUpApp.flat.name">Name</span></th>
-                    <th><span translate="tidyUpApp.flat.dateCreated">Date Created</span></th>
-                    <th><span translate="tidyUpApp.flat.hasAdmin">Has Admin</span></th>
-                    <th><span translate="tidyUpApp.flat.friends">Friends</span></th>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="name"><span translate="tidyUpApp.flat.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="dateCreated"><span translate="tidyUpApp.flat.dateCreated">Date Created</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="hasAdmin.id"><span translate="tidyUpApp.flat.hasAdmin">Has Admin</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -81,5 +80,9 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount"></jhi-item-count>
+        <uib-pagination class="pagination-sm" total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
     </div>
 </div>
