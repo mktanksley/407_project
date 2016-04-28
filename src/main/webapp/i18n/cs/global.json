@@ -7,8 +7,8 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entity",
-                "typeOfChore": "Type Of Chore",
-                "typeOfBadge": "Type Of Badge",
+                "typeOfChore": "Typ úklidu",
+                "typeOfBadge": "Typ odznáčku",
                 "flat": "Flat",
                 "chore": "Chore",
                 "event": "Event",
@@ -120,5 +120,5 @@
         "emailexists": "Zadaný e-mail je již použitý!",
         "idexists": "Nová entita {{ entityName }} ještě nemůže mít ID"
     },
-    "footer": "Toto je vaše zápatí"
+    "footer": "karolan1@fel.cvut.cz"
 }
