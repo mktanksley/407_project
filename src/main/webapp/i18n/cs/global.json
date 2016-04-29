@@ -118,7 +118,8 @@
         "Size": "Pole {{ fieldName }} nesplňuje požadavek minimální nebo maximální velikosti!",
         "userexists": "Zadané uživatelské jméno je již použito!",
         "emailexists": "Zadaný e-mail je již použitý!",
-        "idexists": "Nová entita {{ entityName }} ještě nemůže mít ID"
+        "idexists": "Nová entita {{ entityName }} ještě nemůže mít ID",
+        "dateexist": "Datum vytvoření se nemůže měnit!"
     },
     "footer": "karolan1@fel.cvut.cz"
 }

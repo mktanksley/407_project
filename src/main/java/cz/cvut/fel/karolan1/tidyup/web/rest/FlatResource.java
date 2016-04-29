@@ -19,12 +19,9 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Flat.
@@ -34,10 +31,10 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class FlatResource {
 
     private final Logger log = LoggerFactory.getLogger(FlatResource.class);
-        
+
     @Inject
     private FlatService flatService;
-    
+
     /**
      * POST  /flats : Create a new flat.
      *
@@ -54,6 +51,9 @@ public class FlatResource {
         if (flat.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("flat", "idexists", "A new flat cannot already have an ID")).body(null);
         }
+
+        // set current time
+        flat.setDateCreated(ZonedDateTime.now());
         Flat result = flatService.save(flat);
         return ResponseEntity.created(new URI("/api/flats/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("flat", result.getId().toString()))
@@ -78,6 +78,13 @@ public class FlatResource {
         if (flat.getId() == null) {
             return createFlat(flat);
         }
+
+        Flat fromDb = flatService.findOne(flat.getId());
+        if (flat.getDateCreated() != fromDb.getDateCreated()) {
+            log.warn("Attempt to update creation date on Flat entity : {}", flat);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("flat", "dateexist", "Creation date cannot be modified!")).body(null);
+        }
+
         Flat result = flatService.save(flat);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("flat", flat.getId().toString()))
@@ -98,7 +105,7 @@ public class FlatResource {
     public ResponseEntity<List<Flat>> getAllFlats(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Flats");
-        Page<Flat> page = flatService.findAll(pageable); 
+        Page<Flat> page = flatService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/flats");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
