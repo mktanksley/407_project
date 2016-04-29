@@ -79,6 +79,7 @@ public class FlatResource {
             return createFlat(flat);
         }
 
+        // check that date is not being updated
         Flat fromDb = flatService.findOne(flat.getId());
         if (flat.getDateCreated() != fromDb.getDateCreated()) {
             log.warn("Attempt to update creation date on Flat entity : {}", flat);

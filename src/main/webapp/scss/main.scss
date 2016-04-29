@@ -55,11 +55,11 @@ body {
     background-color: red;
 }
 
-.hipster {
+.dustbin {
     display: inline-block;
-    width: 347px;
-    height: 497px;
-    background: url("../images/hipster.png") no-repeat center top;
+    width: 330px;
+    height: 500px;
+    background: url("../images/dustbin.png") no-repeat center top;
     background-size: contain;
 }
 
@@ -80,8 +80,8 @@ only screen and (     -o-min-device-pixel-ratio: 2/1),
 only screen and (        min-device-pixel-ratio: 2),
 only screen and (                min-resolution: 192dpi),
 only screen and (                min-resolution: 2dppx) {
-    .hipster {
-        background: url("../images/hipster2x.png") no-repeat center top;
+    .dustbin {
+        background: url("../images/dustbin2x.png") no-repeat center top;
         background-size: contain;
     }
 }
