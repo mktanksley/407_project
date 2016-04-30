@@ -1,7 +1,14 @@
+// sticky footer fix - https://getbootstrap.com/examples/sticky-footer/
+html {
+    position: relative;
+    min-height: 100%;
+}
+
 body {
     background: #fafafa;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #333;
+    margin-bottom: 60px; // margin for footer
 }
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
@@ -61,6 +68,38 @@ body {
     height: 500px;
     background: url("../images/dustbin.png") no-repeat center top;
     background-size: contain;
+}
+
+.welcome {
+    display: inline-block;
+    width: 274px;
+    height: 150px;
+    background: url("../images/welcome.png") no-repeat center top;
+    background-size: contain;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    background-color: #f5f5f5;
+}
+.footer p {
+    margin: 20px 0;
+}
+
+// add border/vertical line between login and register columns at home page (on big screens only)
+// 992px = @screen-md-min, did not find an easy way to use the variable here
+@media (min-width: 992px) {
+    #left {
+        border-right: 1px solid #ddd;
+    }
+}
+
+.horizontal-space {
+    height: 50px;
 }
 
 .pad {
