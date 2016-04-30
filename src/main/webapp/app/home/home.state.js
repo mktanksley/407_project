@@ -40,6 +40,7 @@
                         return $translate.refresh();
                     }]
                 }
-            });
+            })
+            .state('none', {});
     }
 })();

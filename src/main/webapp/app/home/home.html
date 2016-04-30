@@ -1,40 +1,166 @@
 <div ng-cloak ng-switch="vm.isAuthenticated()">
     <div class="row" ng-switch-when="true">
-        <div class="col-md-12">
-            <h1 translate="home.title">Welcome, Java Hipster!</h1>
-            <p class="lead" translate="home.subtitle">This is your homepage</p>
+        <jhi-alert></jhi-alert>
 
-            <div ng-switch="vm.isAuthenticated()">
-                <div class="alert alert-success" translate="home.logged.message"
-                     translate-values="{username: '{{vm.account.login}}'}">
-                    You are logged in as user "{{vm.account.login}}".
-                </div>
+        <!-- LEFT COLUMN -->
+        <div class="col-md-3 left-column">
+            <div class="text-center">
+                <img src="images/avatar.png" alt="..." class="img-circle"/>
 
-                <div class="alert alert-warning" ng-switch-when="false" translate="global.messages.info.register" translate-compile>
-                    You don't have an account yet? <a class="alert-link" ui-sref="register">Register a new account</a>
+                <h3>{{vm.account.login}}</h3>
+                <h4><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> 9517</h4>
+            </div>
+
+            <h3>Frequent:</h3>
+
+            <div class="list-group">
+                <a href="#" class="list-group-item">took out the trash<span class="badge">14 <span
+                    class="glyphicon glyphicon-star"></span></span></a>
+                <a href="#" class="list-group-item">washed all dishes<span class="badge">7 <span
+                    class="glyphicon glyphicon-star"></span></span></a>
+                <a href="#" class="list-group-item">dish out of dishwasher<span class="badge">7 <span
+                    class="glyphicon glyphicon-star"></span></span></a>
+                <a href="#" class="list-group-item">bought toilet paper<span class="badge">7 <span
+                    class="glyphicon glyphicon-star"></span></span></a>
+                <a href="#" class="list-group-item">organised shoes<span class="badge">5 <span
+                    class="glyphicon glyphicon-star"></span></span></a>
+            </div>
+        </div>
+        <!-- LEFT COLUMN END -->
+
+        <hr class="hidden-lg hidden-md">
+        <!-- MIDDLE COLUMN -->
+        <div id="middle" class="col-md-6">
+
+            <div class="well">
+                <div class="media">
+                    <div class="media-left">
+                        <a href="#">
+                            <a href="#"><img class="media-object img-circle" src="holder.js/64x64"></a>
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h3 class="media-heading">TODO: tidy up bathroom</h3>
+
+                        <p>Lorem ipsum dolor sit amet, dolor fringilla viverra rhoncus, erat venenatis vitae in lectus
+                            eget.</p>
+
+                        <div class="btn-group pull-left" role="group">
+                            <button type="button" class="btn btn-success btn-sm"><span
+                                class="glyphicon glyphicon-ok"></span> Fulfilled
+                            </button>
+                            <button type="button" class="btn btn-default btn-sm">Cannot make it</button>
+                        </div>
+                        <p class="text-right">Tidy till <strong>
+                            <time datetime="">24th December</time>
+                        </strong>.
+                        </p>
+                    </div>
                 </div>
             </div>
 
-            <p translate="home.question">
-                If you have any question on JHipster:
-            </p>
+            <div class="media">
+                <div class="media-body">
+                    <h4 class="media-heading">Media heading</h4>
+                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo.
+                    Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.
+                </div>
+                <div class="media-right">
+                    <a href="#"><img class="media-object img-circle" src="holder.js/64x64"></a>
+                </div>
+            </div>
 
-            <ul>
-                <li><a href="http://jhipster.github.io/" target="_blank" translate="home.link.homepage">JHipster homepage</a></li>
-                <li><a href="http://stackoverflow.com/tags/jhipster/info" target="_blank" translate="home.link.stackoverflow">JHipster on Stack Overflow</a></li>
-                <li><a href="https://github.com/jhipster/generator-jhipster/issues?state=open" target="_blank" translate="home.link.bugtracker">JHipster bug tracker</a></li>
-                <li><a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" translate="home.link.chat">JHipster public chat room</a></li>
-                <li><a href="https://twitter.com/java_hipster" target="_blank"  translate="home.link.follow">follow @java_hipster on Twitter</a></li>
-            </ul>
+            <div class="media">
+                <div class="media-body">
+                    <h4 class="media-heading">Media heading</h4>
+                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo.
+                    Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.
+                </div>
+                <div class="media-right">
+                    <a href="#"><img class="media-object img-circle" src="holder.js/64x64"></a>
+                </div>
+            </div>
 
-            <p>
-             <span translate="home.like">If you like JHipster, don't forget to give us a star on </span>&nbsp;<a href="https://github.com/jhipster/generator-jhipster" target="_blank" translate="home.github">Github</a>!
-            </p>
+            <nav>
+                <ul class="pager">
+                    <li class="next"><a href="#">Older <span aria-hidden="true">&darr;</span></a></li>
+                </ul>
+            </nav>
         </div>
+        <!-- MIDDLE COLUMN END -->
+
+        <hr class="hidden-lg hidden-md">
+        <!-- RIGHT COLUMN -->
+        <div class="col-md-3 right-column">
+            <h3>Meanwhile, your friends:</h3>
+
+            <div class="media">
+                <div class="media-left media-middle">
+                    <a href="#">
+                        <img class="media-object img-circle" src="holder.js/32x32">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <a href="#">User1</a> tidied room.
+                </div>
+            </div>
+
+            <div class="media">
+                <div class="media-body text-right">
+                    <a href="#">User2</a> did that.
+                </div>
+                <div class="media-right media-middle">
+                    <a href="#"><img class="media-object img-circle" src="holder.js/32x32"></a>
+                </div>
+            </div>
+
+            <div class="media">
+                <div class="media-left media-middle">
+                    <a href="#">
+                        <img class="media-object img-circle" src="holder.js/32x32">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <a href="#">User1</a> tidied room.
+                </div>
+            </div>
+
+            <div class="media">
+                <div class="media-body text-right">
+                    <a href="#">User2</a> did that.
+                </div>
+                <div class="media-right media-middle">
+                    <a href="#"><img class="media-object img-circle" src="holder.js/32x32"></a>
+                </div>
+            </div>
+
+            <div class="media">
+                <div class="media-left media-middle">
+                    <a href="#">
+                        <img class="media-object img-circle" src="holder.js/32x32">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <a href="#">User1</a> tidied room.
+                </div>
+            </div>
+
+            <div class="media">
+                <div class="media-body text-right">
+                    <a href="#">User2</a> did that.
+                </div>
+                <div class="media-right media-middle">
+                    <a href="#"><img class="media-object img-circle" src="holder.js/32x32"></a>
+                </div>
+            </div>
+
+        </div>
+        <!-- RIGHT COLUMN END -->
+
     </div>
 
+    <!-- PUBLIC HOME, TODO MOVE TO SEPARATE STATE -->
     <div class="row" ng-switch-when="false">
-
         <div class="row">
             <div class="col-md-4 col-md-offset-2 text-center">
                 <h1>TidyUp!
@@ -50,13 +176,13 @@
         <div class="col-xs-12 horizontal-space"></div>
 
         <!-- login -->
-        <div id="left" class="col-md-6" ui-view="login"></div>
+        <div class="col-md-6 left-column" ui-view="login"></div>
 
         <div class="hidden-lg horizontal-space">
             <hr>
         </div>
 
         <!-- sign-up -->
-        <div id="right" class="col-md-6" ui-view="register"></div>
+        <div class="col-md-6" ui-view="register"></div>
     </div>
 </div>

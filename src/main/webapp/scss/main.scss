@@ -92,9 +92,13 @@ body {
 
 // add border/vertical line between login and register columns at home page (on big screens only)
 // 992px = @screen-md-min, did not find an easy way to use the variable here
+$border-color: #ddd;
 @media (min-width: 992px) {
-    #left {
-        border-right: 1px solid #ddd;
+    .left-column {
+        border-right: 1px solid $border-color;
+    }
+    .right-column {
+        border-left: 1px solid $border-color;
     }
 }
 

@@ -5,9 +5,9 @@
         .module('tidyUpApp')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$rootScope', '$state', '$sessionStorage', '$timeout', 'Auth', '$uibModalInstance'];
+    LoginController.$inject = ['$rootScope', '$state', '$sessionStorage', '$timeout', 'Auth', '$uibModalInstance', 'AlertService'];
 
-    function LoginController ($rootScope, $state, $sessionStorage, $timeout, Auth, $uibModalInstance) {
+    function LoginController($rootScope, $state, $sessionStorage, $timeout, Auth, $uibModalInstance, AlertService) {
         var vm = this;
 
         vm.authenticationError = false;
@@ -46,6 +46,7 @@
                     $state.go('home');
                 }
 
+                AlertService.success("home.logged.message", {username: vm.username});
                 $rootScope.$broadcast('authenticationSuccess');
 
                 // previousState was set in the authExpiredInterceptor before being redirected to login modal.
