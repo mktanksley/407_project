@@ -34,7 +34,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/home/home-user.html'
+                        templateUrl: 'app/home/home.user.html',
+                        controller: 'HomeController',
+                        controllerAs: 'vm'
                     }
                 }
             })
@@ -44,7 +46,7 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/home/home-public.html',
+                        templateUrl: 'app/home/home.public.html',
                         controller: 'HomePublicController'
                     },
                     'login@home.public': {
