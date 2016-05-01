@@ -16,6 +16,7 @@
         vm.register = register;
         $scope.$on('authenticationSuccess', function() {
             getAccount();
+            $state.go('home.user');
         });
 
         getAccount();
@@ -28,6 +29,12 @@
         }
         function register () {
             $state.go('register');
+        }
+
+        if (Principal.isAuthenticated() == true) {
+            $state.go('home.user');
+        } else {
+            $state.go('home.public');
         }
     }
 })();
