@@ -53,7 +53,21 @@
             <label class="control-label" translate="tidyUpApp.typeOfChore.points" for="field_points">Points</label>
             <input type="number" class="form-control" name="points" id="field_points"
                     ng-model="vm.typeOfChore.points"
-                     />
+                    required min="0" />
+            <div ng-show="editForm.points.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.points.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.points.$error.min" translate="entity.validation.min" translate-value-min="0">
+                    This field should be more than 0.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.points.$error.number" translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
         </div>
 
     </div>

@@ -4,16 +4,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Email;
-
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
-import java.time.ZonedDateTime;
 
 /**
  * A user.
@@ -91,6 +91,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     // added by hand //
 
+    @Min(value = 0)
     @NotNull
     @Column(name = "points", nullable = false)
     private Integer points;

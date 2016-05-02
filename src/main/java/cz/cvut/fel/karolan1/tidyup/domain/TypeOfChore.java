@@ -38,7 +38,9 @@ public class TypeOfChore implements Serializable {
     @Column(name = "interval")
     private Integer interval;
 
-    @Column(name = "points")
+    @NotNull
+    @Min(value = 0)
+    @Column(name = "points", nullable = false)
     private Integer points;
 
     public Long getId() {

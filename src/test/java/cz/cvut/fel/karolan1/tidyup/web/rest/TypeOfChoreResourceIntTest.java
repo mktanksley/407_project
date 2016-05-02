@@ -53,8 +53,8 @@ public class TypeOfChoreResourceIntTest {
     private static final Integer DEFAULT_INTERVAL = 1;
     private static final Integer UPDATED_INTERVAL = 2;
 
-    private static final Integer DEFAULT_POINTS = 1;
-    private static final Integer UPDATED_POINTS = 2;
+    private static final Integer DEFAULT_POINTS = 0;
+    private static final Integer UPDATED_POINTS = 1;
 
     @Inject
     private TypeOfChoreRepository typeOfChoreRepository;
@@ -145,6 +145,24 @@ public class TypeOfChoreResourceIntTest {
         int databaseSizeBeforeTest = typeOfChoreRepository.findAll().size();
         // set the field null
         typeOfChore.setRepeatable(null);
+
+        // Create the TypeOfChore, which fails.
+
+        restTypeOfChoreMockMvc.perform(post("/api/type-of-chores")
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(typeOfChore)))
+                .andExpect(status().isBadRequest());
+
+        List<TypeOfChore> typeOfChores = typeOfChoreRepository.findAll();
+        assertThat(typeOfChores).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkPointsIsRequired() throws Exception {
+        int databaseSizeBeforeTest = typeOfChoreRepository.findAll().size();
+        // set the field null
+        typeOfChore.setPoints(null);
 
         // Create the TypeOfChore, which fails.
 
