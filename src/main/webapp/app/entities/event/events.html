@@ -39,7 +39,7 @@
                     <th jh-sort-by="dateTill"><span translate="tidyUpApp.event.dateTill">Date Till</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="dateDone"><span translate="tidyUpApp.event.dateDone">Date Done</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="doneBy.id"><span translate="tidyUpApp.event.doneBy">Done By</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="is.id"><span translate="tidyUpApp.event.is">Is</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="chore.id"><span translate="tidyUpApp.event.chore">Chore</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -52,7 +52,7 @@
                         {{event.doneBy.id}}
                     </td>
                     <td>
-                        <a ui-sref="chore-detail({id:event.is.id})">{{event.is.id}}</a>
+                        <a ui-sref="chore-detail({id:event.chore.id})">{{event.chore.id}}</a>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">

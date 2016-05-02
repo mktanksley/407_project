@@ -7,16 +7,16 @@
         Added the constraints for entity Event.
     -->
     <changeSet id="20160427120813-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="done_by_id"
                                  baseTableName="event"
                                  constraintName="fk_event_doneby_id"
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
 
-        <addForeignKeyConstraint baseColumnNames="is_id"
+        <addForeignKeyConstraint baseColumnNames="chore_id"
                                  baseTableName="event"
-                                 constraintName="fk_event_is_id"
+                                 constraintName="fk_event_chore_id"
                                  referencedColumnNames="id"
                                  referencedTableName="chore"/>
 

@@ -19,7 +19,7 @@
             "dateTill": "Date Till",
             "dateDone": "Date Done",
             "doneBy": "Done By",
-            "is": "Is"
+            "chore": "Chore"
         }
     }
 }

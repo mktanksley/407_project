@@ -34,7 +34,7 @@ public class Event implements Serializable {
     private User doneBy;
 
     @ManyToOne
-    private Chore is;
+    private Chore chore;
 
     public Long getId() {
         return id;
@@ -68,12 +68,12 @@ public class Event implements Serializable {
         this.doneBy = user;
     }
 
-    public Chore getIs() {
-        return is;
+    public Chore getChore() {
+        return chore;
     }
 
-    public void setIs(Chore chore) {
-        this.is = chore;
+    public void setChore(Chore chore) {
+        this.chore = chore;
     }
 
     @Override

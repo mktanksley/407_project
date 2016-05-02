@@ -24,17 +24,17 @@
             <column name="date_till" type="timestamp">
                 <constraints nullable="true" />
             </column>
-            
+
             <column name="date_done" type="timestamp">
                 <constraints nullable="true" />
             </column>
-            
+
             <column name="done_by_id" type="bigint"/>
-            <column name="is_id" type="bigint"/>
+            <column name="chore_id" type="bigint"/>
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="event" columnName="date_till" columnDataType="datetime"/>
         <dropDefaultValue tableName="event" columnName="date_done" columnDataType="datetime"/>
-        
+
     </changeSet>
 </databaseChangeLog>

@@ -10,7 +10,7 @@
     {
       "relationshipId": 2,
       "relationshipType": "many-to-one",
-      "relationshipName": "is",
+      "relationshipName": "chore",
       "otherEntityName": "chore",
       "otherEntityField": "id"
     }
