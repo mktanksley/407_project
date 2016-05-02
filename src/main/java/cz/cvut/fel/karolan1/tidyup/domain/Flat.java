@@ -39,14 +39,9 @@ public class Flat implements Serializable {
     @JoinColumn(unique = true)
     private User hasAdmin;
 
-    @OneToMany
+    @OneToMany(mappedBy = "memberOf")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(
-        name = "flat_residents",
-        joinColumns = @JoinColumn(name = "flat_id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
     private Set<User> residents = new HashSet<>();
 
     @ManyToMany

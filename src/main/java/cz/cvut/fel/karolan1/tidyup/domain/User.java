@@ -37,7 +37,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @JsonIgnore
     @NotNull
-    @Size(min = 60, max = 60) 
+    @Size(min = 60, max = 60)
     @Column(name = "password_hash",length = 60)
     private String password;
 
@@ -88,6 +88,27 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PersistentToken> persistentTokens = new HashSet<>();
+
+    // added by hand //
+
+    @NotNull
+    @Column(name = "points", nullable = false)
+    private Integer points;
+
+    @Size(max = 100000)
+    @Lob
+    @Column(name = "avatar")
+    private byte[] avatar;
+
+    @Column(name = "avatar_content_type")
+    private String avatarContentType;
+
+    @OneToOne(mappedBy = "hasAdmin")
+    @JsonIgnore
+    private Flat isAdminOf;
+
+    @ManyToOne
+    private Flat memberOf;
 
     public Long getId() {
         return id;
@@ -191,6 +212,46 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setPersistentTokens(Set<PersistentToken> persistentTokens) {
         this.persistentTokens = persistentTokens;
+    }
+
+    public Integer getPoints() {
+        return points;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
+    }
+
+    public byte[] getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(byte[] avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getAvatarContentType() {
+        return avatarContentType;
+    }
+
+    public void setAvatarContentType(String avatarContentType) {
+        this.avatarContentType = avatarContentType;
+    }
+
+    public Flat getIsAdminOf() {
+        return isAdminOf;
+    }
+
+    public void setIsAdminOf(Flat flat) {
+        this.isAdminOf = flat;
+    }
+
+    public Flat getMemberOf() {
+        return memberOf;
+    }
+
+    public void setMemberOf(Flat flat) {
+        this.memberOf = flat;
     }
 
     @Override
