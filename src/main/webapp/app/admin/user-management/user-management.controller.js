@@ -5,9 +5,9 @@
         .module('tidyUpApp')
         .controller('UserManagementController', UserManagementController);
 
-    UserManagementController.$inject = ['Principal', 'User', 'ParseLinks', 'paginationConstants', 'JhiLanguageService'];
+    UserManagementController.$inject = ['Principal', 'User', 'ParseLinks', 'paginationConstants', 'JhiLanguageService', 'DataUtils'];
 
-    function UserManagementController(Principal, User, ParseLinks, paginationConstants, JhiLanguageService) {
+    function UserManagementController(Principal, User, ParseLinks, paginationConstants, JhiLanguageService, DataUtils) {
         var vm = this;
 
         vm.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
@@ -21,6 +21,8 @@
         vm.setActive = setActive;
         vm.totalItems = null;
         vm.users = [];
+        vm.openFile = DataUtils.openFile;
+        vm.byteSize = DataUtils.byteSize;
 
 
         vm.loadAll();
@@ -61,7 +63,7 @@
                 id: null, login: null, firstName: null, lastName: null, email: null,
                 activated: null, langKey: null, createdBy: null, createdDate: null,
                 lastModifiedBy: null, lastModifiedDate: null, resetDate: null,
-                resetKey: null, authorities: null
+                resetKey: null, authorities: null, points: null, avatar: null, avatarContentType: null
             };
             vm.editForm.$setPristine();
             vm.editForm.$setUntouched();

@@ -80,6 +80,61 @@
                  </p>
             </div>
         </div>
+
+        <div class="form-group">
+            <label class="control-label" translate="userManagement.points" for="field_points">Points</label>
+            <input type="number" class="form-control" name="points" id="field_points"
+                   ng-model="vm.user.points"
+                   required />
+            <div ng-show="editForm.points.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.points.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                   ng-show="editForm.points.$error.number" translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label translate="userManagement.memberOf" for="field_memberOf">Member Of</label>
+            <select class="form-control" id="field_memberOf" name="memberOf" ng-model="vm.user.memberOf" ng-options="flat as flat.id for flat in vm.flats track by flat.id">
+                <option value=""></option>
+            </select>
+        </div>
+
+        <div class="form-group" ngf-drop ngf-change="vm.setAvatar($file, vm.user)" ngf-pattern="'image/*'">
+            <label class="control-label" translate="userManagement.avatar" for="field_avatar">Avatar</label>
+            <div>
+                <img data-ng-src="{{'data:' + vm.user.avatarContentType + ';base64,' + vm.user.avatar}}" style="max-height: 100px;" ng-if="vm.user.avatar"/>
+                <div class="help-block clearfix">
+                    <span class="pull-left">{{vm.user.avatarContentType}}, {{byteSize(vm.user.avatar)}}</span>
+                    <button ng-click="vm.user.avatar=null;vm.user.avatarContentType=null;"
+                            ng-if="vm.user.avatar"
+                            class="btn btn-default btn-xs pull-right">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </div>
+                <button type="file" ngf-select class="btn btn-default btn-block"
+                        ngf-change="vm.setAvatar($file, vm.user)" accept="image/*" translate="entity.action.addimage">
+                    Add image
+                </button>
+            </div>
+            <input type="hidden" class="form-control" name="avatar" id="field_avatar"
+                   ng-model="vm.user.avatar"
+                   maxbytes="100000" />
+            <input type="hidden" class="form-control" name="avatarContentType" id="field_avatarContentType"
+                   ng-model="vm.user.avatarContentType" />
+            <div ng-show="editForm.avatar.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.avatar.$error.maxbytes" translate="entity.validation.maxbytes" translate-value-max="100000">
+                    This field cannot be more than 100000.
+                </p>
+            </div>
+        </div>
+
         <div class="form-group">
             <label for="activated">
                 <input ng-disabled="vm.user.id === undefined" type="checkbox" id="activated" ng-model="vm.user.activated">

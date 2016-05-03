@@ -94,7 +94,7 @@ public class UserService {
     }
 
     public User createUserInformation(String login, String password, String firstName, String lastName, String email,
-        String langKey) {
+                                      String langKey, Integer points, byte[] avatar, String avatarContentType) {
 
         User newUser = new User();
         Authority authority = authorityRepository.findOne("ROLE_USER");
@@ -115,6 +115,9 @@ public class UserService {
         newUser.setAuthorities(authorities);
         // new user has zero points
         newUser.setPoints(0);
+        newUser.setPoints(points);
+        newUser.setAvatar(avatar);
+        newUser.setAvatarContentType(avatarContentType);
 
         userRepository.save(newUser);
         userSearchRepository.save(newUser);
@@ -154,12 +157,16 @@ public class UserService {
         return user;
     }
 
-    public void updateUserInformation(String firstName, String lastName, String email, String langKey) {
+    public void updateUserInformation(String firstName, String lastName, String email, String langKey,
+                                      Integer points, byte[] avatar, String avatarContentType) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(u -> {
             u.setFirstName(firstName);
             u.setLastName(lastName);
             u.setEmail(email);
             u.setLangKey(langKey);
+            u.setPoints(points);
+            u.setAvatar(avatar);
+            u.setAvatarContentType(avatarContentType);
             userRepository.save(u);
             userSearchRepository.save(u);
             log.debug("Changed Information for User: {}", u);

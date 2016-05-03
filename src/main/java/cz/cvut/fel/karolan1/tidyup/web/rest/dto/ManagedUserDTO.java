@@ -1,12 +1,11 @@
 package cz.cvut.fel.karolan1.tidyup.web.rest.dto;
 
-import java.time.ZonedDateTime;
-
-import java.util.Set;
-
 import cz.cvut.fel.karolan1.tidyup.domain.User;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.ZonedDateTime;
+import java.util.Set;
 
 /**
  * A DTO extending the UserDTO, which is meant to be used in the user management UI.
@@ -41,8 +40,10 @@ public class ManagedUserDTO extends UserDTO {
     }
 
     public ManagedUserDTO(Long id, String login, String password, String firstName, String lastName,
-                          String email, boolean activated, String langKey, Set<String> authorities , ZonedDateTime createdDate, String lastModifiedBy, ZonedDateTime lastModifiedDate ) {
-        super(login, firstName, lastName, email, activated, langKey, authorities);
+                          String email, boolean activated, String langKey, Set<String> authorities,
+                          ZonedDateTime createdDate, String lastModifiedBy, ZonedDateTime lastModifiedDate,
+                          Integer points, byte[] avatar, String avatarContentType) {
+        super(login, firstName, lastName, email, activated, langKey, authorities, points, avatar, avatarContentType);
         this.id = id;
         this.createdDate = createdDate;
         this.lastModifiedBy = lastModifiedBy;

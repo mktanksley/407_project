@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -285,9 +286,12 @@ public class User extends AbstractAuditingEntity implements Serializable {
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
             ", email='" + email + '\'' +
-            ", activated='" + activated + '\'' +
+            ", activated=" + activated +
             ", langKey='" + langKey + '\'' +
             ", activationKey='" + activationKey + '\'' +
-            "}";
+            ", points=" + points +
+            ", avatar=" + Arrays.toString(avatar) +
+            ", avatarContentType='" + avatarContentType + '\'' +
+            '}';
     }
 }

@@ -26,7 +26,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyObject;
@@ -156,7 +159,10 @@ public class AccountResourceIntTest {
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
             null,                   // createdDate
             null,                   // lastModifiedBy
-            null                    // lastModifiedDate 
+            null,                    // lastModifiedDate
+            0,                      // points
+            null,                   // avatar
+            null                    // avatarContentType
         );
 
         restMvc.perform(
@@ -184,7 +190,10 @@ public class AccountResourceIntTest {
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
             null,                   // createdDate
             null,                   // lastModifiedBy
-            null                    // lastModifiedDate 
+            null,                    // lastModifiedDate
+            0,                      // points
+            null,                   // avatar
+            null                    // avatarContentType
         );
 
         restUserMockMvc.perform(
@@ -212,7 +221,10 @@ public class AccountResourceIntTest {
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
             null,                   // createdDate
             null,                   // lastModifiedBy
-            null                    // lastModifiedDate 
+            null,                    // lastModifiedDate
+            0,                      // points
+            null,                   // avatar
+            null                    // avatarContentType
         );
 
         restUserMockMvc.perform(
@@ -240,7 +252,10 @@ public class AccountResourceIntTest {
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
             null,                   // createdDate
             null,                   // lastModifiedBy
-            null                    // lastModifiedDate 
+            null,                    // lastModifiedDate
+            0,                      // points
+            null,                   // avatar
+            null                    // avatarContentType
         );
 
         restUserMockMvc.perform(
@@ -251,7 +266,7 @@ public class AccountResourceIntTest {
 
         Optional<User> user = userRepository.findOneByLogin("bob");
         assertThat(user.isPresent()).isFalse();
-    }    
+    }
 
     @Test
     @Transactional
@@ -268,7 +283,10 @@ public class AccountResourceIntTest {
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
             null,                   // createdDate
             null,                   // lastModifiedBy
-            null                    // lastModifiedDate 
+            null,                    // lastModifiedDate
+            0,                      // points
+            null,                   // avatar
+            null                    // avatarContentType
         );
 
         restUserMockMvc.perform(
@@ -297,12 +315,16 @@ public class AccountResourceIntTest {
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
             null,                   // createdDate
             null,                   // lastModifiedBy
-            null                    // lastModifiedDate 
+            null,                    // lastModifiedDate
+            0,                      // points
+            null,                   // avatar
+            null                    // avatarContentType
         );
 
         // Duplicate login, different e-mail
         ManagedUserDTO duplicatedUser = new ManagedUserDTO(validUser.getId(), validUser.getLogin(), validUser.getPassword(), validUser.getLogin(), validUser.getLastName(),
-            "alicejr@example.com", true, validUser.getLangKey(), validUser.getAuthorities(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate());
+            "alicejr@example.com", true, validUser.getLangKey(), validUser.getAuthorities(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate(),
+            validUser.getPoints(), validUser.getAvatar(), validUser.getAvatarContentType());
 
         // Good user
         restMvc.perform(
@@ -338,12 +360,16 @@ public class AccountResourceIntTest {
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
             null,                   // createdDate
             null,                   // lastModifiedBy
-            null                    // lastModifiedDate 
+            null,                    // lastModifiedDate
+            0,                      // points
+            null,                   // avatar
+            null                    // avatarContentType
         );
 
         // Duplicate e-mail, different login
         ManagedUserDTO duplicatedUser = new ManagedUserDTO(validUser.getId(), "johnjr", validUser.getPassword(), validUser.getLogin(), validUser.getLastName(),
-            validUser.getEmail(), true, validUser.getLangKey(), validUser.getAuthorities(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate());
+            validUser.getEmail(), true, validUser.getLangKey(), validUser.getAuthorities(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate(),
+            validUser.getPoints(), validUser.getAvatar(), validUser.getAvatarContentType());
 
         // Good user
         restMvc.perform(
@@ -378,7 +404,10 @@ public class AccountResourceIntTest {
             new HashSet<>(Arrays.asList(AuthoritiesConstants.ADMIN)),
             null,                   // createdDate
             null,                   // lastModifiedBy
-            null                    // lastModifiedDate 
+            null,                    // lastModifiedDate
+            0,                      // points
+            null,                   // avatar
+            null                    // avatarContentType
         );
 
         restMvc.perform(
@@ -394,7 +423,7 @@ public class AccountResourceIntTest {
     }
 
     @Test
-    @Transactional    
+    @Transactional
     public void testSaveInvalidLogin() throws Exception {
         UserDTO invalidUser = new UserDTO(
             "funky-log!n",          // login <-- invalid
@@ -403,7 +432,9 @@ public class AccountResourceIntTest {
             "funky@example.com",    // e-mail
             true,                   // activated
             "en",               // langKey
-            new HashSet<>(Arrays.asList(AuthoritiesConstants.USER))
+            new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
+            0,                      // points
+            null, ""                // avatar + type
         );
 
         restUserMockMvc.perform(
@@ -414,5 +445,5 @@ public class AccountResourceIntTest {
 
         Optional<User> user = userRepository.findOneByEmail("funky@example.com");
         assertThat(user.isPresent()).isFalse();
-    }    
+    }
 }

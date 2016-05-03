@@ -15,6 +15,9 @@
                 <th translate="global.field.id">ID</th>
                 <th translate="userManagement.login">Login</th>
                 <th translate="userManagement.email">Email</th>
+                <th translate="userManagement.points">Points</th>
+                <th translate="userManagement.avatar">Avatar</th>
+                <th translate="userManagement.memberOf">Member Of</th>
                 <th></th>
                 <th translate="userManagement.langKey">Lang Key</th>
                 <th translate="userManagement.profiles">Profiles</th>
@@ -29,9 +32,16 @@
                 <td><a ui-sref="user-management-detail({login:user.login})">{{user.id}}</a></td>
                 <td>{{user.login}}</td>
                 <td>{{user.email}}</td>
+                <td>{{user.points}}</td>
+                <td>
+                    <img data-ng-src="{{'data:' + user.avatarContentType + ';base64,' + user.avatar}}" style="max-height: 30px;" ng-if="user.avatar"/> {{user.avatarContentType}} {{byteSize(user.avatar)}}
+                </td>
+                <td>
+                    <a ui-sref="flat-detail({id:user.memberOf.id})">{{user.memberOf.name}}</a>
+                </td>
                 <td>
                     <span class="label label-danger" ng-click="vm.setActive(user, true)" ng-show="!user.activated"
-                          translate="userManagement.deactivated" style="cursor: pointer;">Desactivated</span>
+                          translate="userManagement.deactivated" style="cursor: pointer;">Deactivated</span>
                     <span class="label label-success" ng-click="vm.setActive(user, false)" ng-show="user.activated"
                           translate="userManagement.activated" style="cursor: pointer;">Activated</span>
                 </td>

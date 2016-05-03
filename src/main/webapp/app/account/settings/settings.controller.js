@@ -25,7 +25,10 @@
                 firstName: account.firstName,
                 langKey: account.langKey,
                 lastName: account.lastName,
-                login: account.login
+                login: account.login,
+                points: account.points,
+                avatar: account.avatar,
+                avatarContentType: account.avatarContentType
             };
         };
 

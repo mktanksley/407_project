@@ -5,9 +5,9 @@
         .module('tidyUpApp')
         .controller('UserManagementDialogController',UserManagementDialogController);
 
-    UserManagementDialogController.$inject = ['$stateParams', '$uibModalInstance', 'entity', 'User', 'JhiLanguageService'];
+    UserManagementDialogController.$inject = ['$stateParams', '$scope', '$uibModalInstance', 'entity', 'User', 'JhiLanguageService', 'DataUtils'];
 
-    function UserManagementDialogController ($stateParams, $uibModalInstance, entity, User, JhiLanguageService) {
+    function UserManagementDialogController ($stateParams, $scope, $uibModalInstance, entity, User, JhiLanguageService, DataUtils) {
         var vm = this;
 
         vm.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
@@ -16,6 +16,19 @@
         vm.save = save;
         vm.user = entity;
 
+        vm.setAvatar = function ($file, user) {
+            if ($file && $file.$error === 'pattern') {
+                return;
+            }
+            if ($file) {
+                DataUtils.toBase64($file, function(base64Data) {
+                    $scope.$apply(function() {
+                        user.avatar = base64Data;
+                        user.avatarContentType = $file.type;
+                    });
+                });
+            }
+        };
 
         JhiLanguageService.getAll().then(function (languages) {
             vm.languages = languages;

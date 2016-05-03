@@ -1,7 +1,6 @@
 package cz.cvut.fel.karolan1.tidyup.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import cz.cvut.fel.karolan1.tidyup.domain.Authority;
 import cz.cvut.fel.karolan1.tidyup.domain.PersistentToken;
 import cz.cvut.fel.karolan1.tidyup.domain.User;
 import cz.cvut.fel.karolan1.tidyup.repository.PersistentTokenRepository;
@@ -74,7 +73,7 @@ public class AccountResource {
                 .orElseGet(() -> {
                     User user = userService.createUserInformation(managedUserDTO.getLogin(), managedUserDTO.getPassword(),
                     managedUserDTO.getFirstName(), managedUserDTO.getLastName(), managedUserDTO.getEmail().toLowerCase(),
-                    managedUserDTO.getLangKey());
+                    managedUserDTO.getLangKey(), 0, managedUserDTO.getAvatar(), managedUserDTO.getAvatarContentType());
                     String baseUrl = request.getScheme() + // "http"
                     "://" +                                // "://"
                     request.getServerName() +              // "myhost"
@@ -153,7 +152,7 @@ public class AccountResource {
             .findOneByLogin(SecurityUtils.getCurrentUserLogin())
             .map(u -> {
                 userService.updateUserInformation(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
-                    userDTO.getLangKey());
+                    userDTO.getLangKey(), userDTO.getPoints(), userDTO.getAvatar(), userDTO.getAvatarContentType());
                 return new ResponseEntity<String>(HttpStatus.OK);
             })
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
