@@ -21,7 +21,8 @@ var gulp = require('gulp'),
     changed = require('gulp-changed'),
     gulpIf = require('gulp-if'),
     inject = require('gulp-inject'),
-    angularFilesort = require('gulp-angular-filesort');
+    angularFilesort = require('gulp-angular-filesort'),
+    naturalSort = require('gulp-natural-sort');
 
 var handleErrors = require('./gulp/handleErrors'),
     serve = require('./gulp/serve'),
@@ -37,7 +38,7 @@ gulp.task('clean', function () {
 });
 
 gulp.task('copy', function () {
-    return es.merge( 
+    return es.merge(
         gulp.src(config.app + 'i18n/**')
         .pipe(plumber({errorHandler: handleErrors}))
         .pipe(changed(config.dist + 'i18n/'))
@@ -108,7 +109,9 @@ gulp.task('styles', ['sass'], function () {
 
 gulp.task('inject', function () {
     return gulp.src(config.app + 'index.html')
-        .pipe(inject(gulp.src(config.app + 'app/**/*.js').pipe(angularFilesort()), {relative: true}))
+        .pipe(inject(gulp.src(config.app + 'app/**/*.js')
+            .pipe(naturalSort())
+            .pipe(angularFilesort()), {relative: true}))
         .pipe(gulp.dest(config.app));
 });
 
