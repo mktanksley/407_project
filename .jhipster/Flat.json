@@ -14,7 +14,7 @@
       "relationshipType": "one-to-many",
       "relationshipName": "residents",
       "otherEntityName": "user",
-      "otherEntityRelationshipName": "flat"
+      "otherEntityRelationshipName": "memberOf"
     },
     {
       "relationshipId": 3,

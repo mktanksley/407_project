@@ -1,0 +1,25 @@
+{
+    "tidyUpApp": {
+        "choreEvent" : {
+            "home": {
+                "title": "Chore Events",
+                "createLabel": "Create a new Chore Event",
+                "createOrEditLabel": "Create or edit a Chore Event",
+                "search": "Search for Chore Event"
+            },
+            "created": "A new Chore Event is created with identifier {{ param }}",
+            "updated": "A Chore Event is updated with identifier {{ param }}",
+            "deleted": "A Chore Event is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Chore Event {{ id }}?"
+            },
+            "detail": {
+                "title": "Chore Event"
+            },
+            "dateTo": "Date To",
+            "dateDone": "Date Done",
+            "isType": "Is Type",
+            "doneBy": "Done By"
+        }
+    }
+}

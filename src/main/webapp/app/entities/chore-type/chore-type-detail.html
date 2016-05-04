@@ -1,0 +1,38 @@
+
+<div>
+    <h2><span translate="tidyUpApp.choreType.detail.title">Chore Type</span> {{vm.choreType.id}}</h2>
+    <hr>
+    <dl class="dl-horizontal">
+        <dt><span translate="tidyUpApp.choreType.name">Name</span></dt>
+        <dd>
+            <span>{{vm.choreType.name}}</span>
+        </dd>
+        <hr>
+        <dt><span translate="tidyUpApp.choreType.description">Description</span></dt>
+        <dd>
+            <span>{{vm.choreType.description}}</span>
+        </dd>
+        <hr>
+        <dt><span translate="tidyUpApp.choreType.repeatable">Repeatable</span></dt>
+        <dd>
+            <span>{{vm.choreType.repeatable}}</span>
+        </dd>
+        <hr>
+        <dt><span translate="tidyUpApp.choreType.interval">Interval</span></dt>
+        <dd>
+            <span>{{vm.choreType.interval}}</span>
+        </dd>
+        <hr>
+        <dt><span translate="tidyUpApp.choreType.points">Points</span></dt>
+        <dd>
+            <span>{{vm.choreType.points}}</span>
+        </dd>
+        <hr>
+    </dl>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

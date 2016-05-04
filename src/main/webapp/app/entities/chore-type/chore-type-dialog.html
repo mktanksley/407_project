@@ -1,0 +1,92 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myChoreTypeLabel" translate="tidyUpApp.choreType.home.createOrEditLabel">Create or edit a Chore Type</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.choreType.id">
+            <label for="id" translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.choreType.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="tidyUpApp.choreType.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                    ng-model="vm.choreType.name"
+                    required />
+            <div ng-show="editForm.name.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.name.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="tidyUpApp.choreType.description" for="field_description">Description</label>
+            <input type="text" class="form-control" name="description" id="field_description"
+                    ng-model="vm.choreType.description"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="tidyUpApp.choreType.repeatable" for="field_repeatable">Repeatable</label>
+            <input type="checkbox" class="form-control" name="repeatable" id="field_repeatable"
+                    ng-model="vm.choreType.repeatable"
+                     />
+            <div ng-show="editForm.repeatable.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.repeatable.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="tidyUpApp.choreType.interval" for="field_interval">Interval</label>
+            <input type="number" class="form-control" name="interval" id="field_interval"
+                    ng-model="vm.choreType.interval"
+                    min="0" />
+            <div ng-show="editForm.interval.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.interval.$error.min" translate="entity.validation.min" translate-value-min="0">
+                    This field should be more than 0.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.interval.$error.number" translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="tidyUpApp.choreType.points" for="field_points">Points</label>
+            <input type="number" class="form-control" name="points" id="field_points"
+                    ng-model="vm.choreType.points"
+                    required min="0" />
+            <div ng-show="editForm.points.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.points.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.points.$error.min" translate="entity.validation.min" translate-value-min="0">
+                    This field should be more than 0.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.points.$error.number" translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

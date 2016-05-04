@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity ChoreEvent.
+    -->
+    <changeSet id="20160504071833-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="is_type_id"
+                                 baseTableName="chore_event"
+                                 constraintName="fk_choreevent_istype_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="chore_type"/>
+
+        <addForeignKeyConstraint baseColumnNames="done_by_id"
+                                 baseTableName="chore_event"
+                                 constraintName="fk_choreevent_doneby_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+    </changeSet>
+</databaseChangeLog>

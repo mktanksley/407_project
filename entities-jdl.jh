@@ -2,21 +2,15 @@ entity Flat {
 	name String required,
 	dateCreated ZonedDateTime
 }
-
-entity Chore {
-	date ZonedDateTime
-}
-
-entity TypeOfChore {
+entity ChoreType {
 	name String required,
     description String,
     repeatable Boolean required,
-    interval Integer,
-    points Integer
+    interval Integer min(0),
+    points Integer min(0)
 }
-
-entity Event {
-	dateTill ZonedDateTime,
+entity ChoreEvent {
+	dateTo ZonedDateTime,
     dateDone ZonedDateTime
 }
 entity Badge {
@@ -31,18 +25,19 @@ relationship OneToOne {
 	Flat{hasAdmin} to User
 }
 relationship OneToMany {
-	User{hasChore} to Chore{isDoneBy}
-	User{hasBadge} to Badge{ownedBy}
-    Flat{hasResidents} to User
+	User{hasBadge(badges)} to Badge{ownedBy}
+    Flat{residents} to User{memberOf}
 }
 relationship ManyToMany {
 	Flat{friends} to Flat{friends}
 }
 relationship ManyToOne {
-	Chore{isOfType} to TypeOfChore
-	Event{doneBy} to User
-	Event{is} to Chore
+	ChoreEvent{isType} to ChoreType
+	ChoreEvent{doneBy} to User
 	Badge{isOfType} to TypeOfBadge
 }
 
-paginate Event with pagination
+paginate ChoreEvent with pagination
+paginate Flat with pagination
+
+service Flat with serviceClass
