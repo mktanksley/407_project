@@ -21,7 +21,8 @@
             "hasAdmin": "Has Admin",
             "residents": "Residents",
             "friends": "Friend flats",
-            "placeholder": "e.g. \"The Castle\""
+            "placeholder": "e.g. \"The Castle\"",
+            "registered": "<strong>Welcome!</strong> You have successfully registered and created new flat <strong>{{ param }}</strong>."
         }
     }
 }

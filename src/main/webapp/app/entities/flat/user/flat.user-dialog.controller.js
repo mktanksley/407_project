@@ -16,7 +16,7 @@
         var onSaveSuccess = function (result) {
             $scope.$emit('tidyUpApp:flatUpdate', result);
             vm.isSaving = false;
-            $state.go('home');
+            $state.go('home.user');
         };
 
         var onSaveError = function () {
