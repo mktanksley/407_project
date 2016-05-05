@@ -1,5 +1,6 @@
 package cz.cvut.fel.karolan1.tidyup.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -110,6 +111,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private Flat isAdminOf;
 
     @ManyToOne
+    @JsonBackReference
     private Flat memberOf;
 
     public Long getId() {
@@ -292,6 +294,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
             ", points=" + points +
             ", avatar=" + Arrays.toString(avatar) +
             ", avatarContentType='" + avatarContentType + '\'' +
+            ", isAdminOf=" + isAdminOf +
+            ", memberOf=" + memberOf +
             '}';
     }
 }

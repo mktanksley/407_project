@@ -10,7 +10,6 @@ import cz.cvut.fel.karolan1.tidyup.security.AuthoritiesConstants;
 import cz.cvut.fel.karolan1.tidyup.service.MailService;
 import cz.cvut.fel.karolan1.tidyup.service.UserService;
 import cz.cvut.fel.karolan1.tidyup.web.rest.dto.ManagedUserDTO;
-import cz.cvut.fel.karolan1.tidyup.web.rest.dto.UserDTO;
 import cz.cvut.fel.karolan1.tidyup.web.rest.util.HeaderUtil;
 import cz.cvut.fel.karolan1.tidyup.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -26,14 +25,16 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
-import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing users.

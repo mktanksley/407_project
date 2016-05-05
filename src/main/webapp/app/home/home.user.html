@@ -1,3 +1,5 @@
+<h1>{{vm.user.memberOf}}</h1>
+
 <div class="row">
     <jhi-alert></jhi-alert>
 
@@ -11,11 +13,10 @@
             <img src="content/images/default-avatar-1.png" ng-if="vm.account.avatar == null" class="img-circle avatar"/>
 
             <h3>{{vm.account.login}}</h3>
-            <h4><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> {{vm.account.points}}</h4>
+            <h4><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> {{vm.account.points | number}}</h4>
         </div>
 
         <h3>Frequent:</h3>
-
         <div class="list-group">
             <a href="#" class="list-group-item">took out the trash<span class="badge">14 <span
                 class="glyphicon glyphicon-star"></span></span></a>

@@ -1,6 +1,7 @@
 package cz.cvut.fel.karolan1.tidyup.web.rest.dto;
 
 import cz.cvut.fel.karolan1.tidyup.domain.Authority;
+import cz.cvut.fel.karolan1.tidyup.domain.Flat;
 import cz.cvut.fel.karolan1.tidyup.domain.User;
 import org.hibernate.validator.constraints.Email;
 
@@ -46,18 +47,20 @@ public class UserDTO {
 
     private String avatarContentType;
 
+    private Flat memberOf;
+
     public UserDTO() {
     }
 
     public UserDTO(User user) {
         this(user.getLogin(), user.getFirstName(), user.getLastName(),
             user.getEmail(), user.getActivated(), user.getLangKey(),
-            user.getAuthorities().stream().map(Authority::getName)
-                .collect(Collectors.toSet()), user.getPoints(), user.getAvatar(), user.getAvatarContentType());
+            user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet()),
+            user.getPoints(), user.getAvatar(), user.getAvatarContentType(), user.getMemberOf());
     }
 
-    public UserDTO(String login, String firstName, String lastName,
-                   String email, boolean activated, String langKey, Set<String> authorities, Integer points, byte[] avatar, String avatarContentType) {
+    public UserDTO(String login, String firstName, String lastName, String email, boolean activated, String langKey,
+                   Set<String> authorities, Integer points, byte[] avatar, String avatarContentType, Flat memberOf) {
 
         this.login = login;
         this.firstName = firstName;
@@ -69,6 +72,7 @@ public class UserDTO {
         this.points = points;
         this.avatar = avatar;
         this.avatarContentType = avatarContentType;
+        this.memberOf = memberOf;
     }
 
     public String getLogin() {
@@ -123,6 +127,14 @@ public class UserDTO {
         this.avatarContentType = avatarContentType;
     }
 
+    public Flat getMemberOf() {
+        return memberOf;
+    }
+
+    public void setMemberOf(Flat memberOf) {
+        this.memberOf = memberOf;
+    }
+
     @Override
     public String toString() {
         return "UserDTO{" +
@@ -136,6 +148,7 @@ public class UserDTO {
             ", points=" + points +
             ", avatar=" + Arrays.toString(avatar) +
             ", avatarContentType='" + avatarContentType + '\'' +
+            ", memberOf=" + memberOf +
             '}';
     }
 }

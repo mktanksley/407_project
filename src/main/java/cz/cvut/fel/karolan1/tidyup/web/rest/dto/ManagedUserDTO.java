@@ -1,5 +1,6 @@
 package cz.cvut.fel.karolan1.tidyup.web.rest.dto;
 
+import cz.cvut.fel.karolan1.tidyup.domain.Flat;
 import cz.cvut.fel.karolan1.tidyup.domain.User;
 
 import javax.validation.constraints.NotNull;
@@ -42,8 +43,8 @@ public class ManagedUserDTO extends UserDTO {
     public ManagedUserDTO(Long id, String login, String password, String firstName, String lastName,
                           String email, boolean activated, String langKey, Set<String> authorities,
                           ZonedDateTime createdDate, String lastModifiedBy, ZonedDateTime lastModifiedDate,
-                          Integer points, byte[] avatar, String avatarContentType) {
-        super(login, firstName, lastName, email, activated, langKey, authorities, points, avatar, avatarContentType);
+                          Integer points, byte[] avatar, String avatarContentType, Flat memberOf) {
+        super(login, firstName, lastName, email, activated, langKey, authorities, points, avatar, avatarContentType, memberOf);
         this.id = id;
         this.createdDate = createdDate;
         this.lastModifiedBy = lastModifiedBy;

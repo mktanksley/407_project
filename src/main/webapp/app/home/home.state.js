@@ -32,12 +32,21 @@
                 data: {
                     authorities: ['ROLE_USER']
                 },
+                params: {
+                    login : {}
+                },
                 views: {
                     'content@': {
                         templateUrl: 'app/home/home.user.html',
-                        controller: 'HomeController',
+                        controller: 'HomeUserController',
                         controllerAs: 'vm'
                     }
+                },
+                resolve: {
+                    mainTranslatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('home');
+                        return $translate.refresh();
+                    }]
                 }
             })
             .state('home.public', {

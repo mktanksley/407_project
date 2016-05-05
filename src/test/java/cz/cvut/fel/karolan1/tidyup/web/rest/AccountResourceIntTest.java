@@ -162,8 +162,8 @@ public class AccountResourceIntTest {
             null,                    // lastModifiedDate
             0,                      // points
             null,                   // avatar
-            null                    // avatarContentType
-        );
+            null,                    // avatarContentType
+            null);
 
         restMvc.perform(
             post("/api/register")
@@ -193,8 +193,8 @@ public class AccountResourceIntTest {
             null,                    // lastModifiedDate
             0,                      // points
             null,                   // avatar
-            null                    // avatarContentType
-        );
+            null,                    // avatarContentType
+            null);
 
         restUserMockMvc.perform(
             post("/api/register")
@@ -224,8 +224,8 @@ public class AccountResourceIntTest {
             null,                    // lastModifiedDate
             0,                      // points
             null,                   // avatar
-            null                    // avatarContentType
-        );
+            null,                    // avatarContentType
+            null);
 
         restUserMockMvc.perform(
             post("/api/register")
@@ -255,8 +255,8 @@ public class AccountResourceIntTest {
             null,                    // lastModifiedDate
             0,                      // points
             null,                   // avatar
-            null                    // avatarContentType
-        );
+            null,                    // avatarContentType
+            null);
 
         restUserMockMvc.perform(
             post("/api/register")
@@ -286,8 +286,8 @@ public class AccountResourceIntTest {
             null,                    // lastModifiedDate
             0,                      // points
             null,                   // avatar
-            null                    // avatarContentType
-        );
+            null,                    // avatarContentType
+            null);
 
         restUserMockMvc.perform(
             post("/api/register")
@@ -318,13 +318,13 @@ public class AccountResourceIntTest {
             null,                    // lastModifiedDate
             0,                      // points
             null,                   // avatar
-            null                    // avatarContentType
-        );
+            null,                    // avatarContentType
+            null);
 
         // Duplicate login, different e-mail
         ManagedUserDTO duplicatedUser = new ManagedUserDTO(validUser.getId(), validUser.getLogin(), validUser.getPassword(), validUser.getLogin(), validUser.getLastName(),
             "alicejr@example.com", true, validUser.getLangKey(), validUser.getAuthorities(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate(),
-            validUser.getPoints(), validUser.getAvatar(), validUser.getAvatarContentType());
+            validUser.getPoints(), validUser.getAvatar(), validUser.getAvatarContentType(), null);
 
         // Good user
         restMvc.perform(
@@ -363,13 +363,13 @@ public class AccountResourceIntTest {
             null,                    // lastModifiedDate
             0,                      // points
             null,                   // avatar
-            null                    // avatarContentType
-        );
+            null,                    // avatarContentType
+            null);
 
         // Duplicate e-mail, different login
         ManagedUserDTO duplicatedUser = new ManagedUserDTO(validUser.getId(), "johnjr", validUser.getPassword(), validUser.getLogin(), validUser.getLastName(),
             validUser.getEmail(), true, validUser.getLangKey(), validUser.getAuthorities(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate(),
-            validUser.getPoints(), validUser.getAvatar(), validUser.getAvatarContentType());
+            validUser.getPoints(), validUser.getAvatar(), validUser.getAvatarContentType(), null);
 
         // Good user
         restMvc.perform(
@@ -407,8 +407,8 @@ public class AccountResourceIntTest {
             null,                    // lastModifiedDate
             0,                      // points
             null,                   // avatar
-            null                    // avatarContentType
-        );
+            null,                    // avatarContentType
+            null);
 
         restMvc.perform(
             post("/api/register")
@@ -434,7 +434,8 @@ public class AccountResourceIntTest {
             "en",               // langKey
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
             0,                      // points
-            null, ""                // avatar + type
+            null, "",                // avatar + type
+            null
         );
 
         restUserMockMvc.perform(

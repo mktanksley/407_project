@@ -9,7 +9,7 @@
 
     function HomePublicController ($scope, $state) {
         $scope.$on('authenticationSuccess', function() {
-            $state.go('home.user');
+            $state.go('home');
         });
     }
 })();

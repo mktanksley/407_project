@@ -2,6 +2,11 @@ package cz.cvut.fel.karolan1.tidyup.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import cz.cvut.fel.karolan1.tidyup.domain.Flat;
+import cz.cvut.fel.karolan1.tidyup.domain.User;
+import cz.cvut.fel.karolan1.tidyup.repository.FlatRepository;
+import cz.cvut.fel.karolan1.tidyup.repository.UserRepository;
+import cz.cvut.fel.karolan1.tidyup.security.AuthoritiesConstants;
+import cz.cvut.fel.karolan1.tidyup.security.SecurityUtils;
 import cz.cvut.fel.karolan1.tidyup.service.FlatService;
 import cz.cvut.fel.karolan1.tidyup.web.rest.util.HeaderUtil;
 import cz.cvut.fel.karolan1.tidyup.web.rest.util.PaginationUtil;
@@ -13,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -20,6 +26,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +42,12 @@ public class FlatResource {
     @Inject
     private FlatService flatService;
 
+    @Inject
+    private FlatRepository flatRepository;
+
+    @Inject
+    private UserRepository userRepository;
+
     /**
      * POST  /flats : Create a new flat.
      *
@@ -46,14 +59,41 @@ public class FlatResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured(AuthoritiesConstants.USER)
     public ResponseEntity<Flat> createFlat(@Valid @RequestBody Flat flat) throws URISyntaxException {
         log.debug("REST request to save Flat : {}", flat);
         if (flat.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("flat", "idexists", "A new flat cannot already have an ID")).body(null);
         }
 
+        // check if the name already exists
+        if (flatRepository.findOneByName(flat.getName()) != null){
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("flat", "nameexist", "This name (" + flat.getName() + ") is already used!")).body(null);
+        }
+
         // set current time
         flat.setDateCreated(ZonedDateTime.now());
+
+        // if the create request is made by common user, assign the flat to him
+        if (!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+            Optional<User> currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
+            if (!currentUser.isPresent()) {
+                return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user", "entitynotexists", "User does not exist!")).body(null);
+            } else {
+                User user = currentUser.get();
+                flat.setHasAdmin(user);
+                flat.setResidents(Collections.singleton(user));
+                Flat result = flatService.save(flat);
+
+                user.setMemberOf(result);
+                userRepository.save(user);
+
+                return ResponseEntity.created(new URI("/api/flats/" + result.getId()))
+                    .headers(HeaderUtil.createEntityCreationAlert("flat", result.getId().toString()))
+                    .body(result);
+            }
+        }
+
         Flat result = flatService.save(flat);
         return ResponseEntity.created(new URI("/api/flats/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("flat", result.getId().toString()))

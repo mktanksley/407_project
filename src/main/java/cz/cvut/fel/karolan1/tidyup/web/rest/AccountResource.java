@@ -12,7 +12,6 @@ import cz.cvut.fel.karolan1.tidyup.web.rest.dto.KeyAndPasswordDTO;
 import cz.cvut.fel.karolan1.tidyup.web.rest.dto.ManagedUserDTO;
 import cz.cvut.fel.karolan1.tidyup.web.rest.dto.UserDTO;
 import cz.cvut.fel.karolan1.tidyup.web.rest.util.HeaderUtil;
-
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for managing the current user's account.
@@ -136,23 +136,23 @@ public class AccountResource {
     /**
      * POST  /account : update the current user information.
      *
-     * @param userDTO the current user information
+     * @param managedUserDTO the current user information
      * @return the ResponseEntity with status 200 (OK), or status 400 (Bad Request) or 500 (Internal Server Error) if the user couldn't be updated
      */
     @RequestMapping(value = "/account",
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<String> saveAccount(@Valid @RequestBody UserDTO userDTO) {
-        Optional<User> existingUser = userRepository.findOneByEmail(userDTO.getEmail());
-        if (existingUser.isPresent() && (!existingUser.get().getLogin().equalsIgnoreCase(userDTO.getLogin()))) {
+    public ResponseEntity<String> saveAccount(@Valid @RequestBody ManagedUserDTO managedUserDTO) {
+        Optional<User> existingUser = userRepository.findOneByEmail(managedUserDTO.getEmail());
+        if (existingUser.isPresent() && (!existingUser.get().getLogin().equalsIgnoreCase(managedUserDTO.getLogin()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "emailexists", "Email already in use")).body(null);
         }
         return userRepository
             .findOneByLogin(SecurityUtils.getCurrentUserLogin())
             .map(u -> {
-                userService.updateUserInformation(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
-                    userDTO.getLangKey(), userDTO.getPoints(), userDTO.getAvatar(), userDTO.getAvatarContentType());
+                userService.updateUserInformation(managedUserDTO.getFirstName(), managedUserDTO.getLastName(), managedUserDTO.getEmail(),
+                    managedUserDTO.getLangKey(), managedUserDTO.getPoints(), managedUserDTO.getAvatar(), managedUserDTO.getAvatarContentType());
                 return new ResponseEntity<String>(HttpStatus.OK);
             })
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));

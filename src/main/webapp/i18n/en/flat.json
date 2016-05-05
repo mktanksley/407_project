@@ -20,7 +20,8 @@
             "dateCreated": "Date Created",
             "hasAdmin": "Has Admin",
             "residents": "Residents",
-            "friends": "Friends"
+            "friends": "Friend flats",
+            "placeholder": "e.g. \"The Castle\""
         }
     }
 }

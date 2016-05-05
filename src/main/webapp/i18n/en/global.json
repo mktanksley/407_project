@@ -118,7 +118,9 @@
         "userexists": "Login name already used!",
         "emailexists": "E-mail is already in use!",
         "idexists": "A new {{ entityName }} cannot already have an ID",
-        "dateexist": "Creation date cannot be modified!"
+        "nameexists": "This name ({{ entityName }}) is already used!",
+        "dateexist": "Creation date cannot be modified!",
+        "entitynotexists": "Requested {{ entityName }} does not exist!"
     },
     "footer": "karolan1@fel.cvut.cz"
 }

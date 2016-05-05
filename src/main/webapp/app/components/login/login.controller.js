@@ -46,7 +46,7 @@
                     $state.go('home');
                 }
 
-                AlertService.success("home.logged.message", {username: vm.username});
+                AlertService.success('home.logged.message', {username: vm.username});
                 $rootScope.$broadcast('authenticationSuccess');
 
                 // previousState was set in the authExpiredInterceptor before being redirected to login modal.
