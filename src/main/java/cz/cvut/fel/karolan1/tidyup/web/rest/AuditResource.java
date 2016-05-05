@@ -1,21 +1,22 @@
 package cz.cvut.fel.karolan1.tidyup.web.rest;
 
+import cz.cvut.fel.karolan1.tidyup.security.AuthoritiesConstants;
 import cz.cvut.fel.karolan1.tidyup.service.AuditEventService;
-
-import java.time.LocalDate;
 import cz.cvut.fel.karolan1.tidyup.web.rest.util.PaginationUtil;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.*;
 
-import java.net.URISyntaxException;
 import javax.inject.Inject;
+import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -58,6 +59,7 @@ public class AuditResource {
 
     @RequestMapping(method = RequestMethod.GET,
         params = {"fromDate", "toDate"})
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<List<AuditEvent>> getByDates(
         @RequestParam(value = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
         @RequestParam(value = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
@@ -76,6 +78,7 @@ public class AuditResource {
      */
     @RequestMapping(value = "/{id:.+}",
         method = RequestMethod.GET)
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<AuditEvent> get(@PathVariable Long id) {
         return auditEventService.find(id)
                 .map((entity) -> new ResponseEntity<>(entity, HttpStatus.OK))

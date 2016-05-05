@@ -85,6 +85,7 @@ public class FlatResource {
                 flat.setResidents(Collections.singleton(user));
                 Flat result = flatService.save(flat);
 
+                // update the user as well
                 user.setMemberOf(result);
                 userRepository.save(user);
 
@@ -113,6 +114,7 @@ public class FlatResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Flat> updateFlat(@Valid @RequestBody Flat flat) throws URISyntaxException {
         log.debug("REST request to update Flat : {}", flat);
         if (flat.getId() == null) {
@@ -143,6 +145,7 @@ public class FlatResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<List<Flat>> getAllFlats(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Flats");
@@ -161,6 +164,7 @@ public class FlatResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Flat> getFlat(@PathVariable Long id) {
         log.debug("REST request to get Flat : {}", id);
         Flat flat = flatService.findOne(id);
@@ -181,6 +185,7 @@ public class FlatResource {
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteFlat(@PathVariable Long id) {
         log.debug("REST request to delete Flat : {}", id);
         flatService.delete(id);
@@ -198,6 +203,7 @@ public class FlatResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<List<Flat>> searchFlats(@RequestParam String query, Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to search for a page of Flats for query {}", query);
