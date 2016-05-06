@@ -24,25 +24,30 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="description" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            
+
             <column name="repeatable" type="bit">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="interval" type="integer">
                 <constraints nullable="true" />
             </column>
-            
+
             <column name="points" type="integer">
                 <constraints nullable="false" />
             </column>
-            
+
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
-        
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/chore_types.csv"
+                  separator=";"
+                  tableName="chore_type"/>
+
     </changeSet>
 </databaseChangeLog>
