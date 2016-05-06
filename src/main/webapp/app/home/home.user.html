@@ -16,18 +16,10 @@
             <h4><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> {{vm.account.points | number}}</h4>
         </div>
 
-        <h3>Frequent:</h3>
+        <h3>Frequent chores:</h3>
         <div class="list-group">
-            <a href="#" class="list-group-item">took out the trash<span class="badge">14 <span
-                class="glyphicon glyphicon-star"></span></span></a>
-            <a href="#" class="list-group-item">washed all dishes<span class="badge">7 <span
-                class="glyphicon glyphicon-star"></span></span></a>
-            <a href="#" class="list-group-item">dish out of dishwasher<span class="badge">7 <span
-                class="glyphicon glyphicon-star"></span></span></a>
-            <a href="#" class="list-group-item">bought toilet paper<span class="badge">7 <span
-                class="glyphicon glyphicon-star"></span></span></a>
-            <a href="#" class="list-group-item">organised shoes<span class="badge">5 <span
-                class="glyphicon glyphicon-star"></span></span></a>
+            <a ng-click="vm.saveChoreEvent(choreType)" class="list-group-item" ng-class="{disabled: vm.isEventSaving}" ng-repeat="choreType in vm.choreTypes track by choreType.id">
+                {{choreType.name}}<span class="badge">{{choreType.points}} <span class="glyphicon glyphicon-star"></span></span></a>
         </div>
     </div>
     <!-- LEFT COLUMN END -->

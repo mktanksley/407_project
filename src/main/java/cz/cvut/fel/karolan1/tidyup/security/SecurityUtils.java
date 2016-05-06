@@ -57,7 +57,7 @@ public final class SecurityUtils {
 
     /**
      * If the current user has a specific authority (security role).
-     *
+     * <p>
      * <p>The name of this method comes from the isUserInRole() method in the Servlet API</p>
      *
      * @param authority the authorithy to check
@@ -73,5 +73,14 @@ public final class SecurityUtils {
             }
         }
         return false;
+    }
+
+    /**
+     * If the current user has an ROLE_ADMIN authority (security role).
+     *
+     * @return true if the current user has ROLE_ADMIN authority (security role), false otherwise
+     */
+    public static boolean isCurrentUserAdmin() {
+        return isCurrentUserInRole(AuthoritiesConstants.ADMIN);
     }
 }

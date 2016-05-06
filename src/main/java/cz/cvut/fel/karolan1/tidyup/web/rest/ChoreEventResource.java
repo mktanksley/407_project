@@ -4,6 +4,8 @@ import com.codahale.metrics.annotation.Timed;
 import cz.cvut.fel.karolan1.tidyup.domain.ChoreEvent;
 import cz.cvut.fel.karolan1.tidyup.repository.ChoreEventRepository;
 import cz.cvut.fel.karolan1.tidyup.repository.search.ChoreEventSearchRepository;
+import cz.cvut.fel.karolan1.tidyup.security.AuthoritiesConstants;
+import cz.cvut.fel.karolan1.tidyup.security.SecurityUtils;
 import cz.cvut.fel.karolan1.tidyup.web.rest.util.HeaderUtil;
 import cz.cvut.fel.karolan1.tidyup.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -14,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -21,10 +24,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing ChoreEvent.
@@ -34,13 +35,13 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class ChoreEventResource {
 
     private final Logger log = LoggerFactory.getLogger(ChoreEventResource.class);
-        
+
     @Inject
     private ChoreEventRepository choreEventRepository;
-    
+
     @Inject
     private ChoreEventSearchRepository choreEventSearchRepository;
-    
+
     /**
      * POST  /chore-events : Create a new choreEvent.
      *
@@ -52,6 +53,7 @@ public class ChoreEventResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured(AuthoritiesConstants.USER)
     public ResponseEntity<ChoreEvent> createChoreEvent(@RequestBody ChoreEvent choreEvent) throws URISyntaxException {
         log.debug("REST request to save ChoreEvent : {}", choreEvent);
         if (choreEvent.getId() != null) {
@@ -59,9 +61,16 @@ public class ChoreEventResource {
         }
         ChoreEvent result = choreEventRepository.save(choreEvent);
         choreEventSearchRepository.save(result);
-        return ResponseEntity.created(new URI("/api/chore-events/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("choreEvent", result.getId().toString()))
-            .body(result);
+
+        // create bootstrap alert for created entity only for admin
+        if (SecurityUtils.isCurrentUserAdmin()) {
+            return ResponseEntity.created(new URI("/api/chore-events/" + result.getId()))
+                .headers(HeaderUtil.createEntityCreationAlert("choreEvent", result.getId().toString()))
+                .body(result);
+        } else {
+            return ResponseEntity.created(new URI("/api/chore-events/" + result.getId()))
+                .body(result);
+        }
     }
 
     /**
@@ -103,7 +112,7 @@ public class ChoreEventResource {
     public ResponseEntity<List<ChoreEvent>> getAllChoreEvents(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of ChoreEvents");
-        Page<ChoreEvent> page = choreEventRepository.findAll(pageable); 
+        Page<ChoreEvent> page = choreEventRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/chore-events");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
