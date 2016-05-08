@@ -25,7 +25,7 @@
     <div ng-show="{{ENV === 'dev'}}" class="development" ng-cloak></div>
     <div ui-view="navbar" ng-cloak></div>
     <div class="container">
-        <div ui-view="content"></div>
+        <div ui-view="content" ng-cloak></div>
     </div>
     <footer class="footer" ng-cloak>
         <div class="container">
@@ -214,8 +214,6 @@
     <script src="app/account/activate/activate.controller.js"></script>
     <script src="app/account/account.state.js"></script>
     <script src="app/about/about.state.js"></script>
-    <script src="app/about/about.service.js"></script>
-    <script src="app/about/about.controller.js"></script>
     <!-- endinject -->
     <!-- endbuild -->
 
