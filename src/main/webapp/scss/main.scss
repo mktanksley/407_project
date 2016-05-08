@@ -92,19 +92,29 @@ body {
 
 // add border/vertical line between login and register columns at home page (on big screens only)
 // 992px = @screen-md-min, did not find an easy way to use the variable here
-$border-color: #ddd;
+$filler-color: #DDDDDD;
 @media (min-width: 992px) {
     .left-column {
-        border-right: 1px solid $border-color;
+        border-right: 1px solid $filler-color;
     }
     .right-column {
-        border-left: 1px solid $border-color;
+        border-left: 1px solid $filler-color;
     }
 }
 
 .avatar {
     max-height: 140px;
-    background-color: #DDDDDD;
+    background-color: $filler-color;
+}
+
+.event {
+    padding-bottom: 20px;
+    //border-bottom: 1px solid $filler-color;
+}
+.event img {
+    max-height: 64px;
+    //max-width: 64px;
+    //background-color: $filler-color;
 }
 
 .horizontal-space {

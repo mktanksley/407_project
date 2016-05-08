@@ -4,6 +4,9 @@
     angular
         .module('tidyUpApp')
         .constant('paginationConstants', {
-            'itemsPerPage': 20
+            'itemsPerPage': 10
+        })
+        .constant('pagerConstants', {
+            'itemsPerPage': 3
         });
 })();

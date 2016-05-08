@@ -33,7 +33,7 @@
                     authorities: ['ROLE_USER']
                 },
                 params: {
-                    login : {}
+                    page : 0
                 },
                 views: {
                     'content@': {

@@ -7,6 +7,7 @@ import cz.cvut.fel.karolan1.tidyup.repository.AuthorityRepository;
 import cz.cvut.fel.karolan1.tidyup.repository.UserRepository;
 import cz.cvut.fel.karolan1.tidyup.repository.search.UserSearchRepository;
 import cz.cvut.fel.karolan1.tidyup.security.AuthoritiesConstants;
+import cz.cvut.fel.karolan1.tidyup.security.SecurityUtils;
 import cz.cvut.fel.karolan1.tidyup.service.MailService;
 import cz.cvut.fel.karolan1.tidyup.service.UserService;
 import cz.cvut.fel.karolan1.tidyup.web.rest.dto.ManagedUserDTO;
@@ -38,7 +39,7 @@ import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing users.
- *
+ * <p>
  * <p>This class accesses the User entity, and needs to fetch its collection of authorities.</p>
  * <p>
  * For a normal use-case, it would be better to have an eager relationship between User and Authority,
@@ -91,7 +92,7 @@ public class UserResource {
      * </p>
      *
      * @param managedUserDTO the user to create
-     * @param request the HTTP request
+     * @param request        the HTTP request
      * @return the ResponseEntity with status 201 (Created) and with body the new user, or with status 400 (Bad Request) if the login or email is already in use
      * @throws URISyntaxException if the Location URI syntaxt is incorrect
      */
@@ -113,14 +114,14 @@ public class UserResource {
         } else {
             User newUser = userService.createUser(managedUserDTO);
             String baseUrl = request.getScheme() + // "http"
-            "://" +                                // "://"
-            request.getServerName() +              // "myhost"
-            ":" +                                  // ":"
-            request.getServerPort() +              // "80"
-            request.getContextPath();              // "/myContextPath" or "" if deployed in root context
+                "://" +                                // "://"
+                request.getServerName() +              // "myhost"
+                ":" +                                  // ":"
+                request.getServerPort() +              // "80"
+                request.getContextPath();              // "/myContextPath" or "" if deployed in root context
             mailService.sendCreationEmail(newUser, baseUrl);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
-                .headers(HeaderUtil.createAlert( "userManagement.created", newUser.getLogin()))
+                .headers(HeaderUtil.createAlert("userManagement.created", newUser.getLogin()))
                 .body(newUser);
         }
     }
@@ -138,7 +139,7 @@ public class UserResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional
-    @Secured(AuthoritiesConstants.ADMIN)
+    @Secured(AuthoritiesConstants.USER)
     public ResponseEntity<ManagedUserDTO> updateUser(@RequestBody ManagedUserDTO managedUserDTO) {
         log.debug("REST request to update User : {}", managedUserDTO);
         Optional<User> existingUser = userRepository.findOneByEmail(managedUserDTO.getEmail());
@@ -148,6 +149,11 @@ public class UserResource {
         existingUser = userRepository.findOneByLogin(managedUserDTO.getLogin());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserDTO.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("userManagement", "userexists", "Login already in use")).body(null);
+        }
+
+        // check that non-admin user is editing only himself
+        if (!SecurityUtils.isCurrentUserAdmin() && !SecurityUtils.getCurrentUserLogin().equals(managedUserDTO.getLogin())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).headers(HeaderUtil.createFailureAlert("error", "error", "User can see only his account's data!")).body(null);
         }
         return userRepository
             .findOneById(managedUserDTO.getId())
@@ -166,8 +172,15 @@ public class UserResource {
                 managedUserDTO.getAuthorities().stream().forEach(
                     authority -> authorities.add(authorityRepository.findOne(authority))
                 );
+
+                // add alert only for admin
+                if (SecurityUtils.isCurrentUserAdmin()) {
+                    return ResponseEntity.ok()
+                        .headers(HeaderUtil.createAlert("userManagement.updated", managedUserDTO.getLogin()))
+                        .body(new ManagedUserDTO(userRepository
+                            .findOne(managedUserDTO.getId())));
+                }
                 return ResponseEntity.ok()
-                    .headers(HeaderUtil.createAlert("userManagement.updated", managedUserDTO.getLogin()))
                     .body(new ManagedUserDTO(userRepository
                         .findOne(managedUserDTO.getId())));
             })
@@ -207,13 +220,21 @@ public class UserResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured(AuthoritiesConstants.USER)
     public ResponseEntity<ManagedUserDTO> getUser(@PathVariable String login) {
         log.debug("REST request to get User : {}", login);
+
+        // non-admin user can read only his data
+        if (!SecurityUtils.isCurrentUserAdmin() && !SecurityUtils.getCurrentUserLogin().equals(login)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).headers(HeaderUtil.createFailureAlert("error", "error", "User can see only his account's data!")).body(null);
+        }
+
         return userService.getUserWithAuthoritiesByLogin(login)
-                .map(ManagedUserDTO::new)
-                .map(managedUserDTO -> new ResponseEntity<>(managedUserDTO, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            .map(ManagedUserDTO::new)
+            .map(managedUserDTO -> new ResponseEntity<>(managedUserDTO, HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
     /**
      * DELETE  USER :login : delete the "login" User.
      *
@@ -228,7 +249,7 @@ public class UserResource {
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
         userService.deleteUserInformation(login);
-        return ResponseEntity.ok().headers(HeaderUtil.createAlert( "userManagement.deleted", login)).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createAlert("userManagement.deleted", login)).build();
     }
 
     /**

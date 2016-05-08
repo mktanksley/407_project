@@ -6,6 +6,7 @@ import cz.cvut.fel.karolan1.tidyup.repository.ChoreEventRepository;
 import cz.cvut.fel.karolan1.tidyup.repository.search.ChoreEventSearchRepository;
 import cz.cvut.fel.karolan1.tidyup.security.AuthoritiesConstants;
 import cz.cvut.fel.karolan1.tidyup.security.SecurityUtils;
+import cz.cvut.fel.karolan1.tidyup.service.UserService;
 import cz.cvut.fel.karolan1.tidyup.web.rest.util.HeaderUtil;
 import cz.cvut.fel.karolan1.tidyup.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -42,6 +43,9 @@ public class ChoreEventResource {
     @Inject
     private ChoreEventSearchRepository choreEventSearchRepository;
 
+    @Inject
+    private UserService userService;
+
     /**
      * POST  /chore-events : Create a new choreEvent.
      *
@@ -59,6 +63,19 @@ public class ChoreEventResource {
         if (choreEvent.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("choreEvent", "idexists", "A new choreEvent cannot already have an ID")).body(null);
         }
+
+        // if not system or flat admin, user can create event only for himself.
+        // if flat admin, user can create events for flat members.
+        if (!SecurityUtils.isCurrentUserAdmin()) {
+            // is current user admin of the flat and is creating event for a flat member?
+            if (!userService.isCurrentUserAdminOfFlat(choreEvent.getDoneBy().getMemberOf())) {
+                // user can create events for himself:
+                if (!choreEvent.getDoneBy().getLogin().equals(SecurityUtils.getCurrentUserLogin())) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).headers(HeaderUtil.createFailureAlert("error", "error", "User can modify only his own data!")).body(null);
+                }
+            }
+        }
+
         ChoreEvent result = choreEventRepository.save(choreEvent);
         choreEventSearchRepository.save(result);
 
@@ -109,9 +126,19 @@ public class ChoreEventResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured(AuthoritiesConstants.USER)
     public ResponseEntity<List<ChoreEvent>> getAllChoreEvents(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of ChoreEvents");
+
+        //TODO list events only for flat members
+
+        // if not admin, return events only done by the user
+        if (!SecurityUtils.isCurrentUserAdmin()) {
+            Page<ChoreEvent> page = choreEventRepository.findByDoneByIsCurrentUser(pageable);
+            HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/chore-events");
+            return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        }
         Page<ChoreEvent> page = choreEventRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/chore-events");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

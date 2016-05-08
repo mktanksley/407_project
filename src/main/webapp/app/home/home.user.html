@@ -1,5 +1,3 @@
-<h1>{{vm.user.memberOf}}</h1>
-
 <div class="row">
     <jhi-alert></jhi-alert>
 
@@ -13,13 +11,16 @@
             <img src="content/images/default-avatar-1.png" ng-if="vm.account.avatar == null" class="img-circle avatar"/>
 
             <h3>{{vm.account.login}}</h3>
-            <h4><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> {{vm.account.points | number}}</h4>
+            <h4><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> {{vm.account.points | number}}
+            </h4>
         </div>
 
         <h3>Frequent chores:</h3>
         <div class="list-group">
-            <a ng-click="vm.saveChoreEvent(choreType)" class="list-group-item" ng-class="{disabled: vm.isEventSaving}" ng-repeat="choreType in vm.choreTypes track by choreType.id">
-                {{choreType.name}}<span class="badge">{{choreType.points}} <span class="glyphicon glyphicon-star"></span></span></a>
+            <a ng-click="vm.saveChoreEvent(choreType)" class="list-group-item" ng-class="{disabled: vm.isEventSaving}"
+               ng-repeat="choreType in vm.choreTypes track by choreType.id">
+                {{choreType.name}}<span class="badge">{{choreType.points}} <span
+                class="glyphicon glyphicon-star"></span></span></a>
         </div>
     </div>
     <!-- LEFT COLUMN END -->
@@ -55,33 +56,41 @@
             </div>
         </div>
 
-        <div class="media">
+        <div class="media event" ng-if="vm.choreEvents.length === 0">
             <div class="media-body">
-                <h4 class="media-heading">Media heading</h4>
-                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo.
-                Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.
+                <h4 class="media-heading">No chores fulfilled yet!</h4>
+                Nobody has done any chore in your fantastic apartment yet :(<br>
+                come on, clean up something...
             </div>
             <div class="media-right">
-                <a href="#"><img class="media-object img-circle" src="holder.js/64x64"></a>
+                <img src="content/images/clean-up-clipart.png" class="media-object img-thumbnail"/>
             </div>
         </div>
 
-        <div class="media">
+        <div class="media event" ng-repeat="choreEvent in vm.choreEvents track by choreEvent.id">
             <div class="media-body">
-                <h4 class="media-heading">Media heading</h4>
-                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo.
-                Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.
+                <h4 class="media-heading">{{choreEvent.doneBy.login}} <em>{{choreEvent.isType.name}}</em></h4>
+                <p>On <em>{{choreEvent.dateDone | date: 'short'}}</em> <strong>{{choreEvent.doneBy.login ===
+                    vm.account.login ? "you" : "your flatmate " + choreEvent.doneBy.login}}</strong>
+                    fulfilled {{choreEvent.isType.repeatable ? 'his' : ''}} a chore
+                    <strong>{{choreEvent.isType.name}}</strong>.
+                    It was for&nbsp;<strong>{{choreEvent.isType.points}}</strong>&nbsp;points, so now {{choreEvent.doneBy.login
+                    === vm.account.login ? "you have" : choreEvent.doneBy.login + " has"}}
+                    <strong>{{choreEvent.doneBy.points}}</strong>&nbsp;points!</p>
             </div>
             <div class="media-right">
-                <a href="#"><img class="media-object img-circle" src="holder.js/64x64"></a>
+                <a href="#">
+                    <img
+                        data-ng-src="{{'data:' + choreEvent.doneBy.avatarContentType + ';base64,' + choreEvent.doneBy.avatar}}"
+                        ng-if="choreEvent.doneBy.avatar" class="media-object img-circle"/>
+                    <!-- ELSE show default picture -->
+                    <img src="content/images/default-avatar-1.png" ng-if="choreEvent.doneBy.avatar == null"
+                         class="media-object img-circle"/>
+                </a>
             </div>
         </div>
 
-        <nav>
-            <ul class="pager">
-                <li class="next"><a href="#">Older <span aria-hidden="true">&darr;</span></a></li>
-            </ul>
-        </nav>
+        <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
     </div>
     <!-- MIDDLE COLUMN END -->
 

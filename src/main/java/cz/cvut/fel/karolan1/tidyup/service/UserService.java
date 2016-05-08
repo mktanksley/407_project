@@ -1,6 +1,7 @@
 package cz.cvut.fel.karolan1.tidyup.service;
 
 import cz.cvut.fel.karolan1.tidyup.domain.Authority;
+import cz.cvut.fel.karolan1.tidyup.domain.Flat;
 import cz.cvut.fel.karolan1.tidyup.domain.User;
 import cz.cvut.fel.karolan1.tidyup.repository.AuthorityRepository;
 import cz.cvut.fel.karolan1.tidyup.repository.PersistentTokenRepository;
@@ -247,5 +248,15 @@ public class UserService {
             userRepository.delete(user);
             userSearchRepository.delete(user);
         }
+    }
+
+    /**
+     * Checks if the current user is administrator of supplied flat.
+     *
+     * @param flat
+     * @return True if current user is admin of supplied flat, false otherwise.
+     */
+    public boolean isCurrentUserAdminOfFlat(Flat flat) {
+        return SecurityUtils.getCurrentUserLogin().equals(flat.getHasAdmin().getLogin());
     }
 }

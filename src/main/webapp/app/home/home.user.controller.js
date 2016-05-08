@@ -5,18 +5,26 @@
         .module('tidyUpApp')
         .controller('HomeUserController', HomeUserController);
 
-    HomeUserController.$inject = ['Principal', 'ChoreType', 'ChoreEvent', 'AlertService'];
+    HomeUserController.$inject = ['$state', 'Principal', 'ChoreType', 'ChoreEvent', 'AlertService', 'ParseLinks', 'pagerConstants', 'User'];
 
-    function HomeUserController(Principal, ChoreType, ChoreEvent, AlertService) {
+    function HomeUserController($state, Principal, ChoreType, ChoreEvent, AlertService, ParseLinks, pagerConstants, User) {
         var vm = this;
 
         vm.account = null;
         vm.user = null;
-
         vm.choreTypes = null;
+        vm.choreEvents = null;
 
         vm.isEventSaving = false;
         vm.saveChoreEvent = saveChoreEvent;
+
+        // pagination for events
+        vm.loadAll = loadAll;
+        vm.loadPage = loadPage;
+        vm.page = $state.params.page;
+        vm.transition = transition;
+        vm.clear = clear;
+        vm.loadAll();
 
         getAccount();
         getChoreTypes();
@@ -34,27 +42,88 @@
         }
 
         // methods for saving one-time chore event
+
         var onSaveSuccess = function (result) {
-            // add event update listeners?
-            // $scope.$emit('tidyUpApp:choreEventUpdate', result);
             vm.isEventSaving = false;
             AlertService.success('home.choreEvent.success');
+            loadAll();
         };
+
         var onSaveError = function () {
             vm.isEventSaving = false;
             AlertService.error('home.choreEvent.error');
         };
+
+        /**
+         * Loads current User entity, creates new choreEvent and updates User with choreType points.
+         *
+         * @param choreType
+         */
         function saveChoreEvent(choreType) {
             vm.isEventSaving = true;
-            
-            var choreEvent = {
-                id: null,
-                dateTo: null,
-                dateDone: null,
-                isType: {id: choreType.id}
-            };
+            vm.isUserSaving = true;
 
-            ChoreEvent.save(choreEvent, onSaveSuccess, onSaveError);
+            // load User
+            User.get({login: vm.account.login}, function (result) {
+                vm.user = result;
+                var choreEvent = {
+                    id: null,
+                    dateTo: null,
+                    dateDone: new Date(),
+                    isType: {id: choreType.id},
+                    doneBy: vm.user
+                };
+
+                // update User
+                var userToUpdate = vm.user;
+                userToUpdate.points += choreType.points;
+                User.update(userToUpdate, function (result) {
+                    vm.isUserSaving = false;
+                    // reload User points
+                    vm.account.points = result.points;
+
+                    // create ChoreEvent
+                    ChoreEvent.save(choreEvent, onSaveSuccess, onSaveError);
+                }, onSaveError);
+            });
+        }
+
+        // methods to handle list of events:
+        function loadAll() {
+            ChoreEvent.query({
+                page: vm.page - 1,
+                size: pagerConstants.itemsPerPage,
+                sort: ['dateDone,desc']
+            }, onSuccess, onError);
+
+            function onSuccess(data, headers) {
+                vm.links = ParseLinks.parse(headers('link'));
+                vm.totalItems = headers('X-Total-Count');
+                vm.queryCount = vm.totalItems;
+                vm.choreEvents = data;
+                // vm.page = pagingParams.page;
+            }
+
+            function onError(error) {
+                AlertService.error(error.data.message);
+            }
+        }
+
+        function loadPage(page) {
+            vm.page = page;
+            vm.transition();
+        }
+
+        function transition() {
+            $state.transitionTo($state.$current, {
+                page: vm.page
+            });
+        }
+
+        function clear() {
+            vm.links = null;
+            vm.page = 1;
+            vm.transition();
         }
 
     }
