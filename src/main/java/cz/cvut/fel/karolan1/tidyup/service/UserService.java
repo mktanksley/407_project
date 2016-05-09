@@ -199,6 +199,20 @@ public class UserService {
 
     public void deleteUserInformation(String login) {
         userRepository.findOneByLogin(login).ifPresent(u -> {
+
+            // unset other side of relationship
+            Flat memberOf = u.getMemberOf();
+            Set<User> residents = u.getMemberOf().getResidents();
+            residents.remove(u);
+            memberOf.setResidents(residents);
+            flatService.save(memberOf);
+
+            // if admin of flat
+            if (u.getIsAdminOf() != null) {
+                memberOf.setHasAdmin(null);
+                flatService.save(memberOf);
+            }
+
             socialService.deleteUserSocialConnection(u.getLogin());
             userRepository.delete(u);
             userSearchRepository.delete(u);

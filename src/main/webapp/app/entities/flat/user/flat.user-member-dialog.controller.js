@@ -30,7 +30,7 @@
         vm.save = function () {
             vm.isSaving = true;
             vm.user.memberOf = $stateParams.flat;
-
+            vm.user.authorities = ['ROLE_USER'];
             User.save(vm.user, onSaveSuccess, onSaveError);
         };
 

@@ -2,6 +2,7 @@ package cz.cvut.fel.karolan1.tidyup.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import cz.cvut.fel.karolan1.tidyup.domain.Authority;
+import cz.cvut.fel.karolan1.tidyup.domain.Flat;
 import cz.cvut.fel.karolan1.tidyup.domain.User;
 import cz.cvut.fel.karolan1.tidyup.repository.AuthorityRepository;
 import cz.cvut.fel.karolan1.tidyup.repository.UserRepository;
@@ -237,15 +238,21 @@ public class UserResource {
     public ResponseEntity<ManagedUserDTO> getUser(@PathVariable String login) {
         log.debug("REST request to get User : {}", login);
 
-        // non-admin user can read only his data
-        if (!SecurityUtils.isCurrentUserAdmin() && !SecurityUtils.getCurrentUserLogin().equals(login)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).headers(HeaderUtil.createFailureAlert("error", "error", "User can see only his account's data!")).body(null);
-        }
-
-        return userService.getUserWithAuthoritiesByLogin(login)
+        ResponseEntity<ManagedUserDTO> response = userService.getUserWithAuthoritiesByLogin(login)
             .map(ManagedUserDTO::new)
             .map(managedUserDTO -> new ResponseEntity<>(managedUserDTO, HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
+        // non-admin user can read only his data
+        // if admin of flat, he can access flatmates
+        Flat adminOf = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get().getIsAdminOf();
+        Flat memberOf = response.getBody() == null ? null : response.getBody().getMemberOf();
+        if (!SecurityUtils.isCurrentUserAdmin() && !SecurityUtils.getCurrentUserLogin().equals(login) && (adminOf == null || memberOf == null || !adminOf.equals(memberOf))) {
+            log.warn("Non-admin user tried to view other user!");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).headers(HeaderUtil.createFailureAlert("error", "error", "User can see only his account's data!")).body(null);
+        }
+
+        return response;
     }
 
     /**
@@ -258,11 +265,13 @@ public class UserResource {
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
+    @Secured(AuthoritiesConstants.USER)
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
         userService.deleteUserInformation(login);
-        return ResponseEntity.ok().headers(HeaderUtil.createAlert("userManagement.deleted", login)).build();
+
+        // only add alert for admin
+        return SecurityUtils.isCurrentUserAdmin() ? ResponseEntity.ok().headers(HeaderUtil.createAlert("userManagement.deleted", login)).build() : ResponseEntity.ok().build();
     }
 
     /**

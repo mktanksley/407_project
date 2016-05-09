@@ -25,6 +25,7 @@
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('flat');
+                        $translatePartialLoader.addPart('global');
                         return $translate.refresh();
                     }],
                     entity: function () {
@@ -52,6 +53,7 @@
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('flat');
+                        $translatePartialLoader.addPart('global');
                         return $translate.refresh();
                     }],
                     entity: function () {
@@ -76,7 +78,7 @@
                 params: {
                     flat: null
                 },
-                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
                         templateUrl: 'app/entities/flat/user/flat.user-member-dialog.html',
                         controller: 'MemberDialogController',
@@ -92,10 +94,34 @@
                                 };
                             }
                         }
-                    }).result.then(function() {
-                        $state.go('userFlat', null, { reload: true });
-                    }, function() {
+                    }).result.then(function () {
+                        $state.go('userFlat', null, {reload: true});
+                    }, function () {
                         $state.go('userFlat');
+                    });
+                }]
+            })
+            .state('userFlat.delete', {
+                parent: 'userFlat',
+                url: '/member/{login}/delete',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/flat/user/flat.user-member-delete-dialog.html',
+                        controller: 'MemberDialogDeleteController',
+                        controllerAs: 'vm',
+                        size: 'md',
+                        resolve: {
+                            entity: ['User', function (User) {
+                                return User.get({login: $stateParams.login});
+                            }]
+                        }
+                    }).result.then(function () {
+                        $state.go('userFlat', null, {reload: true});
+                    }, function () {
+                        $state.go('^');
                     });
                 }]
             });
