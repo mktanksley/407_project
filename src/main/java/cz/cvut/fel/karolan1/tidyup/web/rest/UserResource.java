@@ -113,7 +113,7 @@ public class UserResource {
                 .body(null);
         } else {
 
-            User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
+            User currentUser = userService.getUserWithAuthorities();
 
             // non-admin User can create members of his flat
             if (!SecurityUtils.isCurrentUserAdmin() && !currentUser.getIsAdminOf().equals(managedUserDTO.getMemberOf())) {
@@ -245,7 +245,7 @@ public class UserResource {
 
         // non-admin user can read only his data
         // if admin of flat, he can access flatmates
-        Flat adminOf = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get().getIsAdminOf();
+        Flat adminOf = userService.getUserWithAuthorities().getIsAdminOf();
         Flat memberOf = response.getBody() == null ? null : response.getBody().getMemberOf();
         if (!SecurityUtils.isCurrentUserAdmin() && !SecurityUtils.getCurrentUserLogin().equals(login) && (adminOf == null || memberOf == null || !adminOf.equals(memberOf))) {
             log.warn("Non-admin user tried to view other user!");

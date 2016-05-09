@@ -8,6 +8,7 @@ import cz.cvut.fel.karolan1.tidyup.repository.UserRepository;
 import cz.cvut.fel.karolan1.tidyup.security.AuthoritiesConstants;
 import cz.cvut.fel.karolan1.tidyup.security.SecurityUtils;
 import cz.cvut.fel.karolan1.tidyup.service.FlatService;
+import cz.cvut.fel.karolan1.tidyup.service.UserService;
 import cz.cvut.fel.karolan1.tidyup.web.rest.util.HeaderUtil;
 import cz.cvut.fel.karolan1.tidyup.web.rest.util.PaginationUtil;
 import org.hibernate.Hibernate;
@@ -48,6 +49,9 @@ public class FlatResource {
     private FlatRepository flatRepository;
 
     @Inject
+    private UserService userService;
+
+    @Inject
     private UserRepository userRepository;
 
     /**
@@ -69,7 +73,7 @@ public class FlatResource {
         }
 
         // check if the name already exists
-        if (flatRepository.findOneByName(flat.getName()) != null){
+        if (flatRepository.findOneByName(flat.getName()) != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("flat", "nameexist", "This name (" + flat.getName() + ") is already used!")).body(null);
         }
 
@@ -78,23 +82,18 @@ public class FlatResource {
 
         // if the create request is made by common user, assign the flat to him
         if (!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
-            Optional<User> currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-            if (!currentUser.isPresent()) {
-                return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user", "entitynotexists", "User does not exist!")).body(null);
-            } else {
-                User user = currentUser.get();
-                flat.setHasAdmin(user);
-                flat.setResidents(Collections.singleton(user));
-                Flat result = flatService.save(flat);
+            User user = userService.getUserWithAuthorities();
+            flat.setHasAdmin(user);
+            flat.setResidents(Collections.singleton(user));
+            Flat result = flatService.save(flat);
 
-                // update the user as well
-                user.setMemberOf(result);
-                userRepository.save(user);
+            // update the user as well
+            user.setMemberOf(result);
+            userRepository.save(user);
 
-                return ResponseEntity.created(new URI("/api/flats/" + result.getId()))
-                    .headers(HeaderUtil.createAlert("tidyUpApp.flat.registered", result.getName()))
-                    .body(result);
-            }
+            return ResponseEntity.created(new URI("/api/flats/" + result.getId()))
+                .headers(HeaderUtil.createAlert("tidyUpApp.flat.registered", result.getName()))
+                .body(result);
         }
 
         Flat result = flatService.save(flat);
@@ -176,9 +175,8 @@ public class FlatResource {
         Hibernate.initialize(flat.getFriends()); // eagerly load friends
 
         // if the user is not admin and not member of the flat, he cannot get this!
-        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
-        if (!SecurityUtils.isCurrentUserAdmin() && !currentUser.getMemberOf().equals(flat)) {
-            log.warn("User tried to view foreign flat!", currentUser);
+        if (!SecurityUtils.isCurrentUserAdmin() && !userService.getUserWithAuthorities().getMemberOf().equals(flat)) {
+            log.warn("User tried to view foreign flat!", userService.getUserWithAuthorities());
             return ResponseEntity.status(HttpStatus.FORBIDDEN).headers(HeaderUtil.createFailureAlert("error", "error", "User can see only his account's data!")).body(null);
         }
         return Optional.ofNullable(flat)

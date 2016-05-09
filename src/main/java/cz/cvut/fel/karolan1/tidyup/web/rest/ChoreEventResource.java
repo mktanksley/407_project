@@ -131,11 +131,9 @@ public class ChoreEventResource {
         throws URISyntaxException {
         log.debug("REST request to get a page of ChoreEvents");
 
-        //TODO list events only for flat members
-
-        // if not admin, return events only done by the user
+        // if not admin, return events from user's flat
         if (!SecurityUtils.isCurrentUserAdmin()) {
-            Page<ChoreEvent> page = choreEventRepository.findByDoneByIsCurrentUser(pageable);
+            Page<ChoreEvent> page = choreEventRepository.findEventsFromCurrentUsersFlat(userService.getUserWithAuthorities().getMemberOf(), pageable);
             HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/chore-events");
             return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
         }
