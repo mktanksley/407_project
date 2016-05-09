@@ -1,0 +1,91 @@
+<jhi-alert></jhi-alert>
+<div>
+    <h1>Info about your flat</h1>
+    <hr>
+    <dl class="dl-horizontal">
+        <dt>name</dt>
+        <dd>{{vm.flat.name}}</dd>
+        <hr>
+        <dt>created on</dt>
+        <dd>{{vm.flat.dateCreated | date:'medium'}}</dd>
+        <hr>
+        <dt>members</dt>
+        <dd>
+            <div class="table-responsive">
+                <table class="jh-table table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Nick</th>
+                        <th>Email</th>
+                        <th>Points</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="resident in vm.flat.residents">
+                        <td>{{resident.login}}</td>
+                        <td>{{resident.email}}</td>
+                        <td>{{resident.points}}</td>
+                        <td class="text-right">
+                            <div class="btn-group flex-btn-group-container">
+                                <button type="submit"
+                                        ui-sref="flat.delete({id:flat.id})"
+                                        class="btn btn-danger btn-sm">
+                                    <span class="glyphicon glyphicon-remove-circle"></span>
+                                    <span class="hidden-xs hidden-sm" translate="entity.action.delete"></span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="userFlat.newMember({flat: vm.flat})">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span class="hidden-xs">
+                        Add a member
+                    </span>
+                </button>
+            </div>
+        </dd>
+
+        <hr>
+        <dt>friends</dt>
+        <dd>
+            <div class="table-responsive">
+                <table class="jh-table table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Admin's email</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="friend in vm.flat.friends">
+                        <td>{{friend.name}}</td>
+                        <td>{{friend.hasAdmin.email}}</td>
+                        <td class="text-right">
+                            <div class="btn-group flex-btn-group-container">
+                                <button type="submit"
+                                        ui-sref="userFlat.deleteMember({id:friend.id})"
+                                        class="btn btn-danger btn-sm">
+                                    <span class="glyphicon glyphicon-remove-circle"></span>
+                                    <span class="hidden-xs hidden-sm" translate="entity.action.delete"></span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="flat.new">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span class="hidden-xs">Add a friend's flat</span>
+                </button>
+            </div>
+        </dd>
+    </dl>
+</div>

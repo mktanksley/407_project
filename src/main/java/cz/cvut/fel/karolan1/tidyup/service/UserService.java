@@ -46,12 +46,14 @@ public class UserService {
     @Inject
     private UserSearchRepository userSearchRepository;
 
-
     @Inject
     private PersistentTokenRepository persistentTokenRepository;
 
     @Inject
     private AuthorityRepository authorityRepository;
+
+    @Inject
+    private FlatService flatService;
 
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
@@ -153,7 +155,27 @@ public class UserService {
         // new user has zero points
         user.setPoints(0);
 
+        Flat memberOf = managedUserDTO.getMemberOf();
+        user.setMemberOf(memberOf);
+
+        Flat adminOf = managedUserDTO.getIsAdminOf();
+        user.setIsAdminOf(adminOf);
+
         userRepository.save(user);
+
+        // update other side of relationships
+        if (memberOf != null) {
+            Set<User> residents = memberOf.getResidents();
+            residents.add(user);
+            memberOf.setResidents(residents);
+            flatService.save(memberOf);
+        }
+
+        if (adminOf != null && SecurityUtils.isCurrentUserAdmin()) {
+            adminOf.setHasAdmin(user);
+            flatService.save(adminOf);
+        }
+
         userSearchRepository.save(user);
         log.debug("Created Information for User: {}", user);
         return user;

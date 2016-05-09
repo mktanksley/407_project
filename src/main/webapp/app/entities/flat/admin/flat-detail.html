@@ -25,6 +25,13 @@
             </span>
         </dd>
         <hr>
+        <dt><span translate="tidyUpApp.flat.members">Members</span></dt>
+        <dd>
+            <span ng-repeat="resident in vm.flat.residents">
+                <a ui-sref="user-management-detail({login:resident.login})">{{resident.login}}</a>{{$last ? '' : ', '}}
+            </span>
+        </dd>
+        <hr>
     </dl>
 
     <button type="submit"

@@ -10,6 +10,7 @@ import cz.cvut.fel.karolan1.tidyup.security.SecurityUtils;
 import cz.cvut.fel.karolan1.tidyup.service.FlatService;
 import cz.cvut.fel.karolan1.tidyup.web.rest.util.HeaderUtil;
 import cz.cvut.fel.karolan1.tidyup.web.rest.util.PaginationUtil;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -164,10 +166,21 @@ public class FlatResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
+    @Secured(AuthoritiesConstants.USER)
+    @Transactional
     public ResponseEntity<Flat> getFlat(@PathVariable Long id) {
         log.debug("REST request to get Flat : {}", id);
+
         Flat flat = flatService.findOne(id);
+        Hibernate.initialize(flat.getResidents()); // eagerly load residents
+        Hibernate.initialize(flat.getFriends()); // eagerly load friends
+
+        // if the user is not admin and not member of the flat, he cannot get this!
+        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
+        if (!SecurityUtils.isCurrentUserAdmin() && !currentUser.getMemberOf().equals(flat)) {
+            log.warn("User tried to view foreign flat!", currentUser);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).headers(HeaderUtil.createFailureAlert("error", "error", "User can see only his account's data!")).body(null);
+        }
         return Optional.ofNullable(flat)
             .map(result -> new ResponseEntity<>(
                 result,

@@ -12,6 +12,7 @@ import javax.validation.constraints.Size;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 /**
  * A DTO representing a user, with his authorities.
  */
@@ -47,6 +48,8 @@ public class UserDTO {
 
     private String avatarContentType;
 
+    private Flat isAdminOf;
+
     private Flat memberOf;
 
     public UserDTO() {
@@ -56,11 +59,11 @@ public class UserDTO {
         this(user.getLogin(), user.getFirstName(), user.getLastName(),
             user.getEmail(), user.getActivated(), user.getLangKey(),
             user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet()),
-            user.getPoints(), user.getAvatar(), user.getAvatarContentType(), user.getMemberOf());
+            user.getPoints(), user.getAvatar(), user.getAvatarContentType(), user.getIsAdminOf(), user.getMemberOf());
     }
 
     public UserDTO(String login, String firstName, String lastName, String email, boolean activated, String langKey,
-                   Set<String> authorities, Integer points, byte[] avatar, String avatarContentType, Flat memberOf) {
+                   Set<String> authorities, Integer points, byte[] avatar, String avatarContentType, Flat adminOf, Flat memberOf) {
 
         this.login = login;
         this.firstName = firstName;
@@ -72,6 +75,7 @@ public class UserDTO {
         this.points = points;
         this.avatar = avatar;
         this.avatarContentType = avatarContentType;
+        this.isAdminOf = adminOf;
         this.memberOf = memberOf;
     }
 
@@ -127,6 +131,14 @@ public class UserDTO {
         this.avatarContentType = avatarContentType;
     }
 
+    public Flat getIsAdminOf() {
+        return isAdminOf;
+    }
+
+    public void setIsAdminOf(Flat isAdminOf) {
+        this.isAdminOf = isAdminOf;
+    }
+
     public Flat getMemberOf() {
         return memberOf;
     }
@@ -148,6 +160,7 @@ public class UserDTO {
             ", points=" + points +
             ", avatar=" + Arrays.toString(avatar) +
             ", avatarContentType='" + avatarContentType + '\'' +
+            ", isAdminOf=" + isAdminOf +
             ", memberOf=" + memberOf +
             '}';
     }

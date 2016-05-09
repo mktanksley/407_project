@@ -73,7 +73,6 @@ public class UserResource {
     @Inject
     private MailService mailService;
 
-
     @Inject
     private AuthorityRepository authorityRepository;
 
@@ -100,7 +99,7 @@ public class UserResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
+    @Secured(AuthoritiesConstants.USER)
     public ResponseEntity<?> createUser(@RequestBody ManagedUserDTO managedUserDTO, HttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to save User : {}", managedUserDTO);
         if (userRepository.findOneByLogin(managedUserDTO.getLogin()).isPresent()) {
@@ -112,6 +111,14 @@ public class UserResource {
                 .headers(HeaderUtil.createFailureAlert("userManagement", "emailexists", "Email already in use"))
                 .body(null);
         } else {
+
+            User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
+
+            // non-admin User can create members of his flat
+            if (!SecurityUtils.isCurrentUserAdmin() && !currentUser.getIsAdminOf().equals(managedUserDTO.getMemberOf())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).headers(HeaderUtil.createFailureAlert("error", "error", "User can create members of his flat!")).body(null);
+            }
+
             User newUser = userService.createUser(managedUserDTO);
             String baseUrl = request.getScheme() + // "http"
                 "://" +                                // "://"
@@ -120,8 +127,14 @@ public class UserResource {
                 request.getServerPort() +              // "80"
                 request.getContextPath();              // "/myContextPath" or "" if deployed in root context
             mailService.sendCreationEmail(newUser, baseUrl);
+
+            // alert only for admin
+            if (SecurityUtils.isCurrentUserAdmin()) {
+                return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
+                    .headers(HeaderUtil.createAlert("userManagement.created", newUser.getLogin()))
+                    .body(newUser);
+            }
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
-                .headers(HeaderUtil.createAlert("userManagement.created", newUser.getLogin()))
                 .body(newUser);
         }
     }

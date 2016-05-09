@@ -87,6 +87,5 @@
             vm.currentSearch = null;
             vm.transition();
         }
-
     }
 })();

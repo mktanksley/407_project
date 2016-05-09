@@ -31,7 +31,7 @@
             if (vm.isAuthenticated()) {
                 var isAdmin = vm.account.authorities.indexOf('ROLE_ADMIN') != -1;
                 if (vm.account.memberOf == null && !isAdmin) {
-                    $state.go('registerflat');
+                    $state.go('registerFlat');
                 } else {
                     $state.go('home.user');
                 }
