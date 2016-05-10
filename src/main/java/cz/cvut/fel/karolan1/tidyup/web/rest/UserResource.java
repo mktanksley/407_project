@@ -116,7 +116,7 @@ public class UserResource {
             User currentUser = userService.getUserWithAuthorities();
 
             // non-admin User can create members of his flat
-            if (!SecurityUtils.isCurrentUserAdmin() && !currentUser.getIsAdminOf().equals(managedUserDTO.getMemberOf())) {
+            if (!SecurityUtils.isCurrentUserAdmin() && !currentUser.getIsAdminOf().getId().equals(managedUserDTO.getMemberOf().getId())) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).headers(HeaderUtil.createFailureAlert("error", "error", "User can create members of his flat!")).body(null);
             }
 
@@ -214,6 +214,7 @@ public class UserResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional(readOnly = true)
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<List<ManagedUserDTO>> getAllUsers(Pageable pageable)
         throws URISyntaxException {
         Page<User> page = userRepository.findAll(pageable);
@@ -247,7 +248,7 @@ public class UserResource {
         // if admin of flat, he can access flatmates
         Flat adminOf = userService.getUserWithAuthorities().getIsAdminOf();
         Flat memberOf = response.getBody() == null ? null : response.getBody().getMemberOf();
-        if (!SecurityUtils.isCurrentUserAdmin() && !SecurityUtils.getCurrentUserLogin().equals(login) && (adminOf == null || memberOf == null || !adminOf.equals(memberOf))) {
+        if (!SecurityUtils.isCurrentUserAdmin() && !SecurityUtils.getCurrentUserLogin().equals(login) && (adminOf == null || memberOf == null || !adminOf.getId().equals(memberOf.getId()))) {
             log.warn("Non-admin user tried to view other user!");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).headers(HeaderUtil.createFailureAlert("error", "error", "User can see only his account's data!")).body(null);
         }
@@ -285,6 +286,7 @@ public class UserResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public List<User> search(@PathVariable String query) {
         return StreamSupport
             .stream(userSearchRepository.search(queryStringQuery(query)).spliterator(), false)

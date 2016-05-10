@@ -1,6 +1,6 @@
 id;name;description;repeatable;interval;points
-1;Washed the dishes;;false;;20
-2;Dishes out of dishwasher;Took the dishes out of a dishwasher.;false;;5
-3;Bought toilet paper;;false;;30
-4;Watered flowers;;false;;10
-5;Took out the trash;Took out the trash and put a new sack inside.;false;;15
+1;Washed the dishes;;false;0;20
+2;Dishes out of dishwasher;Took the dishes out of a dishwasher.;false;0;5
+3;Bought toilet paper;;false;0;30
+4;Watered flowers;;false;0;10
+5;Took out the trash;Took out the trash and put a new sack inside.;false;0;15

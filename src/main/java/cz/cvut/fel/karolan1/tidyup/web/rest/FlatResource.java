@@ -92,7 +92,6 @@ public class FlatResource {
             userRepository.save(user);
 
             return ResponseEntity.created(new URI("/api/flats/" + result.getId()))
-                .headers(HeaderUtil.createAlert("tidyUpApp.flat.registered", result.getName()))
                 .body(result);
         }
 
@@ -146,7 +145,7 @@ public class FlatResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
+    @Secured(AuthoritiesConstants.USER)
     public ResponseEntity<List<Flat>> getAllFlats(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Flats");

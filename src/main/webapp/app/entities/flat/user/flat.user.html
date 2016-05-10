@@ -30,7 +30,7 @@
                             <div class="btn-group flex-btn-group-container">
                                 <button type="submit"
                                         ui-sref="userFlat.delete({login:resident.login})"
-                                        class="btn btn-danger btn-sm">
+                                        class="btn btn-danger btn-sm" ng-disabled="vm.account.login==resident.login">
                                     <span class="glyphicon glyphicon-remove-circle"></span>
                                     <span class="hidden-xs hidden-sm" translate="entity.action.delete"></span>
                                 </button>

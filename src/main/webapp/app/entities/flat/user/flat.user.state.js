@@ -17,7 +17,7 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/admin/flat/user/flat.user-dialog.html',
+                        templateUrl: 'app/entities/flat/user/flat.user-dialog.html',
                         controller: 'FlatUserDialogController',
                         controllerAs: 'vm'
                     }

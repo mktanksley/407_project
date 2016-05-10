@@ -5,9 +5,9 @@
         .module('tidyUpApp')
         .controller('MemberDialogController', MemberDialogController);
 
-    MemberDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'User', 'AlertService'];
+    MemberDialogController.$inject = ['$state', '$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'User', 'AlertService'];
 
-    function MemberDialogController($timeout, $scope, $stateParams, $uibModalInstance, entity, User, AlertService) {
+    function MemberDialogController($state, $timeout, $scope, $stateParams, $uibModalInstance, entity, User, AlertService) {
         var vm = this;
         vm.user = entity;
 
@@ -20,6 +20,7 @@
             $uibModalInstance.close(result);
             vm.isSaving = false;
             AlertService.success("Flat member has been added!");
+            $state.go('userFlat');
         };
 
         var onSaveError = function (error) {

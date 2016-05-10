@@ -22,7 +22,7 @@
             "residents": "Residents",
             "friends": "Friend flats",
             "placeholder": "e.g. \"The Castle\"",
-            "registered": "<strong>Welcome!</strong> You have successfully registered and created new flat <strong>{{ param }}</strong>."
+            "registered": "<strong>Welcome!</strong> You have successfully registered and created new flat <strong>{{ param }}</strong>. Now continue with adding flat members."
         }
     }
 }
