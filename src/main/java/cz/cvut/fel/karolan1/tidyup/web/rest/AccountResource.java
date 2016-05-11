@@ -139,7 +139,7 @@ public class AccountResource {
     /**
      * POST  /account : update the current user information.
      *
-     * @param managedUserDTO the current user information
+     * @param userDTO the current user information
      * @return the ResponseEntity with status 200 (OK), or status 400 (Bad Request) or 500 (Internal Server Error) if the user couldn't be updated
      */
     @RequestMapping(value = "/account",
@@ -147,16 +147,16 @@ public class AccountResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Secured(AuthoritiesConstants.USER)
-    public ResponseEntity<String> saveAccount(@Valid @RequestBody ManagedUserDTO managedUserDTO) {
-        Optional<User> existingUser = userRepository.findOneByEmail(managedUserDTO.getEmail());
-        if (existingUser.isPresent() && (!existingUser.get().getLogin().equalsIgnoreCase(managedUserDTO.getLogin()))) {
+    public ResponseEntity<String> saveAccount(@Valid @RequestBody UserDTO userDTO) {
+        Optional<User> existingUser = userRepository.findOneByEmail(userDTO.getEmail());
+        if (existingUser.isPresent() && (!existingUser.get().getLogin().equalsIgnoreCase(userDTO.getLogin()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "emailexists", "Email already in use")).body(null);
         }
         return userRepository
             .findOneByLogin(SecurityUtils.getCurrentUserLogin())
             .map(u -> {
-                userService.updateUserInformation(managedUserDTO.getFirstName(), managedUserDTO.getLastName(), managedUserDTO.getEmail(),
-                    managedUserDTO.getLangKey(), managedUserDTO.getPoints(), managedUserDTO.getAvatar(), managedUserDTO.getAvatarContentType());
+                userService.updateUserInformation(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
+                    userDTO.getLangKey(), userDTO.getPoints(), userDTO.getAvatar(), userDTO.getAvatarContentType());
                 return new ResponseEntity<String>(HttpStatus.OK);
             })
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
