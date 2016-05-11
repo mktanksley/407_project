@@ -5,27 +5,31 @@
         .module('tidyUpApp')
         .controller('HomeUserController', HomeUserController);
 
-    HomeUserController.$inject = ['$state', 'Principal', 'ChoreType', 'ChoreEvent', 'AlertService', 'ParseLinks', 'pagerConstants', 'User'];
+    HomeUserController.$inject = ['$state', 'Principal', 'ChoreType', 'ChoreEvent', 'FriendsChoreEvent', 'AlertService', 'ParseLinks', 'pagerConstants', 'User'];
 
-    function HomeUserController($state, Principal, ChoreType, ChoreEvent, AlertService, ParseLinks, pagerConstants, User) {
+    function HomeUserController($state, Principal, ChoreType, ChoreEvent, FriendsChoreEvent, AlertService, ParseLinks, pagerConstants, User) {
         var vm = this;
 
         vm.account = null;
         vm.user = null;
         vm.choreTypes = null;
         vm.choreEvents = null;
+        vm.friendChoreEvents = null;
+        vm.totalItems = 0;
+        vm.totalFriendItems = 0;
 
         vm.isEventSaving = false;
         vm.saveChoreEvent = saveChoreEvent;
+        vm.onError = onError;
 
         // pagination for events
-        vm.loadAll = loadAll;
         vm.loadPage = loadPage;
         vm.page = $state.params.page;
         vm.transition = transition;
         vm.clear = clear;
-        vm.loadAll();
 
+        loadChoreEvents();
+        loadFriendChoreEvents();
         getAccount();
         getChoreTypes();
 
@@ -42,11 +46,10 @@
         }
 
         // methods for saving one-time chore event
-
         var onSaveSuccess = function (result) {
             vm.isEventSaving = false;
             AlertService.success('home.choreEvent.success');
-            loadAll();
+            loadChoreEvents();
         };
 
         var onSaveError = function () {
@@ -89,9 +92,9 @@
         }
 
         // methods to handle list of events:
-        function loadAll() {
+        function loadChoreEvents() {
             ChoreEvent.query({
-                page: vm.page - 1,
+                page: vm.page,
                 size: pagerConstants.itemsPerPage,
                 sort: ['dateDone,desc']
             }, onSuccess, onError);
@@ -103,10 +106,25 @@
                 vm.choreEvents = data;
                 // vm.page = pagingParams.page;
             }
+        }
 
-            function onError(error) {
-                AlertService.error(error.data.message);
+        function loadFriendChoreEvents() {
+            FriendsChoreEvent.query({
+                page: 0,
+                size: 5,
+                sort: ['dateDone,desc']
+            }, onSuccess, onError);
+
+            function onSuccess(data, headers) {
+                vm.links = ParseLinks.parse(headers('link'));
+                vm.totalFriendItems = headers('X-Total-Count');
+                vm.queryCount = vm.totalFriendItems;
+                vm.friendChoreEvents = data;
             }
+        }
+
+        function onError(error) {
+            AlertService.error(error.data.message);
         }
 
         function loadPage(page) {
@@ -122,7 +140,7 @@
 
         function clear() {
             vm.links = null;
-            vm.page = 1;
+            vm.page = 0;
             vm.transition();
         }
 

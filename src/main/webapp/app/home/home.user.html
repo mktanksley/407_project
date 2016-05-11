@@ -69,7 +69,7 @@
 
         <div class="media event" ng-repeat="choreEvent in vm.choreEvents track by choreEvent.id">
             <div class="media-body">
-                <h4 class="media-heading">{{choreEvent.doneBy.login}} <em>{{choreEvent.isType.name}}</em></h4>
+                <h4 class="media-heading">{{choreEvent.doneBy.login}} <em>{{choreEvent.isType.name | lowercase}}</em></h4>
                 <p>On <em>{{choreEvent.dateDone | date: 'short'}}</em> <strong>{{choreEvent.doneBy.login ===
                     vm.account.login ? "you" : "your flatmate " + choreEvent.doneBy.login}}</strong>
                     fulfilled {{choreEvent.isType.repeatable ? 'his' : ''}} a chore
@@ -90,7 +90,7 @@
             </div>
         </div>
 
-        <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
+        <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()" ng-if="vm.choreEvents.length > 3"></uib-pager>
     </div>
     <!-- MIDDLE COLUMN END -->
 
@@ -98,67 +98,19 @@
     <!-- RIGHT COLUMN -->
     <div class="col-md-3 right-column">
         <h3>Meanwhile, your friends:</h3>
+        <p ng-if="vm.friendChoreEvents.length === 0">No chores done by your friends yet.</p>
 
-        <div class="media">
-            <div class="media-left media-middle">
-                <a href="#">
-                    <img class="media-object img-circle" src="holder.js/32x32">
-                </a>
+        <div class="media" ng-repeat="choreEvent in vm.friendChoreEvents track by choreEvent.id">
+            <div class="media-left media-middle" ng-if="$even">
+                <a href="#"><img class="media-object img-circle" src="holder.js/32x32"></a>
             </div>
-            <div class="media-body">
-                <a href="#">User1</a> tidied room.
+            <div class="media-body" ng-class-even="'text-right'">
+                <a href="#">{{choreEvent.doneBy.login}}</a> {{choreEvent.isType.name | lowercase}}.
             </div>
-        </div>
-
-        <div class="media">
-            <div class="media-body text-right">
-                <a href="#">User2</a> did that.
-            </div>
-            <div class="media-right media-middle">
+            <div class="media-right media-middle" ng-if="$odd">
                 <a href="#"><img class="media-object img-circle" src="holder.js/32x32"></a>
             </div>
         </div>
-
-        <div class="media">
-            <div class="media-left media-middle">
-                <a href="#">
-                    <img class="media-object img-circle" src="holder.js/32x32">
-                </a>
-            </div>
-            <div class="media-body">
-                <a href="#">User1</a> tidied room.
-            </div>
-        </div>
-
-        <div class="media">
-            <div class="media-body text-right">
-                <a href="#">User2</a> did that.
-            </div>
-            <div class="media-right media-middle">
-                <a href="#"><img class="media-object img-circle" src="holder.js/32x32"></a>
-            </div>
-        </div>
-
-        <div class="media">
-            <div class="media-left media-middle">
-                <a href="#">
-                    <img class="media-object img-circle" src="holder.js/32x32">
-                </a>
-            </div>
-            <div class="media-body">
-                <a href="#">User1</a> tidied room.
-            </div>
-        </div>
-
-        <div class="media">
-            <div class="media-body text-right">
-                <a href="#">User2</a> did that.
-            </div>
-            <div class="media-right media-middle">
-                <a href="#"><img class="media-object img-circle" src="holder.js/32x32"></a>
-            </div>
-        </div>
-
     </div>
     <!-- RIGHT COLUMN END -->
 

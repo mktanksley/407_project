@@ -2,6 +2,7 @@ package cz.cvut.fel.karolan1.tidyup.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import cz.cvut.fel.karolan1.tidyup.domain.ChoreEvent;
+import cz.cvut.fel.karolan1.tidyup.domain.Flat;
 import cz.cvut.fel.karolan1.tidyup.repository.ChoreEventRepository;
 import cz.cvut.fel.karolan1.tidyup.repository.search.ChoreEventSearchRepository;
 import cz.cvut.fel.karolan1.tidyup.security.AuthoritiesConstants;
@@ -9,6 +10,7 @@ import cz.cvut.fel.karolan1.tidyup.security.SecurityUtils;
 import cz.cvut.fel.karolan1.tidyup.service.UserService;
 import cz.cvut.fel.karolan1.tidyup.web.rest.util.HeaderUtil;
 import cz.cvut.fel.karolan1.tidyup.web.rest.util.PaginationUtil;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -18,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -139,6 +142,30 @@ public class ChoreEventResource {
         }
         Page<ChoreEvent> page = choreEventRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/chore-events");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /chore-events : get all the choreEvents.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of choreEvents in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
+     */
+    @RequestMapping(value = "/friends-chore-events",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    @Transactional
+    @Secured(AuthoritiesConstants.USER)
+    public ResponseEntity<List<ChoreEvent>> getFriendsChoreEvents(Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of friend's ChoreEvents");
+
+        Flat flat = userService.getUserWithAuthorities().getMemberOf();
+        Hibernate.initialize(flat.getFriends());
+        Page<ChoreEvent> page = choreEventRepository.findEventsFromCurrentUsersFlatFriends(userService.getUserWithAuthorities().getMemberOf(), pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/friends-chore-events");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

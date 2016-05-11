@@ -22,4 +22,7 @@ public interface ChoreEventRepository extends JpaRepository<ChoreEvent, Long> {
 
     @Query("select choreEvent from ChoreEvent choreEvent inner join choreEvent.doneBy user where user.memberOf = ?1")
     Page<ChoreEvent> findEventsFromCurrentUsersFlat(Flat flat, Pageable pageable);
+
+    @Query("SELECT e FROM ChoreEvent e WHERE e.doneBy IN (SELECT u FROM User u WHERE u.memberOf IN :#{[0].friends})")
+    Page<ChoreEvent> findEventsFromCurrentUsersFlatFriends(Flat flat, Pageable pageable);
 }
