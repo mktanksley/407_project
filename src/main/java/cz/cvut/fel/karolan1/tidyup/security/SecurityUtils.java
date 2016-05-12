@@ -1,5 +1,6 @@
 package cz.cvut.fel.karolan1.tidyup.security;
 
+import cz.cvut.fel.karolan1.tidyup.domain.Flat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -82,5 +83,15 @@ public final class SecurityUtils {
      */
     public static boolean isCurrentUserAdmin() {
         return isCurrentUserInRole(AuthoritiesConstants.ADMIN);
+    }
+
+    /**
+     * Checks if the current user is administrator of supplied flat.
+     *
+     * @param flat
+     * @return True if current user is admin of supplied flat, false otherwise.
+     */
+    public static boolean isCurrentUserAdminOfFlat(Flat flat) {
+        return flat != null && SecurityUtils.getCurrentUserLogin().equals(flat.getHasAdmin().getLogin());
     }
 }

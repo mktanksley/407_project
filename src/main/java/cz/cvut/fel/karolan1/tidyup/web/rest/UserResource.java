@@ -113,11 +113,9 @@ public class UserResource {
                 .body(null);
         } else {
 
-            User currentUser = userService.getUserWithAuthorities();
-
             // non-admin User can create members of his flat
-            if (!SecurityUtils.isCurrentUserAdmin() && !currentUser.getIsAdminOf().getId().equals(managedUserDTO.getMemberOf().getId())) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).headers(HeaderUtil.createFailureAlert("error", "error", "User can create members of his flat!")).body(null);
+            if (!SecurityUtils.isCurrentUserAdmin() && !SecurityUtils.isCurrentUserAdminOfFlat(managedUserDTO.getMemberOf())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).headers(HeaderUtil.createFailureAlert("user", "error", "User can create members of his flat!")).body(null);
             }
 
             User newUser = userService.createUser(managedUserDTO);
@@ -246,14 +244,13 @@ public class UserResource {
 
         // non-admin user can read only his data
         // if admin of flat, he can access flatmates
-        Flat adminOf = userService.getUserWithAuthorities().getIsAdminOf();
         Flat memberOf = response.getBody() == null ? null : response.getBody().getMemberOf();
-        if (!SecurityUtils.isCurrentUserAdmin() && !SecurityUtils.getCurrentUserLogin().equals(login) && (adminOf == null || memberOf == null || !adminOf.getId().equals(memberOf.getId()))) {
-            log.warn("Non-admin user tried to view other user!");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).headers(HeaderUtil.createFailureAlert("error", "error", "User can see only his account's data!")).body(null);
+        if (SecurityUtils.isCurrentUserAdmin() || SecurityUtils.getCurrentUserLogin().equals(login) || SecurityUtils.isCurrentUserAdminOfFlat(memberOf)) {
+            return response;
         }
+        log.warn("Non-admin user tried to view other user!");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).headers(HeaderUtil.createFailureAlert("user", "error", "User can see only his account's data!")).body(null);
 
-        return response;
     }
 
     /**

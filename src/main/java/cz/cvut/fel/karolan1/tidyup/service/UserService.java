@@ -285,14 +285,4 @@ public class UserService {
             userSearchRepository.delete(user);
         }
     }
-
-    /**
-     * Checks if the current user is administrator of supplied flat.
-     *
-     * @param flat
-     * @return True if current user is admin of supplied flat, false otherwise.
-     */
-    public boolean isCurrentUserAdminOfFlat(Flat flat) {
-        return SecurityUtils.getCurrentUserLogin().equals(flat.getHasAdmin().getLogin());
-    }
 }
