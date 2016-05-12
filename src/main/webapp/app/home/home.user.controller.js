@@ -14,9 +14,8 @@
         vm.user = null;
         vm.choreTypes = null;
         vm.choreEvents = null;
-        vm.friendChoreEvents = null;
+        vm.friendChoreEvents = [];
         vm.totalItems = 0;
-        vm.totalFriendItems = 0;
 
         vm.isEventSaving = false;
         vm.saveChoreEvent = saveChoreEvent;
@@ -109,18 +108,9 @@
         }
 
         function loadFriendChoreEvents() {
-            FriendsChoreEvent.query({
-                page: 0,
-                size: 5,
-                sort: ['dateDone,desc']
-            }, onSuccess, onError);
-
-            function onSuccess(data, headers) {
-                vm.links = ParseLinks.parse(headers('link'));
-                vm.totalFriendItems = headers('X-Total-Count');
-                vm.queryCount = vm.totalFriendItems;
-                vm.friendChoreEvents = data;
-            }
+            FriendsChoreEvent.query(function(result) {
+                vm.friendChoreEvents = result;
+            });
         }
 
         function onError(error) {

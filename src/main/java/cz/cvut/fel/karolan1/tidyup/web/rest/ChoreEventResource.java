@@ -71,7 +71,7 @@ public class ChoreEventResource {
         // if flat admin, user can create events for flat members.
         if (!SecurityUtils.isCurrentUserAdmin()) {
             // is current user admin of the flat and is creating event for a flat member?
-            if (!userService.isCurrentUserAdminOfFlat(choreEvent.getDoneBy().getMemberOf())) {
+            if (!SecurityUtils.isCurrentUserAdminOfFlat(choreEvent.getDoneBy().getMemberOf())) {
                 // user can create events for himself:
                 if (!choreEvent.getDoneBy().getLogin().equals(SecurityUtils.getCurrentUserLogin())) {
                     return ResponseEntity.status(HttpStatus.FORBIDDEN).headers(HeaderUtil.createFailureAlert("error", "error", "User can modify only his own data!")).body(null);
@@ -148,7 +148,6 @@ public class ChoreEventResource {
     /**
      * GET  /chore-events : get all the choreEvents.
      *
-     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of choreEvents in body
      * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
@@ -158,15 +157,13 @@ public class ChoreEventResource {
     @Timed
     @Transactional
     @Secured(AuthoritiesConstants.USER)
-    public ResponseEntity<List<ChoreEvent>> getFriendsChoreEvents(Pageable pageable)
+    public List<ChoreEvent> getFriendsChoreEvents()
         throws URISyntaxException {
-        log.debug("REST request to get a page of friend's ChoreEvents");
+        log.debug("REST request to get all friend's ChoreEvents");
 
         Flat flat = userService.getUserWithAuthorities().getMemberOf();
         Hibernate.initialize(flat.getFriends());
-        Page<ChoreEvent> page = choreEventRepository.findEventsFromCurrentUsersFlatFriends(userService.getUserWithAuthorities().getMemberOf(), pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/friends-chore-events");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return choreEventRepository.findEventsFromCurrentUsersFlatFriends(flat);
     }
 
     /**
