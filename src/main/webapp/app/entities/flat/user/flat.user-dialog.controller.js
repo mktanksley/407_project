@@ -5,16 +5,17 @@
         .module('tidyUpApp')
         .controller('FlatUserDialogController', FlatUserDialogController);
 
-    FlatUserDialogController.$inject = ['$scope', '$state', 'entity', 'Flat', 'AlertService'];
+    FlatUserDialogController.$inject = ['$rootScope', '$state', 'entity', 'Flat', 'AlertService'];
 
-    function FlatUserDialogController($scope, $state, entity, Flat, AlertService) {
+    function FlatUserDialogController($rootScope, $state, entity, Flat, AlertService) {
         var vm = this;
         vm.flat = entity;
         vm.flats = Flat.query();
         //TODO check if user already has a flat > go to homepage
 
         var onSaveSuccess = function (result) {
-            $scope.$emit('tidyUpApp:flatUpdate', result);
+            // inform navbar about account update
+            $rootScope.$broadcast('tidyUpApp:registeredNewFlat', result);
             vm.isSaving = false;
             AlertService.success("tidyUpApp.flat.registered");
             $state.go('userFlat.newMember', {flat: result});

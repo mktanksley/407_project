@@ -15,10 +15,10 @@
         loadData();
 
         function loadData() {
-            Principal.identity().then(function (account) {
+            Principal.identity(true).then(function (account) {
                 vm.account = account;
 
-                Flat.get({id : vm.account.memberOf.id}, function (flat) {
+                Flat.get({id: vm.account.memberOf.id}, function (flat) {
                     vm.flat = flat;
                 }, function (error) {
                     AlertService.error(error.data.message);

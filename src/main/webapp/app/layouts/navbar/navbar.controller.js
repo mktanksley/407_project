@@ -5,9 +5,9 @@
         .module('tidyUpApp')
         .controller('NavbarController', NavbarController);
 
-    NavbarController.$inject = ['$state', 'Auth', 'Principal', 'ENV', 'LoginService'];
+    NavbarController.$inject = ['$scope', '$state', 'Auth', 'Principal', 'ENV', 'LoginService'];
 
-    function NavbarController ($state, Auth, Principal, ENV, LoginService) {
+    function NavbarController ($scope, $state, Auth, Principal, ENV, LoginService) {
         var vm = this;
 
         vm.isNavbarCollapsed = true;
@@ -18,6 +18,10 @@
         vm.toggleNavbar = toggleNavbar;
         vm.collapseNavbar = collapseNavbar;
         vm.$state = $state;
+        vm.isFlatAdmin = false;
+        vm.setAdmin = setAdmin;
+
+        setAdmin();
 
         function login () {
             collapseNavbar();
@@ -37,5 +41,20 @@
         function collapseNavbar () {
             vm.isNavbarCollapsed = true;
         }
+
+        function setAdmin() {
+            Principal.hasAuthority("ROLE_FLAT_ADMIN")
+                .then(function (result) {
+                    if (result) {
+                        vm.isFlatAdmin = true;
+                    } else {
+                        vm.isFlatAdmin = false;
+                    }
+                });
+        }
+
+        $scope.$on('tidyUpApp:registeredNewFlat', function (event) {
+            Principal.identity(true).then(setAdmin());
+        });
     }
 })();

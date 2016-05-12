@@ -1,6 +1,7 @@
 package cz.cvut.fel.karolan1.tidyup.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import cz.cvut.fel.karolan1.tidyup.domain.Authority;
 import cz.cvut.fel.karolan1.tidyup.domain.Flat;
 import cz.cvut.fel.karolan1.tidyup.domain.User;
 import cz.cvut.fel.karolan1.tidyup.repository.FlatRepository;
@@ -32,6 +33,7 @@ import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * REST controller for managing Flat.
@@ -89,6 +91,11 @@ public class FlatResource {
 
             // update the user as well
             user.setMemberOf(result);
+            Set<Authority> authorities = user.getAuthorities();
+            Authority authority = new Authority();
+            authority.setName(AuthoritiesConstants.FLAT_ADMIN);
+            authorities.add(authority);
+            user.setAuthorities(authorities);
             userRepository.save(user);
 
             return ResponseEntity.created(new URI("/api/flats/" + result.getId()))

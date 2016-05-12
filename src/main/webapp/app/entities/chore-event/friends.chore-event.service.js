@@ -4,9 +4,9 @@
         .module('tidyUpApp')
         .factory('FriendsChoreEvent', FriendsChoreEvent);
 
-    FriendsChoreEvent.$inject = ['$resource', 'DateUtils'];
+    FriendsChoreEvent.$inject = ['$resource'];
 
-    function FriendsChoreEvent($resource, DateUtils) {
+    function FriendsChoreEvent($resource) {
         var resourceUrl = 'api/friends-chore-events';
 
         return $resource(resourceUrl, {}, {
