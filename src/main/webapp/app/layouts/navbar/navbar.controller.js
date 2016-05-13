@@ -56,5 +56,8 @@
         $scope.$on('tidyUpApp:registeredNewFlat', function (event) {
             Principal.identity(true).then(setAdmin());
         });
+        $scope.$on('authenticationSuccess', function (event) {
+            Principal.identity(true).then(setAdmin());
+        });
     }
 })();

@@ -41,7 +41,7 @@
                 parent: 'app',
                 url: '/flat',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_FLAT_ADMIN'],
                 },
                 views: {
                     'content@': {
@@ -73,7 +73,7 @@
                 parent: 'userFlat',
                 url: '/member/new',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_FLAT_ADMIN']
                 },
                 params: {
                     flat: null
@@ -105,7 +105,7 @@
                 parent: 'userFlat',
                 url: '/member/{login}/delete',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_FLAT_ADMIN']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
