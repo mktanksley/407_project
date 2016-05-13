@@ -1,11 +1,12 @@
 <jhi-alert></jhi-alert>
 <div>
-    <h1>Info about your flat</h1>
+    <h1>Information about <em>{{vm.flat.name}}</em></h1>
+    <p class="lead">Here you can see information about your flat, edit its members and flat friends.</p>
     <hr>
     <dl class="dl-horizontal">
-        <dt>name</dt>
-        <dd>{{vm.flat.name}}</dd>
-        <hr>
+        <!--<dt>name</dt>-->
+        <!--<dd>{{vm.flat.name}}</dd>-->
+        <!--<hr>-->
         <dt>created on</dt>
         <dd>{{vm.flat.dateCreated | date:'medium'}}</dd>
         <hr>
@@ -53,7 +54,8 @@
         <hr>
         <dt>friends</dt>
         <dd>
-            <div class="table-responsive">
+            <p ng-if="vm.flat.friends.length === 0">(no friends yet, add some!)</p>
+            <div class="table-responsive" ng-if="vm.flat.friends.length > 0">
                 <table class="jh-table table table-striped">
                     <thead>
                     <tr>
