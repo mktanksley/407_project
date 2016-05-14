@@ -49,7 +49,7 @@
                     <td><a ui-sref="chore-type-detail({id:choreType.id})">{{choreType.id}}</a></td>
                     <td>{{choreType.name}}</td>
                     <td>{{choreType.description}}</td>
-                    <td>{{choreType.repeatable}}</td>
+                    <td><span ng-class="choreType.repeatable ? 'glyphicon glyphicon-ok-circle' : 'glyphicon glyphicon-remove-circle'"></span></td>
                     <td>{{choreType.interval}}</td>
                     <td>{{choreType.points}}</td>
                     <td class="text-right">
