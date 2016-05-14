@@ -45,6 +45,7 @@
                 resolve: {
                     mainTranslatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('home');
+                        $translatePartialLoader.addPart('choreEvent');
                         return $translate.refresh();
                     }]
                 }
