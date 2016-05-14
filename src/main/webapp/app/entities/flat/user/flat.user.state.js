@@ -13,7 +13,7 @@
                 parent: 'app',
                 url: '/add/flat',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER']
                 },
                 views: {
                     'content@': {
@@ -41,7 +41,7 @@
                 parent: 'app',
                 url: '/flat',
                 data: {
-                    authorities: ['ROLE_FLAT_ADMIN'],
+                    authorities: ['ROLE_FLAT_ADMIN']
                 },
                 views: {
                     'content@': {

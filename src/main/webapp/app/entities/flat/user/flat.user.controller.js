@@ -11,8 +11,9 @@
         var vm = this;
         vm.flat = entity;
         vm.account = null;
+        vm.loadData = loadData;
 
-        loadData();
+        vm.loadData();
 
         function loadData() {
             Principal.identity(true).then(function (account) {
@@ -25,7 +26,6 @@
                 })
 
             });
-        }
-
+        };
     }
 })();
