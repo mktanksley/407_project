@@ -5,9 +5,9 @@
         .module('tidyUpApp')
         .controller('HomeUserController', HomeUserController);
 
-    HomeUserController.$inject = ['$state', 'Principal', 'ChoreType', 'ChoreEvent', 'FriendsChoreEvent', 'AlertService', 'ParseLinks', 'pagerConstants', 'User'];
+    HomeUserController.$inject = ['$state', 'Principal', 'ChoreType', 'ChoreEvent', 'FriendsChoreEvent', 'AlertService', 'ParseLinks', 'pagerConstants', 'User', 'TodoChore'];
 
-    function HomeUserController($state, Principal, ChoreType, ChoreEvent, FriendsChoreEvent, AlertService, ParseLinks, pagerConstants, User) {
+    function HomeUserController($state, Principal, ChoreType, ChoreEvent, FriendsChoreEvent, AlertService, ParseLinks, pagerConstants, User, TodoChore) {
         var vm = this;
 
         vm.account = null;
@@ -21,16 +21,26 @@
         vm.saveChoreEvent = saveChoreEvent;
         vm.onError = onError;
 
+        vm.loadChoreEvents = loadChoreEvents;
+        vm.loadFriendChoreEvents = loadFriendChoreEvents;
+        vm.getAccount = getAccount;
+        vm.getChoreTypes = getChoreTypes;
+
+        vm.todoChore = null;
+        vm.getTodoEvent = getTodoEvent;
+
+        vm.getTodoEvent();
+
         // pagination for events
         vm.loadPage = loadPage;
         vm.page = $state.params.page;
         vm.transition = transition;
         vm.clear = clear;
 
-        loadChoreEvents();
-        loadFriendChoreEvents();
-        getAccount();
-        getChoreTypes();
+        vm.loadChoreEvents();
+        vm.loadFriendChoreEvents();
+        vm.getAccount();
+        vm.getChoreTypes();
 
         function getAccount() {
             Principal.identity().then(function (account) {
@@ -108,7 +118,7 @@
         }
 
         function loadFriendChoreEvents() {
-            FriendsChoreEvent.query(function(result) {
+            FriendsChoreEvent.query(function (result) {
                 vm.friendChoreEvents = result;
             });
         }
@@ -132,6 +142,10 @@
             vm.links = null;
             vm.page = 0;
             vm.transition();
+        }
+
+        function getTodoEvent() {
+            vm.todoChore = TodoChore.get();
         }
 
     }

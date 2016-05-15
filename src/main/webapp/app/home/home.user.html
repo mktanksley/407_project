@@ -31,16 +31,16 @@
 
         <div class="well">
             <div class="media">
-                <div class="media-left">
-                    <a href="#">
-                        <a href="#"><img class="media-object img-circle" src="holder.js/64x64"></a>
-                    </a>
-                </div>
+                <!--<div class="media-left">-->
+                    <!--<a href="#">-->
+                        <!--<a href="#"><img class="media-object img-circle" src="holder.js/64x64"></a>-->
+                    <!--</a>-->
+                <!--</div>-->
                 <div class="media-body">
-                    <h3 class="media-heading">TODO: tidy up bathroom</h3>
+                    <h3 class="media-heading">TODO: {{vm.todoChore.isType.name | lowercase}}</h3>
 
-                    <p>Lorem ipsum dolor sit amet, dolor fringilla viverra rhoncus, erat venenatis vitae in lectus
-                        eget.</p>
+                    <p>You are assigned to do {{vm.todoChore.isType.name | lowercase}}. Detailed description:
+                        {{vm.todoChore.isType.description ? vm.todoChore.isType.description : '(was not supplied).'}}</p>
 
                     <div class="btn-group pull-left" role="group">
                         <button type="button" class="btn btn-success btn-sm"><span
@@ -49,8 +49,7 @@
                         <button type="button" class="btn btn-default btn-sm">Cannot make it</button>
                     </div>
                     <p class="text-right">Tidy till <strong>
-                        <time datetime="">24th December</time>
-                    </strong>.
+                        <time datetime="{{vm.todoChore.dateTo}}">{{vm.todoChore.dateTo | date:'EEEE MMM d'}}</time></strong>.
                     </p>
                 </div>
             </div>

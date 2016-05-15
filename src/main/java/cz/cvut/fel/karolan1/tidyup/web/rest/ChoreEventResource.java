@@ -192,6 +192,26 @@ public class ChoreEventResource {
     }
 
     /**
+     * GET  /to-do : get the choreEvent to be done by current user.
+     *
+     * @return the ResponseEntity with status 200 (OK) and with body the choreEvent, or with status 404 (Not Found)
+     */
+    @RequestMapping(value = "/to-do",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    @Secured(AuthoritiesConstants.USER)
+    public ResponseEntity<ChoreEvent> getChoreEventToDo() {
+        log.debug("REST request to get ChoreEvent TODO");
+        ChoreEvent choreEvent = choreEventRepository.findFirstByDoneByAndDateDoneIsNullAndDateToIsNotNullOrderByDateToDesc(userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).get());
+        return Optional.ofNullable(choreEvent)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    /**
      * DELETE  /chore-events/:id : delete the "id" choreEvent.
      *
      * @param id the id of the choreEvent to delete

@@ -35,7 +35,7 @@
                     </a>
                 </li>
                 <li ui-sref-active="active" ng-switch-when="true">
-                    <a ui-sref="chores" ng-click="vm.collapseNavbar()">
+                    <a ui-sref="chores" ng-click="vm.collapseNavbar()" ng-if="vm.isFlatAdmin">
                         <span class="visible-sm glyphicon glyphicon-tint"></span>
                         <span class="hidden-sm" translate="global.menu.chores">Chores</span>
                     </a>

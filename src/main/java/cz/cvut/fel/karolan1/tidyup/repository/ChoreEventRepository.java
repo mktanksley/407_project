@@ -2,6 +2,7 @@ package cz.cvut.fel.karolan1.tidyup.repository;
 
 import cz.cvut.fel.karolan1.tidyup.domain.ChoreEvent;
 import cz.cvut.fel.karolan1.tidyup.domain.Flat;
+import cz.cvut.fel.karolan1.tidyup.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -42,4 +43,14 @@ public interface ChoreEventRepository extends JpaRepository<ChoreEvent, Long> {
         " INNER JOIN flat_friends ON jhi_user.member_of_id = flat_friends.friend_id" +
         " WHERE flat_friends.flat_id = :#{[0].id} AND e.date_done IS NOT NULL ORDER BY e.date_done DESC LIMIT 5", nativeQuery = true)
     List<ChoreEvent> findEventsFromCurrentUsersFlatFriends(Flat flat);
+
+    /**
+     * Select only chore to-be-done to display on homepage.
+     *
+     * @param doneBy
+     * @return
+     */
+//    @Query(value = "SELECT e FROM chore_event e WHERE e.date_done IS NULL AND e.date_to IS NOT NULL ORDER BY e.date_to DESC LIMIT 1", nativeQuery = true)
+//    @Query("select e from ChoreEvent e where e.doneBy = ?1 and e.dateDone is null and e.dateTo is not null order by e.dateTo desc")
+    ChoreEvent findFirstByDoneByAndDateDoneIsNullAndDateToIsNotNullOrderByDateToDesc(User doneBy);
 }
