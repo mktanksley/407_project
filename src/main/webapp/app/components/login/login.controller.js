@@ -7,7 +7,7 @@
 
     LoginController.$inject = ['$rootScope', '$state', '$sessionStorage', '$timeout', 'Auth', '$uibModalInstance'];
 
-    function LoginController($rootScope, $state, $sessionStorage, $timeout, Auth, $uibModalInstance) {
+    function LoginController ($rootScope, $state, $sessionStorage, $timeout, Auth, $uibModalInstance) {
         var vm = this;
 
         vm.authenticationError = false;

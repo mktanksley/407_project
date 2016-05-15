@@ -1,4 +1,4 @@
-// Generated on 2016-04-24 using generator-jhipster 3.1.0
+// Generated on 2016-05-15 using generator-jhipster 3.1.0
 'use strict';
 
 var gulp = require('gulp'),
@@ -38,7 +38,7 @@ gulp.task('clean', function () {
 });
 
 gulp.task('copy', function () {
-    return es.merge(
+    return es.merge( 
         gulp.src(config.app + 'i18n/**')
         .pipe(plumber({errorHandler: handleErrors}))
         .pipe(changed(config.dist + 'i18n/'))

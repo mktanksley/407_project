@@ -250,7 +250,6 @@ public class UserResource {
         }
         log.warn("Non-admin user tried to view other user!");
         return ResponseEntity.status(HttpStatus.FORBIDDEN).headers(HeaderUtil.createFailureAlert("user", "error", "User can see only his account's data!")).body(null);
-
     }
 
     /**
