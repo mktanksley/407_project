@@ -15,7 +15,7 @@
             </h4>
         </div>
 
-        <h3>Frequent chores:</h3>
+        <h3>Quick chores:</h3>
         <div class="list-group">
             <a ng-click="vm.saveChoreEvent(choreType)" class="list-group-item" ng-class="{disabled: vm.isEventSaving}"
                ng-repeat="choreType in vm.choreTypes track by choreType.id">
@@ -90,7 +90,7 @@
             </div>
         </div>
 
-        <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()" ng-if="vm.choreEvents.length > 3"></uib-pager>
+        <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()" ng-if="vm.totalItems > 3"></uib-pager>
     </div>
     <!-- MIDDLE COLUMN END -->
 

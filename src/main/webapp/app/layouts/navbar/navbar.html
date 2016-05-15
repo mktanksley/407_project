@@ -34,6 +34,12 @@
                         <span class="hidden-sm" translate="global.menu.flat">Flat</span>
                     </a>
                 </li>
+                <li ui-sref-active="active" ng-switch-when="true">
+                    <a ui-sref="chores" ng-click="vm.collapseNavbar()">
+                        <span class="visible-sm glyphicon glyphicon-tint"></span>
+                        <span class="hidden-sm" translate="global.menu.chores">Chores</span>
+                    </a>
+                </li>
             </ul>
             <!-- right side of menu - account, language etc. -->
             <ul class="nav navbar-nav navbar-right">

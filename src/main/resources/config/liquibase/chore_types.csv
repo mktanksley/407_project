@@ -4,3 +4,7 @@ id;name;description;repeatable;interval;points
 3;Bought toilet paper;;false;0;30
 4;Watered flowers;;false;0;10
 5;Took out the trash;Took out the trash and put a new sack inside.;false;0;15
+6;Clean floors - weekly;;true;7;150
+7;Clean toilet - weekly;;true;7;75
+8;Clean bathroom - weekly;;true;7;75
+9;Clean kitchen - weekly;;true;7;150

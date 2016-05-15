@@ -82,8 +82,8 @@ public class ChoreEventResource {
         ChoreEvent result = choreEventRepository.save(choreEvent);
         choreEventSearchRepository.save(result);
 
-        // create bootstrap alert for created entity only for admin
-        if (SecurityUtils.isCurrentUserAdmin()) {
+        // add alert only for admin or flat-admin
+        if (SecurityUtils.isCurrentUserAdmin() || SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.FLAT_ADMIN)) {
             return ResponseEntity.created(new URI("/api/chore-events/" + result.getId()))
                 .headers(HeaderUtil.createEntityCreationAlert("choreEvent", result.getId().toString()))
                 .body(result);
@@ -106,6 +106,7 @@ public class ChoreEventResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.FLAT_ADMIN})
     public ResponseEntity<ChoreEvent> updateChoreEvent(@RequestBody ChoreEvent choreEvent) throws URISyntaxException {
         log.debug("REST request to update ChoreEvent : {}", choreEvent);
         if (choreEvent.getId() == null) {
@@ -130,13 +131,16 @@ public class ChoreEventResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Secured(AuthoritiesConstants.USER)
-    public ResponseEntity<List<ChoreEvent>> getAllChoreEvents(Pageable pageable)
+    public ResponseEntity<List<ChoreEvent>> getAllChoreEvents(Pageable pageable, Boolean repeatable)
         throws URISyntaxException {
         log.debug("REST request to get a page of ChoreEvents");
 
+
         // if not admin, return events from user's flat
         if (!SecurityUtils.isCurrentUserAdmin()) {
-            Page<ChoreEvent> page = choreEventRepository.findEventsFromCurrentUsersFlat(userService.getUserWithAuthorities().getMemberOf(), pageable);
+            Page<ChoreEvent> page = repeatable == null ?
+                choreEventRepository.findFinishedEventsFromCurrentUsersFlat(userService.getUserWithAuthorities().getMemberOf(), pageable) :
+                choreEventRepository.findEventsFromCurrentUsersFlatByRepeatable(userService.getUserWithAuthorities().getMemberOf(), repeatable, pageable);
             HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/chore-events");
             return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
         }
@@ -176,6 +180,7 @@ public class ChoreEventResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured(AuthoritiesConstants.USER)
     public ResponseEntity<ChoreEvent> getChoreEvent(@PathVariable Long id) {
         log.debug("REST request to get ChoreEvent : {}", id);
         ChoreEvent choreEvent = choreEventRepository.findOne(id);
@@ -196,6 +201,7 @@ public class ChoreEventResource {
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.FLAT_ADMIN})
     public ResponseEntity<Void> deleteChoreEvent(@PathVariable Long id) {
         log.debug("REST request to delete ChoreEvent : {}", id);
         choreEventRepository.delete(id);
