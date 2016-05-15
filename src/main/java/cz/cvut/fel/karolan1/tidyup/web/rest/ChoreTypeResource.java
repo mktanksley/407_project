@@ -4,13 +4,14 @@ import com.codahale.metrics.annotation.Timed;
 import cz.cvut.fel.karolan1.tidyup.domain.ChoreType;
 import cz.cvut.fel.karolan1.tidyup.repository.ChoreTypeRepository;
 import cz.cvut.fel.karolan1.tidyup.repository.search.ChoreTypeSearchRepository;
+import cz.cvut.fel.karolan1.tidyup.security.AuthoritiesConstants;
 import cz.cvut.fel.karolan1.tidyup.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -22,7 +23,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing ChoreType.
@@ -32,13 +33,13 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class ChoreTypeResource {
 
     private final Logger log = LoggerFactory.getLogger(ChoreTypeResource.class);
-        
+
     @Inject
     private ChoreTypeRepository choreTypeRepository;
-    
+
     @Inject
     private ChoreTypeSearchRepository choreTypeSearchRepository;
-    
+
     /**
      * POST  /chore-types : Create a new choreType.
      *
@@ -50,6 +51,7 @@ public class ChoreTypeResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<ChoreType> createChoreType(@Valid @RequestBody ChoreType choreType) throws URISyntaxException {
         log.debug("REST request to save ChoreType : {}", choreType);
         if (choreType.getId() != null) {
@@ -75,6 +77,7 @@ public class ChoreTypeResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<ChoreType> updateChoreType(@Valid @RequestBody ChoreType choreType) throws URISyntaxException {
         log.debug("REST request to update ChoreType : {}", choreType);
         if (choreType.getId() == null) {
@@ -96,10 +99,10 @@ public class ChoreTypeResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<ChoreType> getAllChoreTypes() {
+    @Secured(AuthoritiesConstants.USER)
+    public List<ChoreType> getAllChoreTypes(Boolean repeatable) {
         log.debug("REST request to get all ChoreTypes");
-        List<ChoreType> choreTypes = choreTypeRepository.findAll();
-        return choreTypes;
+        return repeatable == null ? choreTypeRepository.findAll() : choreTypeRepository.findByRepeatable(repeatable);
     }
 
     /**
@@ -112,6 +115,7 @@ public class ChoreTypeResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured(AuthoritiesConstants.USER)
     public ResponseEntity<ChoreType> getChoreType(@PathVariable Long id) {
         log.debug("REST request to get ChoreType : {}", id);
         ChoreType choreType = choreTypeRepository.findOne(id);
@@ -132,6 +136,7 @@ public class ChoreTypeResource {
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteChoreType(@PathVariable Long id) {
         log.debug("REST request to delete ChoreType : {}", id);
         choreTypeRepository.delete(id);
@@ -150,6 +155,7 @@ public class ChoreTypeResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured(AuthoritiesConstants.USER)
     public List<ChoreType> searchChoreTypes(@RequestParam String query) {
         log.debug("REST request to search ChoreTypes for query {}", query);
         return StreamSupport

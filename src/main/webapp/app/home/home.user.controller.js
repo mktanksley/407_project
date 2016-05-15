@@ -39,7 +39,7 @@
         }
 
         function getChoreTypes() {
-            ChoreType.query(function (result) {
+            ChoreType.query({repeatable: false}, function (result) {
                 vm.choreTypes = result;
             });
         }
@@ -93,7 +93,7 @@
         // methods to handle list of events:
         function loadChoreEvents() {
             ChoreEvent.query({
-                page: vm.page,
+                page: vm.page - 1,
                 size: pagerConstants.itemsPerPage,
                 sort: ['dateDone,desc']
             }, onSuccess, onError);
