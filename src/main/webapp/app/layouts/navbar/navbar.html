@@ -41,6 +41,12 @@
                         <span class="hidden-sm" translate="global.menu.chores">Chores</span>
                     </a>
                 </li>
+                <li ui-sref-active="active" ng-switch-when="true">
+                    <a ui-sref="contest" ng-click="vm.collapseNavbar()">
+                        <span class="visible-sm glyphicon glyphicon-tower"></span>
+                        <span class="hidden-sm" translate="global.menu.contest">Contest</span>
+                    </a>
+                </li>
             </ul>
             <!-- right side of menu - account, language etc. -->
             <ul class="nav navbar-nav navbar-right">

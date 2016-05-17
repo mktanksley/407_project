@@ -105,11 +105,11 @@
         <div class="media" ng-repeat="choreEvent in vm.friendChoreEvents track by choreEvent.id">
             <div class="media-left media-middle" ng-if="$even">
                 <a href="#">
-                    <img class="media-object img-circle"
+                    <img class="media-object img-circle avatar-small"
                          data-ng-src="{{'data:' + choreEvent.doneBy.avatarContentType + ';base64,' + choreEvent.doneBy.avatar}}"
                          ng-if="choreEvent.doneBy.avatar"/>
                     <!-- ELSE show default picture -->
-                    <img class="media-object img-circle"
+                    <img class="media-object img-circle avatar-small"
                          src="content/images/default-avatar-1.png" ng-if="choreEvent.doneBy.avatar == null"/>
                 </a>
             </div>

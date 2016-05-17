@@ -1,0 +1,32 @@
+<jhi-alert></jhi-alert>
+<div class="jumbotron">
+    <h1>TidyUp contest in {{vm.account.memberOf.name}}<br>
+        <small>Who cleans the most in your flat?</small>
+    </h1>
+    <div class="horizontal-space"></div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Points</th>
+            <th>Avatar</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="user in vm.flat.residents" ng-class="{'success': $first}">
+            <th>{{$index + 1}}</th>
+            <td>{{user.login}}</td>
+            <td><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> {{user.points}}</td>
+            <td>
+                <img
+                    data-ng-src="{{'data:' + user.avatarContentType + ';base64,' + user.avatar}}"
+                    ng-if="user.avatar" class="media-object img-circle avatar-small"/>
+                <!-- ELSE show default picture -->
+                <img src="content/images/default-avatar-1.png" ng-if="user.avatar == null"
+                     class="media-object img-circle avatar-small"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

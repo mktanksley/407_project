@@ -14,11 +14,13 @@
         vm.isAuthenticated = null;
         vm.login = LoginService.open;
         vm.register = register;
+        vm.getAccount = getAccount;
+
         $scope.$on('authenticationSuccess', function() {
-            getAccount();
+            vm.getAccount();
         });
 
-        getAccount();
+        vm.getAccount();
 
         function getAccount() {
             Principal.identity().then(function(account) {

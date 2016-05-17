@@ -111,7 +111,7 @@ public class ChoreEventResource {
     public ResponseEntity<ChoreEvent> updateChoreEvent(@RequestBody ChoreEvent choreEvent) throws URISyntaxException {
         log.debug("REST request to update ChoreEvent : {}", choreEvent);
 
-        if (!SecurityUtils.isCurrentUserAdmin() && !SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.FLAT_ADMIN) && choreEvent.getDoneBy().getLogin().equalsIgnoreCase(SecurityUtils.getCurrentUserLogin())) {
+        if (!SecurityUtils.isCurrentUserAdmin() && !SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.FLAT_ADMIN) && !choreEvent.getDoneBy().getLogin().equalsIgnoreCase(SecurityUtils.getCurrentUserLogin())) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("choreEvent", "error", "non-admin can edit only his own chores.")).body(null);
         }
 
