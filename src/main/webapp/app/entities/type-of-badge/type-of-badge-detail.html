@@ -2,17 +2,16 @@
 <div>
     <h2><span translate="tidyUpApp.typeOfBadge.detail.title">Type Of Badge</span> {{vm.typeOfBadge.id}}</h2>
     <hr>
-    <dl class="dl-horizontal">
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
         <dt><span translate="tidyUpApp.typeOfBadge.name">Name</span></dt>
         <dd>
             <span>{{vm.typeOfBadge.name}}</span>
         </dd>
-        <hr>
         <dt><span translate="tidyUpApp.typeOfBadge.description">Description</span></dt>
         <dd>
             <span>{{vm.typeOfBadge.description}}</span>
         </dd>
-        <hr>
     </dl>
 
     <button type="submit"
