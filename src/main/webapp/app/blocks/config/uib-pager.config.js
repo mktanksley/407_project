@@ -5,11 +5,11 @@
         .module('tidyUpApp')
         .config(pagerConfig);
 
-    pagerConfig.$inject = ['uibPagerConfig', 'paginationConstants'];
+    pagerConfig.$inject = ['uibPagerConfig', 'pagerConstants'];
 
-    function pagerConfig(uibPagerConfig, paginationConstants) {
-        uibPagerConfig.itemsPerPage = paginationConstants.itemsPerPage;
-        uibPagerConfig.previousText = '«';
-        uibPagerConfig.nextText = '»';
+    function pagerConfig(uibPagerConfig, pagerConstants) {
+        uibPagerConfig.itemsPerPage = pagerConstants.itemsPerPage;
+        uibPagerConfig.previousText = '↑ Newer';
+        uibPagerConfig.nextText = 'Older ↓';
     }
 })();
