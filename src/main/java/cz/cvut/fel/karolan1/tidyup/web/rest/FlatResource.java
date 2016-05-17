@@ -177,8 +177,10 @@ public class FlatResource {
         log.debug("REST request to get Flat : {}", id);
 
         Flat flat = flatService.findOne(id);
-        Hibernate.initialize(flat.getResidents()); // eagerly load residents
-        Hibernate.initialize(flat.getFriends()); // eagerly load friends
+        if (flat != null) {
+            Hibernate.initialize(flat.getResidents()); // eagerly load residents
+            Hibernate.initialize(flat.getFriends()); // eagerly load friends
+        }
 
         // if the user is not admin and not member of the flat, he cannot get this!
         if (!SecurityUtils.isCurrentUserAdmin() && !userService.getUserWithAuthorities().getMemberOf().equals(flat)) {
