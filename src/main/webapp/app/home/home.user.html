@@ -101,13 +101,27 @@
 
         <div class="media" ng-repeat="choreEvent in vm.friendChoreEvents track by choreEvent.id">
             <div class="media-left media-middle" ng-if="$even">
-                <a href="#"><img class="media-object img-circle" src="holder.js/32x32"></a>
+                <a href="#">
+                    <img class="media-object img-circle"
+                         data-ng-src="{{'data:' + choreEvent.doneBy.avatarContentType + ';base64,' + choreEvent.doneBy.avatar}}"
+                         ng-if="choreEvent.doneBy.avatar"/>
+                    <!-- ELSE show default picture -->
+                    <img class="media-object img-circle"
+                         src="content/images/default-avatar-1.png" ng-if="choreEvent.doneBy.avatar == null"/>
+                </a>
             </div>
             <div class="media-body" ng-class-even="'text-right'">
                 <a href="#">{{choreEvent.doneBy.login}}</a> {{choreEvent.isType.name | lowercase}}.
             </div>
             <div class="media-right media-middle" ng-if="$odd">
-                <a href="#"><img class="media-object img-circle" src="holder.js/32x32"></a>
+                <a href="#">
+                    <img class="media-object img-circle"
+                         data-ng-src="{{'data:' + choreEvent.doneBy.avatarContentType + ';base64,' + choreEvent.doneBy.avatar}}"
+                         ng-if="choreEvent.doneBy.avatar"/>
+                    <!-- ELSE show default picture -->
+                    <img class="media-object img-circle"
+                         src="content/images/default-avatar-1.png" ng-if="choreEvent.doneBy.avatar == null"/>
+                </a>
             </div>
         </div>
     </div>

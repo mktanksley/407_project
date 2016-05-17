@@ -138,6 +138,10 @@ $filler-color: #DDDDDD;
     //background-color: $filler-color;
 }
 
+.right-column .media img {
+    max-height: 32px;
+}
+
 .horizontal-space {
     height: 50px;
 }
