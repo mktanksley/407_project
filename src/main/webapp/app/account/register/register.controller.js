@@ -6,9 +6,9 @@
         .controller('RegisterController', RegisterController);
 
 
-    RegisterController.$inject = ['$translate', '$timeout', 'Auth', 'LoginService'];
+    RegisterController.$inject = ['$translate', '$scope', '$timeout', 'Auth', 'LoginService', 'DataUtils'];
 
-    function RegisterController ($translate, $timeout, Auth, LoginService) {
+    function RegisterController ($translate, $scope, $timeout, Auth, LoginService, DataUtils) {
         var vm = this;
 
         vm.doNotMatch = null;
@@ -20,6 +20,20 @@
         vm.success = null;
 
         $timeout(function (){angular.element('#login').focus();});
+
+        vm.setAvatar = function ($file, user) {
+            if ($file && $file.$error === 'pattern') {
+                return;
+            }
+            if ($file) {
+                DataUtils.toBase64($file, function(base64Data) {
+                    $scope.$apply(function() {
+                        user.avatar = base64Data;
+                        user.avatarContentType = $file.type;
+                    });
+                });
+            }
+        };
 
         function register () {
             if (vm.registerAccount.password !== vm.confirmPassword) {

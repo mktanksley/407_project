@@ -50,7 +50,8 @@
             "confirmpassword": "Potvrzení nového hesla",
             "confirmpassword.placeholder": "Potvrzení nového hesla",
             "email": "E-mail",
-            "email.placeholder": "Váš e-mail"
+            "email.placeholder": "Váš e-mail",
+            "avatar": "Avatar"
         },
         "messages": {
             "info": {
