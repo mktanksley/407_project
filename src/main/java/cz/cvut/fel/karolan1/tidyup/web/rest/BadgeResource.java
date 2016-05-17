@@ -7,13 +7,13 @@ import cz.cvut.fel.karolan1.tidyup.repository.search.BadgeSearchRepository;
 import cz.cvut.fel.karolan1.tidyup.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing Badge.
@@ -31,13 +31,13 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class BadgeResource {
 
     private final Logger log = LoggerFactory.getLogger(BadgeResource.class);
-        
+
     @Inject
     private BadgeRepository badgeRepository;
-    
+
     @Inject
     private BadgeSearchRepository badgeSearchRepository;
-    
+
     /**
      * POST  /badges : Create a new badge.
      *
@@ -49,7 +49,7 @@ public class BadgeResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Badge> createBadge(@RequestBody Badge badge) throws URISyntaxException {
+    public ResponseEntity<Badge> createBadge(@Valid @RequestBody Badge badge) throws URISyntaxException {
         log.debug("REST request to save Badge : {}", badge);
         if (badge.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("badge", "idexists", "A new badge cannot already have an ID")).body(null);
@@ -74,7 +74,7 @@ public class BadgeResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Badge> updateBadge(@RequestBody Badge badge) throws URISyntaxException {
+    public ResponseEntity<Badge> updateBadge(@Valid @RequestBody Badge badge) throws URISyntaxException {
         log.debug("REST request to update Badge : {}", badge);
         if (badge.getId() == null) {
             return createBadge(badge);

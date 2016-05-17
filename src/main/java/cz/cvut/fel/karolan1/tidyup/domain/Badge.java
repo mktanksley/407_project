@@ -5,6 +5,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -24,13 +25,16 @@ public class Badge implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "earned_at")
+    @NotNull
+    @Column(name = "earned_at", nullable = false)
     private ZonedDateTime earnedAt;
 
     @ManyToOne
+    @NotNull
     private TypeOfBadge isOfType;
 
     @ManyToOne
+    @NotNull
     private User ownedBy;
 
     public Long getId() {

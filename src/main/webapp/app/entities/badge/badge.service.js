@@ -14,8 +14,10 @@
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {
-                    data = angular.fromJson(data);
-                    data.earnedAt = DateUtils.convertDateTimeFromServer(data.earnedAt);
+                    if (data) {
+                        data = angular.fromJson(data);
+                        data.earnedAt = DateUtils.convertDateTimeFromServer(data.earnedAt);
+                    }
                     return data;
                 }
             },

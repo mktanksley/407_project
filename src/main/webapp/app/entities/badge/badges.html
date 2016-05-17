@@ -47,10 +47,10 @@
                     <td><a ui-sref="badge-detail({id:badge.id})">{{badge.id}}</a></td>
                     <td>{{badge.earnedAt | date:'medium'}}</td>
                     <td>
-                        <a ui-sref="type-of-badge-detail({id:badge.isOfType.id})">{{badge.isOfType.id}}</a>
+                        <a ui-sref="type-of-badge-detail({id:badge.isOfType.id})">{{badge.isOfType.name}}</a>
                     </td>
                     <td>
-                        {{badge.ownedBy.id}}
+                        {{badge.ownedBy.login}}
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">

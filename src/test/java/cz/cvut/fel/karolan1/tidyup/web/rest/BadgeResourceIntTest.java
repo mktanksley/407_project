@@ -4,17 +4,15 @@ import cz.cvut.fel.karolan1.tidyup.TidyUpApp;
 import cz.cvut.fel.karolan1.tidyup.domain.Badge;
 import cz.cvut.fel.karolan1.tidyup.repository.BadgeRepository;
 import cz.cvut.fel.karolan1.tidyup.repository.search.BadgeSearchRepository;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.hamcrest.Matchers.hasItem;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -25,12 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.ZoneId;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -108,6 +107,24 @@ public class BadgeResourceIntTest {
         // Validate the Badge in ElasticSearch
         Badge badgeEs = badgeSearchRepository.findOne(testBadge.getId());
         assertThat(badgeEs).isEqualToComparingFieldByField(testBadge);
+    }
+
+    @Test
+    @Transactional
+    public void checkEarnedAtIsRequired() throws Exception {
+        int databaseSizeBeforeTest = badgeRepository.findAll().size();
+        // set the field null
+        badge.setEarnedAt(null);
+
+        // Create the Badge, which fails.
+
+        restBadgeMockMvc.perform(post("/api/badges")
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(badge)))
+                .andExpect(status().isBadRequest());
+
+        List<Badge> badges = badgeRepository.findAll();
+        assertThat(badges).hasSize(databaseSizeBeforeTest);
     }
 
     @Test

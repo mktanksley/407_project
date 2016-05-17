@@ -1,30 +1,39 @@
 {
-  "relationships": [
-    {
-      "relationshipId": 1,
-      "relationshipType": "many-to-one",
-      "relationshipName": "isOfType",
-      "otherEntityName": "typeOfBadge",
-      "otherEntityField": "id"
-    },
-    {
-      "relationshipId": 2,
-      "relationshipType": "many-to-one",
-      "relationshipName": "ownedBy",
-      "otherEntityName": "user",
-      "otherEntityField": "id"
-    }
-  ],
-  "fields": [
-    {
-      "fieldId": 1,
-      "fieldName": "earnedAt",
-      "fieldType": "ZonedDateTime"
-    }
-  ],
-  "changelogDate": "20160427120814",
-  "dto": "no",
-  "pagination": "no",
-  "service": "no",
-  "entityTableName": "badge"
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipType": "many-to-one",
+            "relationshipName": "isOfType",
+            "otherEntityName": "typeOfBadge",
+            "otherEntityField": "name",
+            "relationshipValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "relationshipId": 2,
+            "relationshipType": "many-to-one",
+            "relationshipName": "ownedBy",
+            "otherEntityName": "user",
+            "otherEntityField": "login",
+            "relationshipValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "earnedAt",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20160427120814",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "entityTableName": "badge"
 }

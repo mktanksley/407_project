@@ -22,11 +22,17 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="earned_at" type="timestamp">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             
-            <column name="is_of_type_id" type="bigint"/>
-            <column name="owned_by_id" type="bigint"/>
+            <column name="is_of_type_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="owned_by_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="badge" columnName="earned_at" columnDataType="datetime"/>
