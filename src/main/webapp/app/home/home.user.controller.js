@@ -28,6 +28,7 @@
 
         vm.todoChore = null;
         vm.getTodoEvent = getTodoEvent;
+        vm.fulfillTodoChore = fulfillTodoChore;
 
         vm.getTodoEvent();
 
@@ -145,8 +146,38 @@
         }
 
         function getTodoEvent() {
-            vm.todoChore = TodoChore.get();
+            vm.todoChore = TodoChore.get({}, function (data) {
+                vm.todoChore = data;
+            }, function () {
+                vm.todoChore = null;
+            });
         }
 
+        function fulfillTodoChore() {
+            vm.isUserSaving = true;
+
+            // load User
+            User.get({login: vm.account.login}, function (result) {
+                vm.user = result;
+                vm.todoChore.dateDone = new Date();
+
+                // update User
+                var userToUpdate = vm.user;
+                userToUpdate.points += vm.todoChore.isType.points;
+                User.update(userToUpdate, function (result) {
+                    vm.isUserSaving = false;
+                    // reload User points
+                    vm.account.points = result.points;
+
+                    // update chore
+                    vm.todoChore.dateDone = new Date();
+                    ChoreEvent.update(vm.todoChore, function () {
+                        AlertService.success('home.choreEvent.success');
+                        vm.getTodoEvent();
+                    }, onSaveError);
+
+                }, onSaveError);
+            });
+        }
     }
 })();

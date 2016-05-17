@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -106,17 +107,26 @@ public class ChoreEventResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.FLAT_ADMIN})
+    @Secured(AuthoritiesConstants.USER)
     public ResponseEntity<ChoreEvent> updateChoreEvent(@RequestBody ChoreEvent choreEvent) throws URISyntaxException {
         log.debug("REST request to update ChoreEvent : {}", choreEvent);
+
+        if (!SecurityUtils.isCurrentUserAdmin() && !SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.FLAT_ADMIN) && choreEvent.getDoneBy().getLogin().equalsIgnoreCase(SecurityUtils.getCurrentUserLogin())) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("choreEvent", "error", "non-admin can edit only his own chores.")).body(null);
+        }
+
         if (choreEvent.getId() == null) {
             return createChoreEvent(choreEvent);
         }
         ChoreEvent result = choreEventRepository.save(choreEvent);
         choreEventSearchRepository.save(result);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("choreEvent", choreEvent.getId().toString()))
-            .body(result);
+
+        return SecurityUtils.isCurrentUserAdmin() ?
+            ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityUpdateAlert("choreEvent", choreEvent.getId().toString()))
+                .body(result) :
+            ResponseEntity.ok()
+                .body(result);
     }
 
     /**
@@ -166,8 +176,11 @@ public class ChoreEventResource {
         log.debug("REST request to get all friend's ChoreEvents");
 
         Flat flat = userService.getUserWithAuthorities().getMemberOf();
-        Hibernate.initialize(flat.getFriends());
-        return choreEventRepository.findEventsFromCurrentUsersFlatFriends(flat);
+        if (flat.getFriends() != null && flat.getFriends().size() > 0) {
+            Hibernate.initialize(flat.getFriends());
+            return choreEventRepository.findEventsFromCurrentUsersFlatFriends(flat);
+        }
+        return new ArrayList<>(0);
     }
 
     /**
@@ -203,7 +216,7 @@ public class ChoreEventResource {
     @Secured(AuthoritiesConstants.USER)
     public ResponseEntity<ChoreEvent> getChoreEventToDo() {
         log.debug("REST request to get ChoreEvent TODO");
-        ChoreEvent choreEvent = choreEventRepository.findFirstByDoneByAndDateDoneIsNullAndDateToIsNotNullOrderByDateToDesc(userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).get());
+        ChoreEvent choreEvent = choreEventRepository.findFirstByDoneByAndDateDoneIsNullAndDateToIsNotNullOrderByDateToAsc(userService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).get());
         return Optional.ofNullable(choreEvent)
             .map(result -> new ResponseEntity<>(
                 result,

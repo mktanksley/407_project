@@ -31,26 +31,29 @@
 
         <div class="well">
             <div class="media">
-                <!--<div class="media-left">-->
-                    <!--<a href="#">-->
-                        <!--<a href="#"><img class="media-object img-circle" src="holder.js/64x64"></a>-->
-                    <!--</a>-->
-                <!--</div>-->
-                <div class="media-body">
+                <div class="media-body" ng-if="vm.todoChore">
                     <h3 class="media-heading">TODO: {{vm.todoChore.isType.name | lowercase}}</h3>
 
                     <p>You are assigned to do {{vm.todoChore.isType.name | lowercase}}. Detailed description:
                         {{vm.todoChore.isType.description ? vm.todoChore.isType.description : '(was not supplied).'}}</p>
 
-                    <div class="btn-group pull-left" role="group">
-                        <button type="button" class="btn btn-success btn-sm"><span
-                            class="glyphicon glyphicon-ok"></span> Fulfilled
+                        <button type="button" class="btn btn-success btn-sm pull-left" ng-click="vm.fulfillTodoChore()">
+                            <span class="glyphicon glyphicon-ok"></span> Fulfilled
                         </button>
-                        <button type="button" class="btn btn-default btn-sm">Cannot make it</button>
-                    </div>
                     <p class="text-right">Tidy till <strong>
-                        <time datetime="{{vm.todoChore.dateTo}}">{{vm.todoChore.dateTo | date:'EEEE MMM d'}}</time></strong>.
+                        <time datetime="{{vm.todoChore.dateTo}}">{{vm.todoChore.dateTo | date:'EEEE, MMM d'}}</time></strong>.
                     </p>
+                </div>
+
+                <!-- if no to-do chore -->
+                <div ng-if="!vm.todoChore">
+                    <div class="media-left">
+                        <span class="glyphicon glyphicon-ok-sign fulfilled"></span>
+                    </div>
+                    <div class="media-body">
+                        <h3 class="media-heading">All done!</h3>
+                        <p>You don't have any upcoming chores :)</p>
+                    </div>
                 </div>
             </div>
         </div>
