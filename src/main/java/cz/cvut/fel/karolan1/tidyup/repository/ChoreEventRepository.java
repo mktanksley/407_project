@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 /**
@@ -53,4 +54,7 @@ public interface ChoreEventRepository extends JpaRepository<ChoreEvent, Long> {
 //    @Query(value = "SELECT e FROM chore_event e WHERE e.date_done IS NULL AND e.date_to IS NOT NULL ORDER BY e.date_to DESC LIMIT 1", nativeQuery = true)
 //    @Query("select e from ChoreEvent e where e.doneBy = ?1 and e.dateDone is null and e.dateTo is not null order by e.dateTo desc")
     ChoreEvent findFirstByDoneByAndDateDoneIsNullAndDateToIsNotNullOrderByDateToDesc(User doneBy);
+
+    @Query("select e from ChoreEvent e where e.isType.repeatable = TRUE and e.dateTo >= ?1 and e.dateTo < ?2")
+    List<ChoreEvent> findRepeatableToCopy(ZonedDateTime dayBegin, ZonedDateTime dayEnd);
 }
