@@ -5,14 +5,19 @@
         .module('tidyUpApp')
         .controller('NavbarController', NavbarController);
 
-    NavbarController.$inject = ['$scope', '$state', 'Auth', 'Principal', 'ENV', 'LoginService'];
+    NavbarController.$inject = ['$scope', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService'];
 
-    function NavbarController ($scope, $state, Auth, Principal, ENV, LoginService) {
+    function NavbarController ($scope, $state, Auth, Principal, ProfileService, LoginService) {
         var vm = this;
 
         vm.isNavbarCollapsed = true;
         vm.isAuthenticated = Principal.isAuthenticated;
-        vm.inProduction = ENV === 'prod';
+
+        ProfileService.getProfileInfo().then(function(response) {
+            vm.inProduction = response.inProduction;
+            vm.swaggerDisabled = response.swaggerDisabled;
+        });
+
         vm.login = login;
         vm.logout = logout;
         vm.toggleNavbar = toggleNavbar;
@@ -23,22 +28,22 @@
 
         setAdmin();
 
-        function login () {
+        function login() {
             collapseNavbar();
             LoginService.open();
         }
 
-        function logout () {
+        function logout() {
             collapseNavbar();
             Auth.logout();
             $state.go('home');
         }
 
-        function toggleNavbar () {
+        function toggleNavbar() {
             vm.isNavbarCollapsed = !vm.isNavbarCollapsed;
         }
 
-        function collapseNavbar () {
+        function collapseNavbar() {
             vm.isNavbarCollapsed = true;
         }
 

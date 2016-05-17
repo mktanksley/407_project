@@ -2,6 +2,7 @@ package cz.cvut.fel.karolan1.tidyup.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import cz.cvut.fel.karolan1.tidyup.config.Constants;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Email;
@@ -10,6 +11,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -33,6 +35,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private Long id;
 
     @NotNull
+    @Pattern(regexp = Constants.LOGIN_REGEX)
     @Size(min = 1, max = 100)
     @Column(length = 100, unique = true, nullable = false)
     private String login;
@@ -40,7 +43,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @JsonIgnore
     @NotNull
     @Size(min = 60, max = 60)
-    @Column(name = "password_hash",length = 60)
+    @Column(name = "password_hash", length = 60)
     private String password;
 
     @Size(max = 50)
@@ -187,11 +190,11 @@ public class User extends AbstractAuditingEntity implements Serializable {
     }
 
     public ZonedDateTime getResetDate() {
-       return resetDate;
+        return resetDate;
     }
 
     public void setResetDate(ZonedDateTime resetDate) {
-       this.resetDate = resetDate;
+        this.resetDate = resetDate;
     }
 
     public String getLangKey() {
@@ -288,7 +291,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
             ", email='" + email + '\'' +
-            ", activated=" + activated +
+            ", activated='" + activated + '\'' +
             ", langKey='" + langKey + '\'' +
             ", activationKey='" + activationKey + '\'' +
             ", points=" + points +

@@ -1,19 +1,20 @@
 package cz.cvut.fel.karolan1.tidyup.security;
 
+import cz.cvut.fel.karolan1.tidyup.config.JHipsterProperties;
 import cz.cvut.fel.karolan1.tidyup.domain.PersistentToken;
-import cz.cvut.fel.karolan1.tidyup.domain.User;
 import cz.cvut.fel.karolan1.tidyup.repository.PersistentTokenRepository;
 import cz.cvut.fel.karolan1.tidyup.repository.UserRepository;
-import cz.cvut.fel.karolan1.tidyup.config.JHipsterProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.codec.Base64;
-import org.springframework.security.web.authentication.rememberme.*;
+import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
+import org.springframework.security.web.authentication.rememberme.CookieTheftException;
+import org.springframework.security.web.authentication.rememberme.InvalidCookieException;
+import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -80,7 +81,7 @@ public class CustomPersistentRememberMeServices extends
 
     @Override
     protected UserDetails processAutoLoginCookie(String[] cookieTokens, HttpServletRequest request,
-        HttpServletResponse response) {
+                                                 HttpServletResponse response) {
 
         PersistentToken token = getPersistentToken(cookieTokens);
         String login = token.getUser().getLogin();

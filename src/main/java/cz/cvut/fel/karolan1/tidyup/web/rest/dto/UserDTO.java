@@ -1,5 +1,6 @@
 package cz.cvut.fel.karolan1.tidyup.web.rest.dto;
 
+import cz.cvut.fel.karolan1.tidyup.config.Constants;
 import cz.cvut.fel.karolan1.tidyup.domain.Authority;
 import cz.cvut.fel.karolan1.tidyup.domain.Flat;
 import cz.cvut.fel.karolan1.tidyup.domain.User;
@@ -18,9 +19,9 @@ import java.util.stream.Collectors;
  */
 public class UserDTO {
 
-    @Pattern(regexp = "^[a-z0-9]*$")
     @NotNull
-    @Size(min = 1, max = 50)
+    @Pattern(regexp = Constants.LOGIN_REGEX)
+    @Size(min = 1, max = 100)
     private String login;
 
     @Size(max = 50)

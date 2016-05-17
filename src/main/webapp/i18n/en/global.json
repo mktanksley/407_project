@@ -81,6 +81,9 @@
         },
         "field": {
             "id": "ID"
+        },
+        "ribbon": {
+            "dev":"Development"
         }
     },
     "entity": {
@@ -91,6 +94,7 @@
             "cancel": "Cancel",
             "delete": "Delete",
             "edit": "Edit",
+            "open": "Open",
             "save": "Save",
             "view": "View"
         },
@@ -116,6 +120,7 @@
     },
     "error": {
         "server.not.reachable": "Server not reachable",
+        "url.not.found": "Not found",
         "NotNull": "Field {{ fieldName }} cannot be empty!",
         "Size": "Field {{ fieldName }} does not meet min/max size requirements!",
         "userexists": "Login name already used!",

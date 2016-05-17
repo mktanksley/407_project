@@ -11,6 +11,9 @@ body {
     margin-bottom: 60px; // margin for footer
 }
 
+/* ==========================================================================
+Hide ng-cloak on page load, https://docs.angularjs.org/api/ng/directive/ngCloak
+========================================================================== */
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none !important;
 }
@@ -29,11 +32,17 @@ body {
     pointer-events: none;
 }
 
+/* ==========================================================================
+Version number in navbar
+========================================================================== */
 .navbar-version {
     font-size: 10px;
     color: #ccc
 }
 
+/* ==========================================================================
+Browser Upgrade Prompt
+========================================================================== */
 .browserupgrade {
     margin: 0.2em 0;
     background: #ccc;
@@ -41,6 +50,22 @@ body {
     padding: 0.2em 0;
 }
 
+/* ==========================================================================
+Logo styles
+========================================================================== */
+.navbar-brand {
+    &.logo {
+        padding: 5px 15px;
+        .logo-img {
+            height: 45px;
+            display: inline-block;
+        }
+    }
+}
+
+/* ==========================================================================
+Main page styles
+========================================================================== */
 .hero-unit {
     margin: 50px auto 0 auto;
     width: 300px;
@@ -57,11 +82,7 @@ body {
     }
 }
 
-.error {
-    color: white;
-    background-color: red;
-}
-
+// customized
 .dustbin {
     display: inline-block;
     width: 330px;
@@ -120,15 +141,7 @@ $filler-color: #DDDDDD;
 .horizontal-space {
     height: 50px;
 }
-
-.pad {
-    padding: 10px;
-}
-
-.break {
-    white-space: normal;
-    word-break:break-all;
-}
+// END
 
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
 @media
@@ -144,7 +157,42 @@ only screen and (                min-resolution: 2dppx) {
     }
 }
 
-/* make sure browsers use the pointer cursor for anchors, even with no href */
+/* ==========================================================================
+Generic styles
+========================================================================== */
+.error {
+    color: white;
+    background-color: red;
+}
+
+.pad {
+    padding: 10px;
+}
+
+.break {
+    white-space: normal;
+    word-break:break-all;
+}
+
+.voffset  { margin-top: 2px; }
+.voffset1 { margin-top: 5px; }
+.voffset2 { margin-top: 10px; }
+.voffset3 { margin-top: 15px; }
+.voffset4 { margin-top: 30px; }
+.voffset5 { margin-top: 40px; }
+.voffset6 { margin-top: 60px; }
+.voffset7 { margin-top: 80px; }
+.voffset8 { margin-top: 100px; }
+.voffset9 { margin-top: 150px; }
+
+.readonly {
+    background-color: #eee;
+    opacity: 1;
+}
+
+/* ==========================================================================
+make sure browsers use the pointer cursor for anchors, even with no href
+========================================================================== */
 a:hover {
   cursor: pointer;
 }
@@ -153,6 +201,9 @@ a:hover {
     cursor: pointer;
 }
 
+/* ==========================================================================
+Metrics and Health styles
+========================================================================== */
 #threadDump .popover, #healthCheck .popover {
     top: inherit;
     display: block;
@@ -168,18 +219,9 @@ a:hover {
     min-width: 400px;
 }
 
-.voffset  { margin-top: 2px; }
-.voffset1 { margin-top: 5px; }
-.voffset2 { margin-top: 10px; }
-.voffset3 { margin-top: 15px; }
-.voffset4 { margin-top: 30px; }
-.voffset5 { margin-top: 40px; }
-.voffset6 { margin-top: 60px; }
-.voffset7 { margin-top: 80px; }
-.voffset8 { margin-top: 100px; }
-.voffset9 { margin-top: 150px; }
-
-/* start Password strength bar style */
+/* ==========================================================================
+start Password strength bar style
+========================================================================== */
 ul#strength {
     display:inline;
     list-style:none;
@@ -200,9 +242,10 @@ ul#strength {
         margin:0 !important;
     }
 }
-/* end Password strength bar style */
-/* Custom alerts for notification */
 
+/* ==========================================================================
+Custom alerts for notification
+========================================================================== */
 .alerts {
     .alert {
         text-overflow: ellipsis;
@@ -242,50 +285,9 @@ ul#strength {
     }
 }
 
-/* end of Custom alerts for notification */
-/* Social button */
-.jh-btn-social {
-    margin-bottom: 5px;
-}
-
-.jh-btn-google {
-    background-color: #dd4b39;
-    border-color: rgba(0, 0, 0, 0.2);
-    color: #fff;
-}
-
-.jh-btn-google:hover, .jh-btn-google:focus, .jh-btn-google:active, .jh-btn-google.active, .open > .dropdown-toggle.jh-btn-google {
-    background-color: #c23321;
-    border-color: rgba(0, 0, 0, 0.2);
-    color: #fff;
-}
-
-.jh-btn-facebook {
-    background-color: #3b5998;
-    border-color: rgba(0, 0, 0, 0.2);
-    color: #fff;
-}
-
-.jh-btn-facebook:hover, .jh-btn-facebook:focus, .jh-btn-facebook:active, .jh-btn-facebook.active, .open > .dropdown-toggle.jh-btn-facebook {
-    background-color: #2d4373;
-    border-color: rgba(0, 0, 0, 0.2);
-    color: #fff;
-}
-
-.jh-btn-twitter {
-    background-color: #55acee;
-    border-color: rgba(0, 0, 0, 0.2);
-    color: #fff;
-}
-
-.jh-btn-twitter:hover, .jh-btn-twitter:focus, .jh-btn-twitter:active, .jh-btn-twitter.active, .open > .dropdown-toggle.jh-btn-twitter {
-    background-color: #2795e9;
-    border-color: rgba(0, 0, 0, 0.2);
-    color: #fff;
-}
-/* end of Social Button */
-
-/* entity tables helpers */
+/* ==========================================================================
+entity tables helpers
+========================================================================== */
 
 /* Remove Bootstrap padding from the element
    http://stackoverflow.com/questions/19562903/remove-padding-from-columns-in-bootstrap-3 */
@@ -338,9 +340,32 @@ ul#strength {
         }
     }
 }
-/* end of entity tables helpers */
 
-/* ui bootstrap tweaks */
+/* ==========================================================================
+entity detail page css
+========================================================================== */
+.dl-horizontal.jh-entity-details > {
+    dd {
+        margin-bottom: 15px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .dl-horizontal.jh-entity-details > {
+        dt {
+            margin-bottom: 15px;
+        }
+        dd {
+            border-bottom: 1px solid #eee;
+            padding-left: 180px;
+            margin-left: 0;
+        }
+    }
+}
+
+/* ==========================================================================
+ui bootstrap tweaks
+========================================================================== */
 .nav, .pagination, .carousel, .panel-title a {
     cursor: pointer;
 }
@@ -351,9 +376,51 @@ ul#strength {
 }
 
 .datetime-picker-dropdown > li.date-picker-menu div > table:focus,
-.uib-datepicker-popup  > li > div.uib-datepicker > table:focus{
+.uib-datepicker-popup  > li > div.uib-datepicker > table:focus {
     outline: none;
 }
-/* end of ui bootstrap tweaks */
+
+/* ==========================================================================
+Social button
+========================================================================== */
+.jh-btn-social {
+    margin-bottom: 5px;
+}
+
+.jh-btn-google {
+    background-color: #dd4b39;
+    border-color: rgba(0, 0, 0, 0.2);
+    color: #fff;
+}
+
+.jh-btn-google:hover, .jh-btn-google:focus, .jh-btn-google:active, .jh-btn-google.active, .open > .dropdown-toggle.jh-btn-google {
+    background-color: #c23321;
+    border-color: rgba(0, 0, 0, 0.2);
+    color: #fff;
+}
+
+.jh-btn-facebook {
+    background-color: #3b5998;
+    border-color: rgba(0, 0, 0, 0.2);
+    color: #fff;
+}
+
+.jh-btn-facebook:hover, .jh-btn-facebook:focus, .jh-btn-facebook:active, .jh-btn-facebook.active, .open > .dropdown-toggle.jh-btn-facebook {
+    background-color: #2d4373;
+    border-color: rgba(0, 0, 0, 0.2);
+    color: #fff;
+}
+
+.jh-btn-twitter {
+    background-color: #55acee;
+    border-color: rgba(0, 0, 0, 0.2);
+    color: #fff;
+}
+
+.jh-btn-twitter:hover, .jh-btn-twitter:focus, .jh-btn-twitter:active, .jh-btn-twitter.active, .open > .dropdown-toggle.jh-btn-twitter {
+    background-color: #2795e9;
+    border-color: rgba(0, 0, 0, 0.2);
+    color: #fff;
+}
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */

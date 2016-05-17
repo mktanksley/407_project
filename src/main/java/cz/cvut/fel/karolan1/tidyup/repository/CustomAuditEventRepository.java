@@ -2,7 +2,6 @@ package cz.cvut.fel.karolan1.tidyup.repository;
 
 import cz.cvut.fel.karolan1.tidyup.config.audit.AuditEventConverter;
 import cz.cvut.fel.karolan1.tidyup.domain.PersistentAuditEvent;
-
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.boot.actuate.audit.AuditEventRepository;
 import org.springframework.stereotype.Repository;
@@ -24,7 +23,7 @@ public class CustomAuditEventRepository implements AuditEventRepository {
 
     private static final String AUTHORIZATION_FAILURE = "AUTHORIZATION_FAILURE";
 
-    private static final String ANONYMOUS_USER = "anonymousUser";
+    private static final String ANONYMOUS_USER = "anonymoususer";
 
     @Inject
     private PersistenceAuditEventRepository persistenceAuditEventRepository;

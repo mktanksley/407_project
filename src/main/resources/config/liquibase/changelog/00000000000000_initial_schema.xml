@@ -31,7 +31,7 @@
             <column name="first_name" type="varchar(50)"/>
             <column name="last_name" type="varchar(50)"/>
             <column name="email" type="varchar(100)">
-                <constraints unique="true" nullable="false"/>
+                <constraints unique="true" nullable="true"/>
             </column>
             <column name="activated" type="boolean" valueBoolean="false">
                 <constraints nullable="false" />
@@ -126,7 +126,6 @@
                                  constraintName="fk_user_persistent_token"
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
-
         <loadData encoding="UTF-8"
                   file="config/liquibase/users.csv"
                   separator=";"

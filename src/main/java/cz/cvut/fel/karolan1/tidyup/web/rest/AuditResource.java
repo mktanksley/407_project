@@ -23,7 +23,7 @@ import java.util.List;
  * REST controller for getting the audit events.
  */
 @RestController
-@RequestMapping(value = "/api/audits", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/management/jhipster/audits", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuditResource {
 
     private AuditEventService auditEventService;
@@ -51,7 +51,7 @@ public class AuditResource {
      * GET  /audits : get a page of AuditEvents between the fromDate and toDate.
      *
      * @param fromDate the start of the time period of AuditEvents to get
-     * @param toDate the end of the time period of AuditEvents to get
+     * @param toDate   the end of the time period of AuditEvents to get
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of AuditEvents in body
      * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
@@ -81,7 +81,7 @@ public class AuditResource {
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<AuditEvent> get(@PathVariable Long id) {
         return auditEventService.find(id)
-                .map((entity) -> new ResponseEntity<>(entity, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            .map((entity) -> new ResponseEntity<>(entity, HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

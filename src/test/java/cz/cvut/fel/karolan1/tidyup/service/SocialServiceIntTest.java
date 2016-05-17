@@ -5,8 +5,6 @@ import cz.cvut.fel.karolan1.tidyup.domain.Authority;
 import cz.cvut.fel.karolan1.tidyup.domain.User;
 import cz.cvut.fel.karolan1.tidyup.repository.AuthorityRepository;
 import cz.cvut.fel.karolan1.tidyup.repository.UserRepository;
-import cz.cvut.fel.karolan1.tidyup.service.MailService;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,7 +78,7 @@ public class SocialServiceIntTest {
             "LAST_NAME",
             "PROVIDER");
         socialService.createSocialUser(connection, "fr");
-        MultiValueMap connectionsByProviderId = new LinkedMultiValueMap<>();
+        MultiValueMap<String, Connection<?>> connectionsByProviderId = new LinkedMultiValueMap<>();
         connectionsByProviderId.put("PROVIDER", null);
         when(mockConnectionRepository.findAllConnections()).thenReturn(connectionsByProviderId);
 
@@ -280,7 +278,7 @@ public class SocialServiceIntTest {
     @Test
     public void testCreateSocialUserShouldNotCreateUserIfEmailAlreadyExist() {
         // Setup
-        User user = createExistingUser("@OTHER_LOGIN",
+        createExistingUser("@OTHER_LOGIN",
             "mail@mail.com",
             "OTHER_FIRST_NAME",
             "OTHER_LAST_NAME");
@@ -305,8 +303,7 @@ public class SocialServiceIntTest {
     @Test
     public void testCreateSocialUserShouldNotChangeUserIfEmailAlreadyExist() {
         // Setup
-        long initialUserCount = userRepository.count();
-        User user = createExistingUser("@OTHER_LOGIN",
+        createExistingUser("@OTHER_LOGIN",
             "mail@mail.com",
             "OTHER_FIRST_NAME",
             "OTHER_LAST_NAME");
@@ -321,7 +318,7 @@ public class SocialServiceIntTest {
 
         //Verify
         User userToVerify = userRepository.findOneByEmail("mail@mail.com").get();
-        assertThat(userToVerify.getLogin()).isEqualTo("@OTHER_LOGIN");
+        assertThat(userToVerify.getLogin()).isEqualTo("@other_login");
         assertThat(userToVerify.getFirstName()).isEqualTo("OTHER_FIRST_NAME");
         assertThat(userToVerify.getLastName()).isEqualTo("OTHER_LAST_NAME");
 

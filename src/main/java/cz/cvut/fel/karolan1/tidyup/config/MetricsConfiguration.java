@@ -1,5 +1,6 @@
 package cz.cvut.fel.karolan1.tidyup.config;
 
+
 import com.codahale.metrics.JmxReporter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Slf4jReporter;
@@ -13,7 +14,8 @@ import fr.ippon.spark.metrics.SparkReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -133,4 +135,5 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter {
             }
         }
     }
+
 }

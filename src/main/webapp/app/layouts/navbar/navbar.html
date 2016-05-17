@@ -7,10 +7,11 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#/" ng-click="vm.collapseNavbar()"><span
-                translate="global.title">TidyUp</span>
+            <a class="navbar-brand" href="#/" ng-click="vm.collapseNavbar()">
+                <span translate="global.title">TidyUp</span>
                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                <span class="navbar-version">v{{VERSION}}</span></a>
+                <span class="navbar-version">v{{VERSION}}</span>
+            </a>
         </div>
         <div class="navbar-collapse" uib-collapse="vm.isNavbarCollapsed" ng-switch="vm.isAuthenticated()">
 
@@ -182,7 +183,7 @@
                                 <span translate="global.menu.admin.logs">Logs</span>
                             </a>
                         </li>
-                        <li ng-hide="vm.inProduction" ui-sref-active="active">
+                        <li ng-hide="vm.inProduction || vm.swaggerDisabled" ui-sref-active="active">
                             <a ui-sref="docs" ng-click="vm.collapseNavbar()">
                                 <span class="glyphicon glyphicon-book"></span>&nbsp;
                                 <span translate="global.menu.admin.apidocs">API</span>

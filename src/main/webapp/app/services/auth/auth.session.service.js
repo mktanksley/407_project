@@ -1,13 +1,13 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('tidyUpApp')
         .factory('AuthServerProvider', AuthServerProvider);
 
-    AuthServerProvider.$inject = ['$http', '$localStorage' ];
+    AuthServerProvider.$inject = ['$http', '$localStorage'];
 
-    function AuthServerProvider ($http, $localStorage ) {
+    function AuthServerProvider($http, $localStorage) {
         var service = {
             getToken: getToken,
             hasValidToken: hasValidToken,
@@ -17,17 +17,17 @@
 
         return service;
 
-        function getToken () {
+        function getToken() {
             var token = $localStorage.authenticationToken;
             return token;
         }
 
-        function hasValidToken () {
+        function hasValidToken() {
             var token = this.getToken();
             return !!token;
         }
 
-        function login (credentials) {
+        function login(credentials) {
             var data = 'j_username=' + encodeURIComponent(credentials.username) +
                 '&j_password=' + encodeURIComponent(credentials.password) +
                 '&remember-me=' + credentials.rememberMe + '&submit=Login';
@@ -41,7 +41,9 @@
             });
         }
 
-        function logout () {
+        function logout() {
+
+
             // logout from the server
             $http.post('api/logout').success(function (response) {
                 delete $localStorage.authenticationToken;
@@ -49,6 +51,7 @@
                 $http.get('api/account');
                 return response;
             });
+
         }
     }
 })();

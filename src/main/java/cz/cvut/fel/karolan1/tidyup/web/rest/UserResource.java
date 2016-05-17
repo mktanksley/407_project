@@ -1,6 +1,7 @@
 package cz.cvut.fel.karolan1.tidyup.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import cz.cvut.fel.karolan1.tidyup.config.Constants;
 import cz.cvut.fel.karolan1.tidyup.domain.Authority;
 import cz.cvut.fel.karolan1.tidyup.domain.Flat;
 import cz.cvut.fel.karolan1.tidyup.domain.User;
@@ -74,6 +75,7 @@ public class UserResource {
     @Inject
     private MailService mailService;
 
+
     @Inject
     private AuthorityRepository authorityRepository;
 
@@ -103,7 +105,9 @@ public class UserResource {
     @Secured(AuthoritiesConstants.USER)
     public ResponseEntity<?> createUser(@RequestBody ManagedUserDTO managedUserDTO, HttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to save User : {}", managedUserDTO);
-        if (userRepository.findOneByLogin(managedUserDTO.getLogin()).isPresent()) {
+
+        //Lowercase the user login before comparing with database
+        if (userRepository.findOneByLogin(managedUserDTO.getLogin().toLowerCase()).isPresent()) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert("userManagement", "userexists", "Login already in use"))
                 .body(null);
@@ -158,13 +162,13 @@ public class UserResource {
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserDTO.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("userManagement", "emailexists", "E-mail already in use")).body(null);
         }
-        existingUser = userRepository.findOneByLogin(managedUserDTO.getLogin());
+        existingUser = userRepository.findOneByLogin(managedUserDTO.getLogin().toLowerCase());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserDTO.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("userManagement", "userexists", "Login already in use")).body(null);
         }
 
         // check that non-admin user is editing only himself
-        if (!SecurityUtils.isCurrentUserAdmin() && !SecurityUtils.getCurrentUserLogin().equals(managedUserDTO.getLogin())) {
+        if (!SecurityUtils.isCurrentUserAdmin() && !SecurityUtils.getCurrentUserLogin().equalsIgnoreCase(managedUserDTO.getLogin())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).headers(HeaderUtil.createFailureAlert("error", "error", "User can see only his account's data!")).body(null);
         }
         return userRepository
@@ -229,7 +233,7 @@ public class UserResource {
      * @param login the login of the user to find
      * @return the ResponseEntity with status 200 (OK) and with body the "login" user, or with status 404 (Not Found)
      */
-    @RequestMapping(value = "/users/{login:[_'.@a-z0-9-]+}",
+    @RequestMapping(value = "/users/{login:" + Constants.LOGIN_REGEX + "}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
@@ -258,7 +262,7 @@ public class UserResource {
      * @param login the login of the user to delete
      * @return the ResponseEntity with status 200 (OK)
      */
-    @RequestMapping(value = "/users/{login:[_'.@a-z0-9-]+}",
+    @RequestMapping(value = "/users/{login:" + Constants.LOGIN_REGEX + "}",
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed

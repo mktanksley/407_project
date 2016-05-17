@@ -1,6 +1,6 @@
 {
   "generator-jhipster": {
-    "jhipsterVersion": "3.1.0",
+    "jhipsterVersion": "3.3.0",
     "baseName": "tidyUp",
     "packageName": "cz.cvut.fel.karolan1.tidyup",
     "packageFolder": "cz/cvut/fel/karolan1/tidyup",

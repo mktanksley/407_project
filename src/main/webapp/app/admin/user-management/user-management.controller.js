@@ -27,7 +27,7 @@
 
         vm.loadAll();
 
-
+        
         JhiLanguageService.getAll().then(function (languages) {
             vm.languages = languages;
         });
@@ -41,6 +41,13 @@
             User.query({page: vm.page - 1, size: paginationConstants.itemsPerPage}, function (result, headers) {
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
+
+                //hide anonymous user from user management: it's a required user for Spring Security
+                for(var i in result) {
+                    if(result[i]['login'] === 'anonymoususer') {
+                        result.splice(i,1);
+                    }
+                }
                 vm.users = result;
             });
         }

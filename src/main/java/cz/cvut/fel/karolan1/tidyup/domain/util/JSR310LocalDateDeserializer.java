@@ -1,14 +1,14 @@
 package cz.cvut.fel.karolan1.tidyup.domain.util;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 
 /**
  * Custom Jackson deserializer for transforming a JSON object (using the ISO 8601 date formatwith optional time)
@@ -57,7 +57,8 @@ public class JSR310LocalDateDeserializer extends JsonDeserializer<LocalDate> {
                     return null;
                 }
                 return LocalDate.parse(string, ISO_DATE_OPTIONAL_TIME);
+            default:
+                throw context.wrongTokenException(parser, JsonToken.START_ARRAY, "Expected array or string.");
         }
-        throw context.wrongTokenException(parser, JsonToken.START_ARRAY, "Expected array or string.");
     }
 }

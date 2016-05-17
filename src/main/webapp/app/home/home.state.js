@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -33,7 +33,7 @@
                     authorities: ['ROLE_USER']
                 },
                 params: {
-                    page : 0
+                    page: 0
                 },
                 views: {
                     'content@': {

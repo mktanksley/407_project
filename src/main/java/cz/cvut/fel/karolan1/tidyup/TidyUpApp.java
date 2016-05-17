@@ -2,17 +2,16 @@ package cz.cvut.fel.karolan1.tidyup;
 
 import cz.cvut.fel.karolan1.tidyup.config.Constants;
 import cz.cvut.fel.karolan1.tidyup.config.JHipsterProperties;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.actuate.autoconfigure.*;
+import org.springframework.boot.actuate.autoconfigure.MetricFilterAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.MetricRepositoryAutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.SimpleCommandLinePropertySource;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -20,6 +19,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @ComponentScan
 @EnableAutoConfiguration(exclude = { MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class })
@@ -41,17 +42,17 @@ public class TidyUpApp {
     @PostConstruct
     public void initApplication() {
         if (env.getActiveProfiles().length == 0) {
-            log.warn("No Spring profile configured, running with default configuration");
+            log.warn("No Spring profile configured, running with default profile: {}", Constants.SPRING_PROFILE_DEVELOPMENT);
         } else {
             log.info("Running with Spring profile(s) : {}", Arrays.toString(env.getActiveProfiles()));
             Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
             if (activeProfiles.contains(Constants.SPRING_PROFILE_DEVELOPMENT) && activeProfiles.contains(Constants.SPRING_PROFILE_PRODUCTION)) {
-                log.error("You have misconfigured your application! " +
-                    "It should not run with both the 'dev' and 'prod' profiles at the same time.");
+                log.error("You have misconfigured your application! It should not run " +
+                    "with both the 'dev' and 'prod' profiles at the same time.");
             }
             if (activeProfiles.contains(Constants.SPRING_PROFILE_DEVELOPMENT) && activeProfiles.contains(Constants.SPRING_PROFILE_CLOUD)) {
-                log.error("You have misconfigured your application! " +
-                    "It should not run with both the 'dev' and 'cloud' profiles at the same time.");
+                log.error("You have misconfigured your application! It should not" +
+                    "run with both the 'dev' and 'cloud' profiles at the same time.");
             }
         }
     }
@@ -64,8 +65,7 @@ public class TidyUpApp {
      */
     public static void main(String[] args) throws UnknownHostException {
         SpringApplication app = new SpringApplication(TidyUpApp.class);
-        SimpleCommandLinePropertySource source = new SimpleCommandLinePropertySource(args);
-        addDefaultProfile(app, source);
+        addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();
         log.info("\n----------------------------------------------------------\n\t" +
                 "Application '{}' is running! Access URLs:\n\t" +
@@ -79,13 +79,16 @@ public class TidyUpApp {
     }
 
     /**
-     * If no profile has been configured, set by default the "dev" profile.
+     * set a default to use when no profile is configured.
      */
-    private static void addDefaultProfile(SpringApplication app, SimpleCommandLinePropertySource source) {
-        if (!source.containsProperty("spring.profiles.active") &&
-                !System.getenv().containsKey("SPRING_PROFILES_ACTIVE")) {
-
-            app.setAdditionalProfiles(Constants.SPRING_PROFILE_DEVELOPMENT);
-        }
+    protected static void addDefaultProfile(SpringApplication app) {
+        Map<String, Object> defProperties =  new HashMap<>();
+        /*
+        * The default profile to use when no other profiles are defined
+        * This cannot be set in the `application.yml` file.
+        * See https://github.com/spring-projects/spring-boot/issues/1219
+        */
+        defProperties.put("spring.profiles.default", Constants.SPRING_PROFILE_DEVELOPMENT);
+        app.setDefaultProperties(defProperties);
     }
 }

@@ -62,13 +62,13 @@
             "validate": {
                 "newpassword": {
                     "required": "Heslo je povinné.",
-                    "minlength": "Vaše heslo musí mít alespoň 4 znaků.",
+                    "minlength": "Vaše heslo musí mít alespoň 4 znaky.",
                     "maxlength": "Vaše heslo nemůže být delší než 50 znaků.",
                     "strength": "Síla hesla:"
                 },
                 "confirmpassword": {
                     "required": "Potvrzení hesla je povinné.",
-                    "minlength": "Vaše potvrzení hesla musí mít alespoň 4 znaků.",
+                    "minlength": "Vaše potvrzení hesla musí mít alespoň 4 znaky.",
                     "maxlength": "Vaše potvrzení hesla nemůže být delší než 50 znaků."
                 },
                 "email": {
@@ -81,6 +81,9 @@
         },
         "field": {
             "id": "ID"
+        },
+        "ribbon": {
+            "dev":"Development"
         }
     },
     "entity": {
@@ -91,6 +94,7 @@
             "cancel": "Zrušit",
             "delete": "Odstranit",
             "edit": "Upravit",
+            "open": "Open",
             "save": "Uložit",
             "view": "Detaily"
         },
@@ -116,12 +120,12 @@
     },
     "error": {
         "server.not.reachable": "Server je nedostupný",
+        "url.not.found": "Not found",
         "NotNull": "Pole {{ fieldName }} nemůže být prázdné!",
         "Size": "Pole {{ fieldName }} nesplňuje požadavek minimální nebo maximální velikosti!",
         "userexists": "Zadané uživatelské jméno je již použito!",
         "emailexists": "Zadaný e-mail je již použitý!",
-        "idexists": "Nová entita {{ entityName }} ještě nemůže mít ID",
-        "dateexist": "Datum vytvoření se nemůže měnit!"
+        "idexists": "Nová entita {{ entityName }} ještě nemůže mít ID"
     },
     "footer": "karolan1@fel.cvut.cz"
 }

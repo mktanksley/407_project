@@ -256,38 +256,8 @@ public class AccountResourceIntTest {
             0,                      // points
             null,                   // avatar
             null,                    // avatarContentType
-            null, null);
-
-        restUserMockMvc.perform(
-            post("/api/register")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(invalidUser)))
-            .andExpect(status().isBadRequest());
-
-        Optional<User> user = userRepository.findOneByLogin("bob");
-        assertThat(user.isPresent()).isFalse();
-    }
-
-    @Test
-    @Transactional
-    public void testRegisterEmailEmpty() throws Exception {
-        ManagedUserDTO invalidUser = new ManagedUserDTO(
-            null,                   // id
-            "bob",              // login
-            "password",         // password
-            "Bob",              // firstName
-            "Green",            // lastName
-            "",                 // e-mail <-- empty
-            true,               // activated
-            "en",               // langKey
-            new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
-            null,                   // createdDate
-            null,                   // lastModifiedBy
-            null,                    // lastModifiedDate
-            0,                      // points
-            null,                   // avatar
-            null,                    // avatarContentType
-            null, null);
+            null, null
+        );
 
         restUserMockMvc.perform(
             post("/api/register")

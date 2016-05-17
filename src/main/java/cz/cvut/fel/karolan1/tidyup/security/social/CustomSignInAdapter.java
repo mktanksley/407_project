@@ -1,11 +1,8 @@
 package cz.cvut.fel.karolan1.tidyup.security.social;
 
 import cz.cvut.fel.karolan1.tidyup.config.JHipsterProperties;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +16,7 @@ import javax.inject.Inject;
 
 public class CustomSignInAdapter implements SignInAdapter {
 
+    @SuppressWarnings("unused")
     private final Logger log = LoggerFactory.getLogger(CustomSignInAdapter.class);
 
     @Inject

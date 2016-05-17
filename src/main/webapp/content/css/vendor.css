@@ -1,5 +1,6 @@
 @charset "UTF-8";
 /* Sass bower components will be injected here */
+/* bower:scss */
 /*!
  * Bootstrap v3.3.6 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
@@ -5817,3 +5818,7 @@ button.close {
 @media print {
   .hidden-print {
     display: none !important; } }
+
+/* endinject */
+/* bower:sass */
+/* endinject */

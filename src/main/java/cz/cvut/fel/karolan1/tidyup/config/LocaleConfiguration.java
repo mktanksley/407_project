@@ -1,7 +1,6 @@
 package cz.cvut.fel.karolan1.tidyup.config;
 
 import cz.cvut.fel.karolan1.tidyup.config.locale.AngularCookieLocaleResolver;
-
 import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +14,7 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 @Configuration
 public class LocaleConfiguration extends WebMvcConfigurerAdapter implements EnvironmentAware {
 
+    @SuppressWarnings("unused")
     private RelaxedPropertyResolver propertyResolver;
 
     @Override

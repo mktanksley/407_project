@@ -4,7 +4,6 @@ import cz.cvut.fel.karolan1.tidyup.domain.Authority;
 import cz.cvut.fel.karolan1.tidyup.domain.User;
 import cz.cvut.fel.karolan1.tidyup.repository.AuthorityRepository;
 import cz.cvut.fel.karolan1.tidyup.repository.UserRepository;
-
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
@@ -63,7 +63,7 @@ public class SocialService {
 
     private User createUserIfNotExist(UserProfile userProfile, String langKey, String providerId) {
         String email = userProfile.getEmail();
-        String userName = userProfile.getUsername();
+        String userName = userProfile.getUsername().toLowerCase(Locale.ENGLISH);
         if (StringUtils.isBlank(email) && StringUtils.isBlank(userName)) {
             log.error("Cannot create social user because email and login are null");
             throw new IllegalArgumentException("Email and login cannot be null");
@@ -98,7 +98,7 @@ public class SocialService {
 
     /**
      * @return login if provider manage a login like Twitter or Github otherwise email address.
-     *         Because provider like Google or Facebook didn't provide login or login like "12099388847393"
+     * Because provider like Google or Facebook didn't provide login or login like "12099388847393"
      */
     private String getLoginDependingOnProviderId(UserProfile userProfile, String providerId) {
         switch (providerId) {

@@ -1,29 +1,33 @@
-(function () {
+(function() {
     'use strict';
 
     angular
         .module('tidyUpApp')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['Principal', '$state'];
+    HomeController.$inject = ['$scope', 'Principal', 'LoginService', '$state'];
 
-    function HomeController(Principal, $state) {
+    function HomeController ($scope, Principal, LoginService, $state) {
         var vm = this;
 
         vm.account = null;
         vm.isAuthenticated = null;
+        vm.login = LoginService.open;
+        vm.register = register;
+        $scope.$on('authenticationSuccess', function() {
+            getAccount();
+        });
 
         getAccount();
 
         function getAccount() {
-            Principal.identity().then(function (account) {
+            Principal.identity().then(function(account) {
                 vm.account = account;
                 vm.isAuthenticated = Principal.isAuthenticated;
                 switchState();
             });
         }
-
-        function register() {
+        function register () {
             $state.go('register');
         }
 

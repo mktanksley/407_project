@@ -1,10 +1,9 @@
 package cz.cvut.fel.karolan1.tidyup.web.rest;
 
-import cz.cvut.fel.karolan1.tidyup.web.rest.dto.LoggerDTO;
-
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
 import com.codahale.metrics.annotation.Timed;
+import cz.cvut.fel.karolan1.tidyup.web.rest.dto.LoggerDTO;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
  * Controller for view and managing Log Level at runtime.
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/management/jhipster")
 public class LogsResource {
 
     @RequestMapping(value = "/logs",

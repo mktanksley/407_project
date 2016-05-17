@@ -56,37 +56,37 @@ public class AccountResource {
      * POST  /register : register the user.
      *
      * @param managedUserDTO the managed user DTO
-     * @param request the HTTP request
+     * @param request        the HTTP request
      * @return the ResponseEntity with status 201 (Created) if the user is registred or 400 (Bad Request) if the login or e-mail is already in use
      */
     @RequestMapping(value = "/register",
-                    method = RequestMethod.POST,
-                    produces={MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+        method = RequestMethod.POST,
+        produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     @Timed
     public ResponseEntity<?> registerAccount(@Valid @RequestBody ManagedUserDTO managedUserDTO, HttpServletRequest request) {
 
         HttpHeaders textPlainHeaders = new HttpHeaders();
         textPlainHeaders.setContentType(MediaType.TEXT_PLAIN);
 
-        return userRepository.findOneByLogin(managedUserDTO.getLogin())
+        return userRepository.findOneByLogin(managedUserDTO.getLogin().toLowerCase())
             .map(user -> new ResponseEntity<>("login already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
             .orElseGet(() -> userRepository.findOneByEmail(managedUserDTO.getEmail())
                 .map(user -> new ResponseEntity<>("e-mail address already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
                 .orElseGet(() -> {
                     User user = userService.createUserInformation(managedUserDTO.getLogin(), managedUserDTO.getPassword(),
-                    managedUserDTO.getFirstName(), managedUserDTO.getLastName(), managedUserDTO.getEmail().toLowerCase(),
-                    managedUserDTO.getLangKey(), 0, managedUserDTO.getAvatar(), managedUserDTO.getAvatarContentType());
+                        managedUserDTO.getFirstName(), managedUserDTO.getLastName(), managedUserDTO.getEmail().toLowerCase(),
+                        managedUserDTO.getLangKey(), 0, managedUserDTO.getAvatar(), managedUserDTO.getAvatarContentType());
                     String baseUrl = request.getScheme() + // "http"
-                    "://" +                                // "://"
-                    request.getServerName() +              // "myhost"
-                    ":" +                                  // ":"
-                    request.getServerPort() +              // "80"
-                    request.getContextPath();              // "/myContextPath" or "" if deployed in root context
+                        "://" +                                // "://"
+                        request.getServerName() +              // "myhost"
+                        ":" +                                  // ":"
+                        request.getServerPort() +              // "80"
+                        request.getContextPath();              // "/myContextPath" or "" if deployed in root context
 
                     mailService.sendActivationEmail(user, baseUrl);
                     return new ResponseEntity<>(HttpStatus.CREATED);
                 })
-        );
+            );
     }
 
     /**
@@ -185,7 +185,7 @@ public class AccountResource {
      * GET  /account/sessions : get the current open sessions.
      *
      * @return the ResponseEntity with status 200 (OK) and the current open sessions in body,
-     *  or status 500 (Internal Server Error) if the current open sessions couldn't be retrieved
+     * or status 500 (Internal Server Error) if the current open sessions couldn't be retrieved
      */
     @RequestMapping(value = "/account/sessions",
         method = RequestMethod.GET,
@@ -202,16 +202,16 @@ public class AccountResource {
 
     /**
      * DELETE  /account/sessions?series={series} : invalidate an existing session.
-     *
+     * <p>
      * - You can only delete your own sessions, not any other user's session
      * - If you delete one of your existing sessions, and that you are currently logged in on that session, you will
-     *   still be able to use that session, until you quit your browser: it does not work in real time (there is
-     *   no API for that), it only removes the "remember me" cookie
+     * still be able to use that session, until you quit your browser: it does not work in real time (there is
+     * no API for that), it only removes the "remember me" cookie
      * - This is also true if you invalidate your current session: you will still be able to use it until you close
-     *   your browser or that the session times out. But automatic login (the "remember me" cookie) will not work
-     *   anymore.
-     *   There is an API to invalidate the current session, but there is no API to check which session uses which
-     *   cookie.
+     * your browser or that the session times out. But automatic login (the "remember me" cookie) will not work
+     * anymore.
+     * There is an API to invalidate the current session, but there is no API to check which session uses which
+     * cookie.
      *
      * @param series the series of an existing session
      * @throws UnsupportedEncodingException if the series couldnt be URL decoded
@@ -232,7 +232,7 @@ public class AccountResource {
     /**
      * POST   /account/reset_password/init : Send an e-mail to reset the password of the user
      *
-     * @param mail the mail of the user
+     * @param mail    the mail of the user
      * @param request the HTTP request
      * @return the ResponseEntity with status 200 (OK) if the e-mail was sent, or status 400 (Bad Request) if the e-mail address is not registred
      */
@@ -270,8 +270,8 @@ public class AccountResource {
             return new ResponseEntity<>("Incorrect password", HttpStatus.BAD_REQUEST);
         }
         return userService.completePasswordReset(keyAndPassword.getNewPassword(), keyAndPassword.getKey())
-              .map(user -> new ResponseEntity<String>(HttpStatus.OK))
-              .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+            .map(user -> new ResponseEntity<String>(HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     private boolean checkPasswordLength(String password) {
