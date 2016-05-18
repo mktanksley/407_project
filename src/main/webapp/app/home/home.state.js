@@ -57,17 +57,8 @@
                 views: {
                     'content@': {
                         templateUrl: 'app/home/home.public.html',
-                        controller: 'HomePublicController'
-                    },
-                    'login@home.public': {
-                        templateUrl: 'app/components/login/login-home.html',
-                        // controller: 'LoginController',
-                        // controllerAs: 'coto'
-                    },
-                    'register@home.public': {
-                        templateUrl: 'app/account/register/register.html',
-                        // controller: 'LoginController',
-                        // controllerAs: 'coto'
+                        controller: 'HomePublicController',
+                        controllerAs: 'vm'
                     }
                 },
                 resolve: {
