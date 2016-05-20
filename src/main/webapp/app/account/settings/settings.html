@@ -83,6 +83,42 @@
                     <select id="langKey" name="langKey" class="form-control" ng-model="vm.settingsAccount.langKey" ng-controller="JhiLanguageController as languageVm" ng-options="code as (code | findLanguageFromKey) for code in languageVm.languages"></select>
                 </div>
 
+                <div class="form-group" ngf-drop ngf-change="vm.setAvatar($file, vm.registerAccount)"
+                     ngf-pattern="'image/*'">
+                    <label class="control-label" translate="global.form.avatar" for="field_avatar">Avatar</label>
+                    <div>
+                        <img
+                            data-ng-src="{{'data:' + vm.registerAccount.avatarContentType + ';base64,' + vm.registerAccount.avatar}}"
+                            style="max-height: 100px;" ng-if="vm.settingsAccount.avatar"/>
+                        <div class="help-block clearfix">
+                            <span class="pull-left" ng-if="vm.settingsAccount.avatar">{{vm.settingsAccount.avatarContentType}}, {{byteSize(vm.settingsAccount.avatar)}}</span>
+                            <span ng-if="!!!vm.settingsAccount.avatar">(not uploaded yet)</span>
+                            <button ng-click="vm.settingsAccount.avatar=null;vm.settingsAccount.avatarContentType=null;"
+                                    ng-if="vm.settingsAccount.avatar"
+                                    class="btn btn-default btn-xs pull-right">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                        </div>
+                        <button type="file" ngf-select class="btn btn-default btn-block"
+                                ngf-change="vm.setAvatar($file, vm.settingsAccount)" accept="image/*"
+                                translate="entity.action.addimage">
+                            Add image
+                        </button>
+                    </div>
+                    <input type="hidden" class="form-control" name="avatar" id="field_avatar"
+                           ng-model="vm.settingsAccount.avatar"
+                           maxbytes="100000"/>
+                    <input type="hidden" class="form-control" name="avatarContentType" id="field_avatarContentType"
+                           ng-model="vm.settingsAccount.avatarContentType"/>
+                    <div ng-show="form.avatar.$invalid">
+                        <p class="help-block"
+                           ng-show="form.avatar.$error.maxbytes" translate="entity.validation.maxbytes"
+                           translate-value-max="100000">
+                            This field cannot be more than 100000.
+                        </p>
+                    </div>
+                </div>
+
                 <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary" translate="settings.form.button">Save</button>
             </form>
         </div>

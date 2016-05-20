@@ -5,9 +5,9 @@
         .module('tidyUpApp')
         .controller('SettingsController', SettingsController);
 
-    SettingsController.$inject = ['Principal', 'Auth', 'JhiLanguageService', '$translate'];
+    SettingsController.$inject = ['$scope', 'Principal', 'Auth', 'JhiLanguageService', '$translate', 'DataUtils'];
 
-    function SettingsController(Principal, Auth, JhiLanguageService, $translate) {
+    function SettingsController($scope, Principal, Auth, JhiLanguageService, $translate, DataUtils) {
         var vm = this;
 
         vm.error = null;
@@ -35,6 +35,20 @@
         Principal.identity().then(function (account) {
             vm.settingsAccount = copyAccount(account);
         });
+
+        vm.setAvatar = function ($file, user) {
+            if ($file && $file.$error === 'pattern') {
+                return;
+            }
+            if ($file) {
+                DataUtils.toBase64($file, function(base64Data) {
+                    $scope.$apply(function() {
+                        user.avatar = base64Data;
+                        user.avatarContentType = $file.type;
+                    });
+                });
+            }
+        };
 
         function save() {
             Auth.updateAccount(vm.settingsAccount).then(function () {
