@@ -174,6 +174,7 @@
                     ChoreEvent.update(vm.todoChore, function () {
                         AlertService.success('home.choreEvent.success');
                         vm.getTodoEvent();
+                        vm.loadChoreEvents();
                     }, onSaveError);
 
                 }, onSaveError);

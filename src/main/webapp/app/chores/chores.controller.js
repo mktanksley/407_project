@@ -12,6 +12,7 @@
         vm.account = null;
         vm.loadData = loadData;
         vm.loadPage = loadPage;
+        vm.transition = transition;
 
         vm.loadData();
 

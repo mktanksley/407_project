@@ -102,6 +102,13 @@ public class FlatResource {
                 .body(result);
         }
 
+        for (Flat flatToUpdate : flat.getFriends()) {
+            Set<Flat> friends = flatToUpdate.getFriends();
+            friends.add(flat);
+            flatToUpdate.setFriends(friends);
+            flatService.save(flatToUpdate);
+        }
+
         Flat result = flatService.save(flat);
         return ResponseEntity.created(new URI("/api/flats/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("flat", result.getId().toString()))
