@@ -40,7 +40,17 @@ spring:
                   logs: target/elasticsearch/log
                   data: target/elasticsearch/data
     mail:
-        host: localhost
+#        host: localhost
+        host: smtp.seznam.cz
+        port: 25
+        username: tidyup@email.cz
+        password: Bfw-GTJzTLRJGy85VGx
+        protocol: smtp
+        tls: true
+        properties.mail.smtp:
+            auth: true
+            starttls.enable: true
+            ssl.trust: smtp.seznam.cz
     messages:
         cache-seconds: 1
     thymeleaf:
@@ -66,7 +76,7 @@ jhipster:
             # security key (this key should be unique for your application, and kept secret)
             key: 8dab5f27baaec77194f7d482be9866580412018c
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: tidyUp@localhost
+        from: tidyUp@email.cz
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         spark:

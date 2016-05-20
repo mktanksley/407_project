@@ -36,10 +36,17 @@ spring:
             cluster-name:
             cluster-nodes: localhost:9300
     mail:
-        host: localhost
+#        host: localhost
+        host: smtp.seznam.cz
         port: 25
-        username:
-        password:
+        username: tidyup@email.cz
+        password: Bfw-GTJzTLRJGy85VGx
+        protocol: smtp
+        tls: true
+        properties.mail.smtp:
+            auth: true
+            starttls.enable: true
+            ssl.trust: smtp.seznam.cz
     thymeleaf:
         cache: true
 
