@@ -54,7 +54,8 @@
         <hr>
         <dt>friends</dt>
         <dd>
-            <p ng-if="vm.flat.friends.length == 0">(no friends yet, add some!)</p>
+            <p ng-if="vm.flat.friends.length == 0">(no friends)</p>
+            <!--<p ng-if="vm.flat.friends.length == 0">(no friends yet, add some!)</p>-->
             <div class="table-responsive" ng-if="vm.flat.friends.length > 0">
                 <table class="jh-table table table-striped">
                     <thead>
@@ -82,12 +83,12 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="flat.new">
-                    <span class="glyphicon glyphicon-plus"></span>
-                    <span class="hidden-xs">Add a friend's flat</span>
-                </button>
-            </div>
+            <!--<div class="col-xs-4 no-padding-left">-->
+                <!--<button class="btn btn-primary" ui-sref="flat.new">-->
+                    <!--<span class="glyphicon glyphicon-plus"></span>-->
+                    <!--<span class="hidden-xs">Add a friend's flat</span>-->
+                <!--</button>-->
+            <!--</div>-->
         </dd>
     </dl>
 </div>

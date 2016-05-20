@@ -70,15 +70,15 @@ public class ChoreEventResource {
 
         // if not system or flat admin, user can create event only for himself.
         // if flat admin, user can create events for flat members.
-        if (!SecurityUtils.isCurrentUserAdmin()) {
-            // is current user admin of the flat and is creating event for a flat member?
-            if (!SecurityUtils.isCurrentUserAdminOfFlat(choreEvent.getDoneBy().getMemberOf())) {
-                // user can create events for himself:
-                if (!choreEvent.getDoneBy().getLogin().equals(SecurityUtils.getCurrentUserLogin())) {
-                    return ResponseEntity.status(HttpStatus.FORBIDDEN).headers(HeaderUtil.createFailureAlert("error", "error", "User can modify only his own data!")).body(null);
-                }
-            }
-        }
+//        if (!SecurityUtils.isCurrentUserAdmin()) {
+//            // is current user admin of the flat and is creating event for a flat member?
+//            if (!SecurityUtils.isCurrentUserAdminOfFlat(choreEvent.getDoneBy().getMemberOf())) {
+//                // user can create events for himself:
+//                if (!choreEvent.getDoneBy().getLogin().equals(SecurityUtils.getCurrentUserLogin())) {
+//                    return ResponseEntity.status(HttpStatus.FORBIDDEN).headers(HeaderUtil.createFailureAlert("error", "error", "User can modify only his own data!")).body(null);
+//                }
+//            }
+//        }
 
         ChoreEvent result = choreEventRepository.save(choreEvent);
         choreEventSearchRepository.save(result);
