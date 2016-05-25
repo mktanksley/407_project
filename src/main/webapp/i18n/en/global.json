@@ -6,8 +6,8 @@
             "home": "Home",
             "about": "About",
             "flat": "Flat",
-            "chores": "Chores",
-            "contest": "Contest",
+            "chores": "Planned chores",
+            "contest": "Flat contest",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entities",

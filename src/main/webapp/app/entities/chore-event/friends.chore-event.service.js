@@ -10,7 +10,9 @@
         var resourceUrl = 'api/friends-chore-events';
 
         return $resource(resourceUrl, {}, {
-            'query': {method: 'GET', isArray: true}
+            'query': {
+                method: 'GET',
+                isArray: true}
         });
     }
 })();

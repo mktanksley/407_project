@@ -11,8 +11,7 @@
             <img src="content/images/default-avatar-1.png" ng-if="vm.account.avatar == null" class="img-circle avatar"/>
 
             <h3>{{vm.account.login}}</h3>
-            <h4><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> {{vm.account.points | number}}
-            </h4>
+            <h4>{{vm.account.points | number}} points</h4>
         </div>
 
         <h3>Quick chores:</h3>
@@ -103,7 +102,7 @@
         <p ng-if="vm.friendChoreEvents.length === 0">No chores done by your friends yet.</p>
 
         <div class="media" ng-repeat="choreEvent in vm.friendChoreEvents track by choreEvent.id">
-            <div class="media-left media-middle" ng-if="$even">
+            <div class="media-left media-middle">
                 <a href="#">
                     <img class="media-object img-circle avatar-small"
                          data-ng-src="{{'data:' + choreEvent.doneBy.avatarContentType + ';base64,' + choreEvent.doneBy.avatar}}"
@@ -113,18 +112,7 @@
                          src="content/images/default-avatar-1.png" ng-if="choreEvent.doneBy.avatar == null"/>
                 </a>
             </div>
-            <div class="media-body" ng-class-even="'text-right'">
-                <a href="#">{{choreEvent.doneBy.login}}</a> {{choreEvent.isType.name | lowercase}}.
-            </div>
-            <div class="media-right media-middle" ng-if="$odd">
-                <a href="#">
-                    <img class="media-object img-circle avatar-small"
-                         data-ng-src="{{'data:' + choreEvent.doneBy.avatarContentType + ';base64,' + choreEvent.doneBy.avatar}}"
-                         ng-if="choreEvent.doneBy.avatar"/>
-                    <!-- ELSE show default picture -->
-                    <img class="media-object img-circle avatar-small"
-                         src="content/images/default-avatar-1.png" ng-if="choreEvent.doneBy.avatar == null"/>
-                </a>
+            <div class="media-body">{{choreEvent.doneBy.login}} {{choreEvent.isType.name | lowercase}} for {{choreEvent.isType.points}}.
             </div>
         </div>
     </div>
