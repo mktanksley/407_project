@@ -3,19 +3,17 @@ package cz.cvut.fel.karolan1.tidyup.web.rest;
 import cz.cvut.fel.karolan1.tidyup.TidyUpApp;
 import cz.cvut.fel.karolan1.tidyup.domain.Flat;
 import cz.cvut.fel.karolan1.tidyup.repository.FlatRepository;
-import cz.cvut.fel.karolan1.tidyup.service.FlatService;
 import cz.cvut.fel.karolan1.tidyup.repository.search.FlatSearchRepository;
-
+import cz.cvut.fel.karolan1.tidyup.service.FlatService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.hamcrest.Matchers.hasItem;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -26,12 +24,13 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.ZoneId;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -95,30 +94,6 @@ public class FlatResourceIntTest {
 
     @Test
     @Transactional
-    public void createFlat() throws Exception {
-        int databaseSizeBeforeCreate = flatRepository.findAll().size();
-
-        // Create the Flat
-
-        restFlatMockMvc.perform(post("/api/flats")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(flat)))
-                .andExpect(status().isCreated());
-
-        // Validate the Flat in the database
-        List<Flat> flats = flatRepository.findAll();
-        assertThat(flats).hasSize(databaseSizeBeforeCreate + 1);
-        Flat testFlat = flats.get(flats.size() - 1);
-        assertThat(testFlat.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testFlat.getDateCreated()).isEqualTo(DEFAULT_DATE_CREATED);
-
-        // Validate the Flat in ElasticSearch
-        Flat flatEs = flatSearchRepository.findOne(testFlat.getId());
-        assertThat(flatEs).isEqualToComparingFieldByField(testFlat);
-    }
-
-    @Test
-    @Transactional
     public void checkNameIsRequired() throws Exception {
         int databaseSizeBeforeTest = flatRepository.findAll().size();
         // set the field null
@@ -148,60 +123,6 @@ public class FlatResourceIntTest {
                 .andExpect(jsonPath("$.[*].id").value(hasItem(flat.getId().intValue())))
                 .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
                 .andExpect(jsonPath("$.[*].dateCreated").value(hasItem(DEFAULT_DATE_CREATED_STR)));
-    }
-
-    @Test
-    @Transactional
-    public void getFlat() throws Exception {
-        // Initialize the database
-        flatRepository.saveAndFlush(flat);
-
-        // Get the flat
-        restFlatMockMvc.perform(get("/api/flats/{id}", flat.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.id").value(flat.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.dateCreated").value(DEFAULT_DATE_CREATED_STR));
-    }
-
-    @Test
-    @Transactional
-    public void getNonExistingFlat() throws Exception {
-        // Get the flat
-        restFlatMockMvc.perform(get("/api/flats/{id}", Long.MAX_VALUE))
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
-    @Transactional
-    public void updateFlat() throws Exception {
-        // Initialize the database
-        flatService.save(flat);
-
-        int databaseSizeBeforeUpdate = flatRepository.findAll().size();
-
-        // Update the flat
-        Flat updatedFlat = new Flat();
-        updatedFlat.setId(flat.getId());
-        updatedFlat.setName(UPDATED_NAME);
-        updatedFlat.setDateCreated(UPDATED_DATE_CREATED);
-
-        restFlatMockMvc.perform(put("/api/flats")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(updatedFlat)))
-                .andExpect(status().isOk());
-
-        // Validate the Flat in the database
-        List<Flat> flats = flatRepository.findAll();
-        assertThat(flats).hasSize(databaseSizeBeforeUpdate);
-        Flat testFlat = flats.get(flats.size() - 1);
-        assertThat(testFlat.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testFlat.getDateCreated()).isEqualTo(UPDATED_DATE_CREATED);
-
-        // Validate the Flat in ElasticSearch
-        Flat flatEs = flatSearchRepository.findOne(testFlat.getId());
-        assertThat(flatEs).isEqualToComparingFieldByField(testFlat);
     }
 
     @Test
