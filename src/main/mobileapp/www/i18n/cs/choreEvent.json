@@ -1,0 +1,25 @@
+{
+    "tidyUpApp": {
+        "choreEvent" : {
+            "home": {
+                "title": "Chore Events",
+                "createLabel": "Vytvořit Chore Event",
+                "createOrEditLabel": "Vytvořit nebo upravit Chore Event",
+                "search": "Vyhledat Chore Event"
+            },
+            "created": "Byl vytvořen potomek entity Chore Event s identifikátorem {{ param }}",
+            "updated": "Potomek entity Chore Event s identifikátorem {{ param }} byl upravený.",
+            "deleted": "Potomek entity Chore Event s identifikátorem {{ param }} bol smazaný.",
+            "delete": {
+                "question": "Jste si jisti, že chcete smazat Chore Event {{ id }}?"
+            },
+            "detail": {
+                "title": "Chore Event"
+            },
+            "dateTo": "Date To",
+            "dateDone": "Date Done",
+            "isType": "Is Type",
+            "doneBy": "Done By"
+        }
+    }
+}

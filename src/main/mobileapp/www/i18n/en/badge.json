@@ -1,0 +1,24 @@
+{
+    "tidyUpApp": {
+        "badge" : {
+            "home": {
+                "title": "Badges",
+                "createLabel": "Create a new Badge",
+                "createOrEditLabel": "Create or edit a Badge",
+                "search": "Search for Badge"
+            },
+            "created": "A new Badge is created with identifier {{ param }}",
+            "updated": "A Badge is updated with identifier {{ param }}",
+            "deleted": "A Badge is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Badge {{ id }}?"
+            },
+            "detail": {
+                "title": "Badge"
+            },
+            "earnedAt": "Earned At",
+            "isOfType": "Is Of Type",
+            "ownedBy": "Owned By"
+        }
+    }
+}

@@ -1,0 +1,127 @@
+<div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h2 translate="settings.title" translate-values="{username: '{{vm.settingsAccount.login}}'}">User settings for [<b>{{vm.settingsAccount.login}}</b>]</h2>
+
+            <div class="alert alert-success" ng-show="vm.success" translate="settings.messages.success">
+                <strong>Settings saved!</strong>
+            </div>
+
+            <div class="alert alert-danger" ng-show="vm.errorEmailExists" translate="settings.messages.error.emailexists">
+                <strong>E-mail is already in use!</strong> Please choose another one.
+            </div>
+
+            <div class="alert alert-danger" ng-show="vm.error" translate="settings.messages.error.fail">
+                <strong>An error has occurred!</strong> Settings could not be saved.
+            </div>
+
+            <form name="form" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+                <div class="form-group">
+                    <label class="control-label" for="firstName" translate="settings.form.firstname">First Name</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="{{'settings.form.firstname.placeholder' | translate}}"
+                           ng-model="vm.settingsAccount.firstName" ng-minlength=1 ng-maxlength=50 required maxlength="50">
+                    <div ng-show="form.firstName.$dirty && form.firstName.$invalid">
+                        <p class="help-block"
+                               ng-show="form.firstName.$error.required" translate="settings.messages.validate.firstname.required">
+                            Your first name is required.
+                        </p>
+                        <p class="help-block"
+                               ng-show="form.firstName.$error.minlength" translate="settings.messages.validate.firstname.minlength">
+                            Your first name is required to be at least 1 character.
+                        </p>
+                        <p class="help-block"
+                               ng-show="form.firstName.$error.maxlength" translate="settings.messages.validate.firstname.maxlength">
+                            Your first name cannot be longer than 50 characters.
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="lastName" translate="settings.form.lastname">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="{{'settings.form.lastname.placeholder' | translate}}"
+                           ng-model="vm.settingsAccount.lastName" ng-minlength=1 ng-maxlength=50 required maxlength="50">
+                    <div ng-show="form.lastName.$dirty && form.lastName.$invalid">
+                        <p class="help-block"
+                               ng-show="form.lastName.$error.required" translate="settings.messages.validate.lastname.required">
+                            Your last name is required.
+                        </p>
+                        <p class="help-block"
+                               ng-show="form.lastName.$error.minlength" translate="settings.messages.validate.lastname.minlength">
+                            Your last name is required to be at least 1 character.
+                        </p>
+                        <p class="help-block"
+                               ng-show="form.lastName.$error.maxlength" translate="settings.messages.validate.lastname.maxlength">
+                            Your last name cannot be longer than 50 characters.
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="email" translate="global.form.email">E-mail</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="{{'global.form.email.placeholder' | translate}}"
+                           ng-model="vm.settingsAccount.email" ng-minlength=5 ng-maxlength=100 required maxlength="100">
+                    <div ng-show="form.email.$dirty && form.email.$invalid">
+                        <p class="help-block"
+                               ng-show="form.email.$error.required" translate="global.messages.validate.email.required">
+                            Your e-mail is required.
+                        </p>
+                        <p class="help-block"
+                               ng-show="form.email.$error.email" translate="global.messages.validate.email.invalid">
+                            Your e-mail is invalid.
+                        </p>
+                        <p class="help-block"
+                               ng-show="form.email.$error.minlength" translate="global.messages.validate.email.minlength">
+                            Your e-mail is required to be at least 5 characters.
+                        </p>
+                        <p class="help-block"
+                               ng-show="form.email.$error.maxlength" translate="global.messages.validate.email.maxlength">
+                            Your e-mail cannot be longer than 100 characters.
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="langKey" translate="settings.form.language">Language</label>
+                    <select id="langKey" name="langKey" class="form-control" ng-model="vm.settingsAccount.langKey" ng-controller="JhiLanguageController as languageVm" ng-options="code as (code | findLanguageFromKey) for code in languageVm.languages"></select>
+                </div>
+
+                <div class="form-group" ngf-drop ngf-change="vm.setAvatar($file, vm.registerAccount)"
+                     ngf-pattern="'image/*'">
+                    <label class="control-label" translate="global.form.avatar" for="field_avatar">Avatar</label>
+                    <div>
+                        <img
+                            data-ng-src="{{'data:' + vm.registerAccount.avatarContentType + ';base64,' + vm.registerAccount.avatar}}"
+                            style="max-height: 100px;" ng-if="vm.settingsAccount.avatar"/>
+                        <div class="help-block clearfix">
+                            <span class="pull-left" ng-if="vm.settingsAccount.avatar">{{vm.settingsAccount.avatarContentType}}, {{byteSize(vm.settingsAccount.avatar)}}</span>
+                            <span ng-if="!!!vm.settingsAccount.avatar">(not uploaded yet)</span>
+                            <button ng-click="vm.settingsAccount.avatar=null;vm.settingsAccount.avatarContentType=null;"
+                                    ng-if="vm.settingsAccount.avatar"
+                                    class="btn btn-default btn-xs pull-right">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                        </div>
+                        <button type="file" ngf-select class="btn btn-default btn-block"
+                                ngf-change="vm.setAvatar($file, vm.settingsAccount)" accept="image/*"
+                                translate="entity.action.addimage">
+                            Add image
+                        </button>
+                    </div>
+                    <input type="hidden" class="form-control" name="avatar" id="field_avatar"
+                           ng-model="vm.settingsAccount.avatar"
+                           maxbytes="100000"/>
+                    <input type="hidden" class="form-control" name="avatarContentType" id="field_avatarContentType"
+                           ng-model="vm.settingsAccount.avatarContentType"/>
+                    <div ng-show="form.avatar.$invalid">
+                        <p class="help-block"
+                           ng-show="form.avatar.$error.maxbytes" translate="entity.validation.maxbytes"
+                           translate-value-max="100000">
+                            This field cannot be more than 100000.
+                        </p>
+                    </div>
+                </div>
+
+                <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary" translate="settings.form.button">Save</button>
+            </form>
+        </div>
+    </div>
+
+</div>

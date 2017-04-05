@@ -1,0 +1,70 @@
+<jhi-alert></jhi-alert>
+<div>
+    <div class="row">
+        <div class="col-xs-9">
+            <h1>Planned chores at <em>{{vm.account.memberOf.name}}</em></h1>
+            <p class="lead">Here you can edit who's gonna tidy what</p>
+            <p>You can assign each person an event with preset interval. The chore will automatically repeat itself after specified number of days.
+            <strong>For example</strong>, if you want to clean up floors every week and your flat has three members, assign each of you a chore event with three weeks interval,
+            shifted by a week each (user1 cleans floors every three weeks starting 1st day of month, user2 starting 8th day of month and user3 starting 15th day of the month).</p>
+        </div>
+        <div class="col-xs-3 pull-right">
+            <div class="horizontal-space"></div>
+            <button class="btn btn-primary" ui-sref="chores.new">
+                <span class="glyphicon glyphicon-plus"></span>
+                <span class="hidden-xs">Assign a new chore</span>
+            </button>
+        </div>
+    </div>
+    <div ng-if="vm.choreEvents.length === 0">
+        <hr>
+        <p>No chores assigned yet.</p>
+    </div>
+    <div class="table-responsive" ng-if="vm.choreEvents.length > 0">
+        <table class="jh-table table table-striped">
+            <thead>
+            <tr>
+                <th><span>Who</span></th>
+                <th><span>What</span></th>
+                <th><span>Till</span></th>
+                <th><span>Done?</span></th>
+                <th><span>Points</span></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="choreEvent in vm.choreEvents track by choreEvent.id">
+                <td>{{choreEvent.doneBy.login}}</td>
+                <td>{{choreEvent.isType.name}}</td>
+                <td>{{choreEvent.dateTo | date:'mediumDate'}}</td>
+                <td><span class="glyphicon" ng-class="choreEvent.dateDone ? 'glyphicon-ok' : 'glyphicon-remove'"></span>
+                    <span ng-if="choreEvent.dateDone">{{choreEvent.dateDone | date:'mediumDate'}}</span>
+                </td>
+                <td>{{choreEvent.isType.points}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                ui-sref="chores.edit({id:choreEvent.id})"
+                                class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            <span class="hidden-xs hidden-sm" translate="entity.action.edit"></span>
+                        </button>
+                        <button type="submit"
+                                ui-sref="chores.delete({id:choreEvent.id})"
+                                class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-remove-circle"></span>
+                            <span class="hidden-xs hidden-sm" translate="entity.action.delete"></span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="text-center">
+            <jhi-item-count page="vm.page" total="vm.queryCount"></jhi-item-count>
+            <uib-pagination class="pagination-sm" total-items="vm.totalItems" ng-model="vm.page"
+                            ng-change="vm.transition()"></uib-pagination>
+        </div>
+    </div>
+</div>
+</div>

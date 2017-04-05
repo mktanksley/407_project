@@ -1,0 +1,71 @@
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myFlatLabel">Add a flat's member</h4>
+        <p>Here you can add new person to your flat. It will create new user account for him, so he can sign in using
+        given nick.</p>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+
+
+        <div class="form-group">
+            <label class="control-label" for="login">Login (nickname)</label>
+            <p>This is the nick of your flatmate, used for signing in. User only lowercase letters and numbers, no spaces.</p>
+            <input type="text" class="form-control" id="login" name="login" placeholder="login"
+                   ng-model="vm.user.login" ng-minlength=1 ng-maxlength=50 ng-pattern="/^[a-z0-9]*$/" required>
+            <div ng-show="editForm.login.$dirty && editForm.login.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.login.$error.required">
+                    Your username is required.
+                </p>
+                <p class="help-block"
+                   ng-show="editForm.login.$error.minlength">
+                    Your username is required to be at least 1 character.
+                </p>
+                <p class="help-block"
+                   ng-show="editForm.login.$error.maxlength">
+                    Your username cannot be longer than 50 characters.
+                </p>
+                <p class="help-block"
+                   ng-show="editForm.login.$error.pattern">
+                    Your username can only contain lower-case letters and digits.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" for="field_email">Flatmate's email</label>
+            <p>Type in your flatmate's email. We will send him message, so he can set up password and sign in.</p>
+            <input type="email" class="form-control" name="email" id="field_email"
+                   ng-model="vm.user.email" required ng-maxlength="100" placeholder="email">
+
+            <div ng-show="editForm.email.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.email.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+
+                <p class="help-block"
+                   ng-show="editForm.email.$error.maxlength" translate="entity.validation.maxlength"
+                   translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+                <p class="help-block"
+                   ng-show="editForm.email.$error.email" translate="global.messages.validate.email.invalid">
+                    Your e-mail is invalid.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>
