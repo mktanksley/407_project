@@ -1,0 +1,26 @@
+{
+    "tidyUpApp": {
+        "flat" : {
+            "home": {
+                "title": "Flats",
+                "createLabel": "Vytvořit Flat",
+                "createOrEditLabel": "Vytvořit nebo upravit Flat",
+                "search": "Vyhledat Flat"
+            },
+            "created": "Byl vytvořen potomek entity Flat s identifikátorem {{ param }}",
+            "updated": "Potomek entity Flat s identifikátorem {{ param }} byl upravený.",
+            "deleted": "Potomek entity Flat s identifikátorem {{ param }} bol smazaný.",
+            "delete": {
+                "question": "Jste si jisti, že chcete smazat Flat {{ id }}?"
+            },
+            "detail": {
+                "title": "Flat"
+            },
+            "name": "Name",
+            "dateCreated": "Date Created",
+            "hasAdmin": "Has Admin",
+            "residents": "Residents",
+            "friends": "Spřátelené byty"
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "tidyUpApp": {
+        "choreType" : {
+            "home": {
+                "title": "Chore Types",
+                "createLabel": "Vytvořit Chore Type",
+                "createOrEditLabel": "Vytvořit nebo upravit Chore Type",
+                "search": "Vyhledat Chore Type"
+            },
+            "created": "Byl vytvořen potomek entity Chore Type s identifikátorem {{ param }}",
+            "updated": "Potomek entity Chore Type s identifikátorem {{ param }} byl upravený.",
+            "deleted": "Potomek entity Chore Type s identifikátorem {{ param }} bol smazaný.",
+            "delete": {
+                "question": "Jste si jisti, že chcete smazat Chore Type {{ id }}?"
+            },
+            "detail": {
+                "title": "Chore Type"
+            },
+            "name": "Name",
+            "description": "Description",
+            "repeatable": "Repeatable",
+            "interval": "Interval",
+            "points": "Points"
+        }
+    }
+}

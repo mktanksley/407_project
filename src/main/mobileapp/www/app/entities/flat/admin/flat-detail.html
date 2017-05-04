@@ -1,0 +1,42 @@
+
+<div>
+    <h2><span translate="tidyUpApp.flat.detail.title">Flat</span> {{vm.flat.id}}</h2>
+    <hr>
+    <dl class="dl-horizontal">
+        <dt><span translate="tidyUpApp.flat.name">Name</span></dt>
+        <dd>
+            <span>{{vm.flat.name}}</span>
+        </dd>
+        <hr>
+        <dt><span translate="tidyUpApp.flat.dateCreated">Date Created</span></dt>
+        <dd>
+            <span>{{vm.flat.dateCreated | date:'medium'}}</span>
+        </dd>
+        <hr>
+        <dt><span translate="tidyUpApp.flat.hasAdmin">Has Admin</span></dt>
+        <dd>
+            {{vm.flat.hasAdmin.login}}
+        </dd>
+        <hr>
+        <dt><span translate="tidyUpApp.flat.friends">Friends</span></dt>
+        <dd>
+            <span ng-repeat="friend in vm.flat.friends">
+                <a ui-sref="flat-detail({id: {{friend.id}}})">{{friend.name}}</a>{{$last ? '' : ', '}}
+            </span>
+        </dd>
+        <hr>
+        <dt><span translate="tidyUpApp.flat.members">Members</span></dt>
+        <dd>
+            <span ng-repeat="resident in vm.flat.residents">
+                <a ui-sref="user-management-detail({login:resident.login})">{{resident.login}}</a>{{$last ? '' : ', '}}
+            </span>
+        </dd>
+        <hr>
+    </dl>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

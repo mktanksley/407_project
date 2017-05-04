@@ -1,0 +1,121 @@
+<div class="row">
+    <jhi-alert></jhi-alert>
+
+    <!-- LEFT COLUMN -->
+    <div class="col-md-3 left-column">
+        <div class="text-center">
+
+            <img data-ng-src="{{'data:' + vm.account.avatarContentType + ';base64,' + vm.account.avatar}}"
+                 ng-if="vm.account.avatar" class="img-circle avatar"/>
+            <!-- ELSE show default picture -->
+            <img src="content/images/default-avatar-1.png" ng-if="vm.account.avatar == null" class="img-circle avatar"/>
+
+            <h3>{{vm.account.login}}</h3>
+            <h4>{{vm.account.points | number}} points</h4>
+        </div>
+
+        <h3>Quick chores:</h3>
+        <div class="list-group">
+            <a ng-click="vm.saveChoreEvent(choreType)" class="list-group-item" ng-class="{disabled: vm.isEventSaving}"
+               ng-repeat="choreType in vm.choreTypes track by choreType.id">
+                {{choreType.name}}<span class="badge">{{choreType.points}} <span
+                class="glyphicon glyphicon-star"></span></span></a>
+        </div>
+    </div>
+    <!-- LEFT COLUMN END -->
+
+    <hr class="hidden-lg hidden-md">
+    <!-- MIDDLE COLUMN -->
+    <div id="middle" class="col-md-6">
+
+        <div class="well">
+            <div class="media">
+                <div class="media-body" ng-if="vm.todoChore">
+                    <h3 class="media-heading">TODO: {{vm.todoChore.isType.name | lowercase}}</h3>
+
+                    <p>You are assigned to do {{vm.todoChore.isType.name | lowercase}}. Detailed description:
+                        {{vm.todoChore.isType.description ? vm.todoChore.isType.description : '(was not supplied).'}}</p>
+
+                        <button type="button" class="btn btn-success btn-sm pull-left" ng-click="vm.fulfillTodoChore()">
+                            <span class="glyphicon glyphicon-ok"></span> Fulfilled
+                        </button>
+                    <p class="text-right">Tidy till <strong>
+                        <time datetime="{{vm.todoChore.dateTo}}">{{vm.todoChore.dateTo | date:'EEEE, MMM d'}}</time></strong>.
+                    </p>
+                </div>
+
+                <!-- if no to-do chore -->
+                <div ng-if="!vm.todoChore">
+                    <div class="media-left">
+                        <span class="glyphicon glyphicon-ok-sign fulfilled"></span>
+                    </div>
+                    <div class="media-body">
+                        <h3 class="media-heading">All done!</h3>
+                        <p>You don't have any upcoming chores :)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="media event" ng-if="vm.choreEvents.length === 0">
+            <div class="media-body">
+                <h4 class="media-heading">No chores fulfilled yet!</h4>
+                Nobody has done any chore in your fantastic apartment yet :(<br>
+                come on, clean up something...
+            </div>
+            <div class="media-right">
+                <img src="content/images/clean-up-clipart.png" class="media-object img-thumbnail"/>
+            </div>
+        </div>
+
+        <div class="media event" ng-repeat="choreEvent in vm.choreEvents track by choreEvent.id">
+            <div class="media-body">
+                <h4 class="media-heading">{{choreEvent.doneBy.login}} <em>{{choreEvent.isType.name | lowercase}}</em></h4>
+                <p>On <em>{{choreEvent.dateDone | date: 'short'}}</em> <strong>{{choreEvent.doneBy.login ===
+                    vm.account.login ? "you" : "your flatmate " + choreEvent.doneBy.login}}</strong>
+                    fulfilled {{choreEvent.isType.repeatable ? 'his' : ''}} a chore
+                    <strong>{{choreEvent.isType.name}}</strong>.
+                    It was for&nbsp;<strong>{{choreEvent.isType.points}}</strong>&nbsp;points, so now {{choreEvent.doneBy.login
+                    === vm.account.login ? "you have" : choreEvent.doneBy.login + " has"}}
+                    <strong>{{choreEvent.doneBy.points}}</strong>&nbsp;points!</p>
+            </div>
+            <div class="media-right">
+                <a href="#">
+                    <img
+                        data-ng-src="{{'data:' + choreEvent.doneBy.avatarContentType + ';base64,' + choreEvent.doneBy.avatar}}"
+                        ng-if="choreEvent.doneBy.avatar" class="media-object img-circle"/>
+                    <!-- ELSE show default picture -->
+                    <img src="content/images/default-avatar-1.png" ng-if="choreEvent.doneBy.avatar == null"
+                         class="media-object img-circle"/>
+                </a>
+            </div>
+        </div>
+
+        <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()" ng-if="vm.totalItems > 3"></uib-pager>
+    </div>
+    <!-- MIDDLE COLUMN END -->
+
+    <hr class="hidden-lg hidden-md">
+    <!-- RIGHT COLUMN -->
+    <div class="col-md-3 right-column">
+        <h3>Meanwhile, your friends:</h3>
+        <p ng-if="vm.friendChoreEvents.length === 0">No chores done by your friends yet.</p>
+
+        <div class="media" ng-repeat="choreEvent in vm.friendChoreEvents track by choreEvent.id">
+            <div class="media-left media-middle">
+                <a href="#">
+                    <img class="media-object img-circle avatar-small"
+                         data-ng-src="{{'data:' + choreEvent.doneBy.avatarContentType + ';base64,' + choreEvent.doneBy.avatar}}"
+                         ng-if="choreEvent.doneBy.avatar"/>
+                    <!-- ELSE show default picture -->
+                    <img class="media-object img-circle avatar-small"
+                         src="content/images/default-avatar-1.png" ng-if="choreEvent.doneBy.avatar == null"/>
+                </a>
+            </div>
+            <div class="media-body">{{choreEvent.doneBy.login}} {{choreEvent.isType.name | lowercase}} for&nbsp;{{choreEvent.isType.points}}&nbsp;points.
+            </div>
+        </div>
+    </div>
+    <!-- RIGHT COLUMN END -->
+
+</div>

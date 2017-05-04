@@ -1,0 +1,70 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myBadgeLabel" translate="tidyUpApp.badge.home.createOrEditLabel">Create or edit a Badge</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.badge.id">
+            <label for="id" translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.badge.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="tidyUpApp.badge.earnedAt" for="field_earnedAt">Earned At</label>
+                <div class="input-group">
+                    <input id="field_earnedAt" type="text" class="form-control" name="earnedAt" datetime-picker="{{dateformat}}" ng-model="vm.badge.earnedAt" is-open="vm.datePickerOpenStatus.earnedAt"
+                    required  />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('earnedAt')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+            <div ng-show="editForm.earnedAt.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.earnedAt.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.earnedAt.$error.ZonedDateTimelocal" translate="entity.validation.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label translate="tidyUpApp.badge.isOfType" for="field_isOfType">Is Of Type</label>
+            <select class="form-control" id="field_isOfType" name="isOfType" ng-model="vm.badge.isOfType" ng-options="typeOfBadge as typeOfBadge.name for typeOfBadge in vm.typeofbadges track by typeOfBadge.id" required>
+                <option value=""></option>
+            </select>
+        </div>
+        <div ng-show="editForm.isOfType.$invalid">
+            <p class="help-block"
+                ng-show="editForm.isOfType.$error.required" translate="entity.validation.required">
+                This field is required.
+            </p>
+        </div>
+        <div class="form-group">
+            <label translate="tidyUpApp.badge.ownedBy" for="field_ownedBy">Owned By</label>
+            <select class="form-control" id="field_ownedBy" name="ownedBy" ng-model="vm.badge.ownedBy" ng-options="user as user.login for user in vm.users track by user.id" required>
+                <option value=""></option>
+            </select>
+        </div>
+        <div ng-show="editForm.ownedBy.$invalid">
+            <p class="help-block"
+                ng-show="editForm.ownedBy.$error.required" translate="entity.validation.required">
+                This field is required.
+            </p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

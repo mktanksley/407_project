@@ -1,0 +1,28 @@
+{
+    "tidyUpApp": {
+        "flat" : {
+            "home": {
+                "title": "Flats",
+                "createLabel": "Create a new Flat",
+                "createOrEditLabel": "Create or edit a Flat",
+                "search": "Search for Flat"
+            },
+            "created": "A new Flat is created with identifier {{ param }}",
+            "updated": "A Flat is updated with identifier {{ param }}",
+            "deleted": "A Flat is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Flat {{ id }}?"
+            },
+            "detail": {
+                "title": "Flat"
+            },
+            "name": "Name",
+            "dateCreated": "Date Created",
+            "hasAdmin": "Has Admin",
+            "residents": "Residents",
+            "friends": "Friend flats",
+            "placeholder": "e.g. \"The Castle\"",
+            "registered": "<strong>Welcome!</strong> You have successfully registered and created new flat <strong>{{ param }}</strong>. Now continue with adding flat members."
+        }
+    }
+}
