@@ -1,23 +1,23 @@
 package cz.cvut.fel.karolan1.tidyup.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import cz.cvut.fel.karolan1.tidyup.config.Constants;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
-import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
+import java.time.ZonedDateTime;
 
 /**
  * A user.
@@ -31,7 +31,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
     @NotNull
@@ -43,7 +44,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @JsonIgnore
     @NotNull
     @Size(min = 60, max = 60)
-    @Column(name = "password_hash", length = 60)
+    @Column(name = "password_hash",length = 60)
     private String password;
 
     @Size(max = 50)
@@ -54,10 +55,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "last_name", length = 50)
     private String lastName;
 
-    @NotNull
     @Email
-    @Size(max = 100)
-    @Column(length = 100, unique = true, nullable = false)
+    @Size(min = 5, max = 100)
+    @Column(length = 100, unique = true)
     private String email;
 
     @NotNull
@@ -68,6 +68,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "lang_key", length = 5)
     private String langKey;
 
+    @Size(max = 256)
+    @Column(name = "image_url", length = 256)
+    private String imageUrl;
+
     @Size(max = 20)
     @Column(name = "activation_key", length = 20)
     @JsonIgnore
@@ -77,7 +81,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "reset_key", length = 20)
     private String resetKey;
 
-    @Column(name = "reset_date", nullable = true)
+    @Column(name = "reset_date")
     private ZonedDateTime resetDate = null;
 
     @JsonIgnore
@@ -87,35 +91,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
         joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
         inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
-
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<PersistentToken> persistentTokens = new HashSet<>();
-
-    // added by hand //
-
-    @Min(value = 0)
-    @NotNull
-    @Column(name = "points", nullable = false)
-    private Integer points;
-
-    @Size(max = 100000)
-    @Lob
-    @Column(name = "avatar")
-    private byte[] avatar;
-
-    @Column(name = "avatar_content_type")
-    private String avatarContentType;
-
-    @OneToOne(mappedBy = "hasAdmin")
-    @JsonIgnore
-    private Flat isAdminOf;
-
-    @ManyToOne
-    @JsonBackReference
-    private Flat memberOf;
 
     public Long getId() {
         return id;
@@ -129,8 +106,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
         return login;
     }
 
+    //Lowercase the login before saving it in database
     public void setLogin(String login) {
-        this.login = login;
+        this.login = login.toLowerCase(Locale.ENGLISH);
     }
 
     public String getPassword() {
@@ -165,6 +143,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.email = email;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public boolean getActivated() {
         return activated;
     }
@@ -190,11 +176,11 @@ public class User extends AbstractAuditingEntity implements Serializable {
     }
 
     public ZonedDateTime getResetDate() {
-        return resetDate;
+       return resetDate;
     }
 
     public void setResetDate(ZonedDateTime resetDate) {
-        this.resetDate = resetDate;
+       this.resetDate = resetDate;
     }
 
     public String getLangKey() {
@@ -213,54 +199,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.authorities = authorities;
     }
 
-    public Set<PersistentToken> getPersistentTokens() {
-        return persistentTokens;
-    }
-
-    public void setPersistentTokens(Set<PersistentToken> persistentTokens) {
-        this.persistentTokens = persistentTokens;
-    }
-
-    public Integer getPoints() {
-        return points;
-    }
-
-    public void setPoints(Integer points) {
-        this.points = points;
-    }
-
-    public byte[] getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(byte[] avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getAvatarContentType() {
-        return avatarContentType;
-    }
-
-    public void setAvatarContentType(String avatarContentType) {
-        this.avatarContentType = avatarContentType;
-    }
-
-    public Flat getIsAdminOf() {
-        return isAdminOf;
-    }
-
-    public void setIsAdminOf(Flat flat) {
-        this.isAdminOf = flat;
-    }
-
-    public Flat getMemberOf() {
-        return memberOf;
-    }
-
-    public void setMemberOf(Flat flat) {
-        this.memberOf = flat;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -272,11 +210,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
         User user = (User) o;
 
-        if (!login.equals(user.login)) {
-            return false;
-        }
-
-        return true;
+        return login.equals(user.login);
     }
 
     @Override
@@ -291,14 +225,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
             ", email='" + email + '\'' +
+            ", imageUrl='" + imageUrl + '\'' +
             ", activated='" + activated + '\'' +
             ", langKey='" + langKey + '\'' +
             ", activationKey='" + activationKey + '\'' +
-            ", points=" + points +
-            ", avatar=" + Arrays.toString(avatar) +
-            ", avatarContentType='" + avatarContentType + '\'' +
-            ", isAdminOf=" + isAdminOf +
-            ", memberOf=" + memberOf +
-            '}';
+            "}";
     }
 }

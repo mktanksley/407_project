@@ -1,5 +1,5 @@
 // Karma configuration
-// http://karma-runner.github.io/0.10/config/configuration-file.html
+// http://karma-runner.github.io/0.13/config/configuration-file.html
 
 var sourcePreprocessors = ['coverage'];
 
@@ -15,7 +15,7 @@ if (isDebug()) {
 module.exports = function (config) {
     config.set({
         // base path, that will be used to resolve files and exclude
-        basePath: 'src/test/javascript/'.replace(/[^/]+/g,'..'),
+        basePath: 'src/test/javascript/'.replace(/[^/]+/g, '..'),
 
         // testing framework to use (jasmine/mocha/qunit/...)
         frameworks: ['jasmine'],
@@ -23,28 +23,6 @@ module.exports = function (config) {
         // list of files / patterns to load in the browser
         files: [
             // bower:js
-            'src/main/webapp/bower_components/jquery/dist/jquery.js',
-            'src/main/webapp/bower_components/messageformat/messageformat.js',
-            'src/main/webapp/bower_components/json3/lib/json3.js',
-            'src/main/webapp/bower_components/angular/angular.js',
-            'src/main/webapp/bower_components/angular-aria/angular-aria.js',
-            'src/main/webapp/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-            'src/main/webapp/bower_components/angular-cache-buster/angular-cache-buster.js',
-            'src/main/webapp/bower_components/angular-cookies/angular-cookies.js',
-            'src/main/webapp/bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js',
-            'src/main/webapp/bower_components/ngstorage/ngStorage.js',
-            'src/main/webapp/bower_components/angular-loading-bar/build/loading-bar.js',
-            'src/main/webapp/bower_components/angular-resource/angular-resource.js',
-            'src/main/webapp/bower_components/angular-sanitize/angular-sanitize.js',
-            'src/main/webapp/bower_components/angular-translate/angular-translate.js',
-            'src/main/webapp/bower_components/angular-translate-interpolation-messageformat/angular-translate-interpolation-messageformat.js',
-            'src/main/webapp/bower_components/angular-translate-loader-partial/angular-translate-loader-partial.js',
-            'src/main/webapp/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js',
-            'src/main/webapp/bower_components/angular-ui-router/release/angular-ui-router.js',
-            'src/main/webapp/bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js',
-            'src/main/webapp/bower_components/ng-file-upload/ng-file-upload.js',
-            'src/main/webapp/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
-            'src/main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'src/main/webapp/app/app.module.js',
             'src/main/webapp/app/app.state.js',
@@ -63,15 +41,13 @@ module.exports = function (config) {
             './**/*.js': sourcePreprocessors
         },
 
-        reporters: ['dots', 'jenkins', 'coverage', 'progress'],
+        reporters: ['dots', 'junit', 'coverage', 'progress'],
 
-        jenkinsReporter: {
-            
-            outputFile: 'target/test-results/karma/TESTS-results.xml'
+        junitReporter: {
+            outputFile: '../target/test-results/karma/TESTS-results.xml'
         },
 
         coverageReporter: {
-            
             dir: 'target/test-results/coverage',
             reporters: [
                 {type: 'lcov', subdir: 'report-lcov'}
@@ -103,8 +79,8 @@ module.exports = function (config) {
         singleRun: false,
 
         // to avoid DISCONNECTED messages when connecting to slow virtual machines
-        browserDisconnectTimeout : 10000, // default 2000
-        browserDisconnectTolerance : 1, // default 0
-        browserNoActivityTimeout : 4*60*1000 //default 10000
+        browserDisconnectTimeout: 10000, // default 2000
+        browserDisconnectTolerance: 1, // default 0
+        browserNoActivityTimeout: 4 * 60 * 1000 //default 10000
     });
 };

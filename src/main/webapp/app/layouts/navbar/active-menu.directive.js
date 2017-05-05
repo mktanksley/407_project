@@ -5,6 +5,8 @@
         .module('tidyUpApp')
         .directive('activeMenu', activeMenu);
 
+    activeMenu.$inject = ['$translate', '$locale', 'tmhDynamicLocale'];
+
     function activeMenu($translate, $locale, tmhDynamicLocale) {
         var directive = {
             restrict: 'A',

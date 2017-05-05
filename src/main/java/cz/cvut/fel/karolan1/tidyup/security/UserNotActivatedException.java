@@ -3,7 +3,7 @@ package cz.cvut.fel.karolan1.tidyup.security;
 import org.springframework.security.core.AuthenticationException;
 
 /**
- * This exception is throw in case of a not activated user trying to authenticate.
+ * This exception is thrown in case of a not activated user trying to authenticate.
  */
 public class UserNotActivatedException extends AuthenticationException {
 

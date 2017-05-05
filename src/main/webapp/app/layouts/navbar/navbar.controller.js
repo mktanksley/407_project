@@ -5,9 +5,9 @@
         .module('tidyUpApp')
         .controller('NavbarController', NavbarController);
 
-    NavbarController.$inject = ['$scope', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService'];
+    NavbarController.$inject = ['$state', 'Auth', 'Principal', 'ProfileService', 'LoginService'];
 
-    function NavbarController ($scope, $state, Auth, Principal, ProfileService, LoginService) {
+    function NavbarController ($state, Auth, Principal, ProfileService, LoginService) {
         var vm = this;
 
         vm.isNavbarCollapsed = true;
@@ -15,7 +15,7 @@
 
         ProfileService.getProfileInfo().then(function(response) {
             vm.inProduction = response.inProduction;
-            vm.swaggerDisabled = response.swaggerDisabled;
+            vm.swaggerEnabled = response.swaggerEnabled;
         });
 
         vm.login = login;
@@ -23,10 +23,6 @@
         vm.toggleNavbar = toggleNavbar;
         vm.collapseNavbar = collapseNavbar;
         vm.$state = $state;
-        vm.isFlatAdmin = false;
-        vm.setAdmin = setAdmin;
-
-        setAdmin();
 
         function login() {
             collapseNavbar();
@@ -46,23 +42,5 @@
         function collapseNavbar() {
             vm.isNavbarCollapsed = true;
         }
-
-        function setAdmin() {
-            Principal.hasAuthority("ROLE_FLAT_ADMIN")
-                .then(function (result) {
-                    if (result) {
-                        vm.isFlatAdmin = true;
-                    } else {
-                        vm.isFlatAdmin = false;
-                    }
-                });
-        }
-
-        $scope.$on('tidyUpApp:registeredNewFlat', function (event) {
-            Principal.identity(true).then(setAdmin());
-        });
-        $scope.$on('authenticationSuccess', function (event) {
-            Principal.identity(true).then(setAdmin());
-        });
     }
 })();

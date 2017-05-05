@@ -1,21 +1,20 @@
 {
   "generator-jhipster": {
-    "jhipsterVersion": "3.3.0",
+    "jhipsterVersion": "4.3.0",
     "baseName": "tidyUp",
     "packageName": "cz.cvut.fel.karolan1.tidyup",
     "packageFolder": "cz/cvut/fel/karolan1/tidyup",
     "serverPort": "8080",
-    "authenticationType": "session",
+    "authenticationType": "JWT",
     "hibernateCache": "ehcache",
-    "clusteredHttpSession": "no",
-    "websocket": "no",
+    "clusteredHttpSession": false,
+    "websocket": false,
     "databaseType": "sql",
     "devDatabaseType": "postgresql",
     "prodDatabaseType": "postgresql",
     "searchEngine": "elasticsearch",
     "buildTool": "maven",
     "enableSocialSignIn": true,
-    "rememberMeKey": "8dab5f27baaec77194f7d482be9866580412018c",
     "useSass": true,
     "applicationType": "monolith",
     "testFrameworks": [],
@@ -25,6 +24,10 @@
     "languages": [
       "en",
       "cs"
-    ]
+    ],
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "clientFramework": "angular1",
+    "clientPackageManager": "npm"
   }
 }

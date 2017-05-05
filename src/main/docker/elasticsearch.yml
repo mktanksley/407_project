@@ -1,8 +1,7 @@
 version: '2'
 services:
     tidyup-elasticsearch:
-        container_name: tidyup-elasticsearch
-        image: elasticsearch:1.7.5
+        image: elasticsearch:2.4.1
         # volumes:
         #     - ~/volumes/jhipster/tidyUp/elasticsearch/:/usr/share/elasticsearch/data/
         ports:

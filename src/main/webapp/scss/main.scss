@@ -1,14 +1,7 @@
-// sticky footer fix - https://getbootstrap.com/examples/sticky-footer/
-html {
-    position: relative;
-    min-height: 100%;
-}
-
 body {
     background: #fafafa;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #333;
-    margin-bottom: 60px; // margin for footer
 }
 
 /* ==========================================================================
@@ -16,6 +9,41 @@ Hide ng-cloak on page load, https://docs.angularjs.org/api/ng/directive/ngCloak
 ========================================================================== */
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none !important;
+}
+
+/* ==========================================================================
+Development Ribbon
+========================================================================== */
+.ribbon {
+    background-color: #a00;
+    box-shadow: 0 0 10px #888;
+    left: -3.5em;
+    moz-box-shadow: 0 0 10px #888;
+    moz-transform: rotate(-45deg);
+    ms-transform: rotate(-45deg);
+    o-transform: rotate(-45deg);
+    overflow: hidden;
+    position: absolute;
+    top: 40px;
+    transform: rotate(-45deg);
+    webkit-box-shadow: 0 0 10px #888;
+    webkit-transform: rotate(-45deg);
+    white-space: nowrap;
+    width: 15em;
+    z-index: 9999;
+    pointer-events: none;
+    a {
+        border: 1px solid #faa;
+        color: #fff;
+        display: block;
+        font: bold 81.25% 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        margin: 1px 0;
+        padding: 10px 50px;
+        text-align: center;
+        text-decoration: none;
+        text-shadow: 0 0 5px #444;
+        pointer-events: none;
+    }
 }
 
 /* ==========================================================================
@@ -68,84 +96,24 @@ Main page styles
     }
 }
 
-// customized
-.dustbin {
+.hipster {
     display: inline-block;
-    width: 330px;
-    height: 500px;
-    background: url("../images/dustbin.png") no-repeat center top;
+    width: 347px;
+    height: 497px;
+    background: url("../images/hipster.png") no-repeat center top;
     background-size: contain;
 }
 
-.footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    /* Set the fixed height of the footer here */
-    height: 60px;
-    background-color: #f5f5f5;
-}
-
-.footer p {
-    margin: 20px 0;
-}
-
-// add border/vertical line between login and register columns at home page (on big screens only)
-// 992px = @screen-md-min, did not find an easy way to use the variable here
-$filler-color: #DDDDDD;
-@media (min-width: 992px) {
-    .left-column {
-        border-right: 1px solid $filler-color;
-    }
-    .right-column {
-        border-left: 1px solid $filler-color;
-    }
-}
-
-.avatar {
-    max-height: 140px;
-    background-color: $filler-color;
-}
-
-.avatar-small {
-    max-height: 32px;
-}
-
-.avatar-medium {
-    max-height: 64px;
-}
-
-.event {
-    padding-bottom: 20px;
-    //border-bottom: 1px solid $filler-color;
-}
-
-.event img {
-    max-height: 64px;
-    //max-width: 64px;
-    //background-color: $filler-color;
-}
-
-.horizontal-space {
-    height: 50px;
-}
-
-.fulfilled {
-    font-size: 50px;
-    color: #5cb85c;
-}
-
-// END
-
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
-@media only screen and (-webkit-min-device-pixel-ratio: 2),
-only screen and (min--moz-device-pixel-ratio: 2),
-only screen and (-o-min-device-pixel-ratio: 2/1),
-only screen and (min-device-pixel-ratio: 2),
-only screen and (min-resolution: 192dpi),
-only screen and (min-resolution: 2dppx) {
-    .dustbin {
-        background: url("../images/dustbin2x.png") no-repeat center top;
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2),
+only screen and (   min--moz-device-pixel-ratio: 2),
+only screen and (     -o-min-device-pixel-ratio: 2/1),
+only screen and (        min-device-pixel-ratio: 2),
+only screen and (                min-resolution: 192dpi),
+only screen and (                min-resolution: 2dppx) {
+    .hipster {
+        background: url("../images/hipster2x.png") no-repeat center top;
         background-size: contain;
     }
 }
@@ -164,48 +132,19 @@ Generic styles
 
 .break {
     white-space: normal;
-    word-break: break-all;
+    word-break:break-all;
 }
 
-.voffset {
-    margin-top: 2px;
-}
-
-.voffset1 {
-    margin-top: 5px;
-}
-
-.voffset2 {
-    margin-top: 10px;
-}
-
-.voffset3 {
-    margin-top: 15px;
-}
-
-.voffset4 {
-    margin-top: 30px;
-}
-
-.voffset5 {
-    margin-top: 40px;
-}
-
-.voffset6 {
-    margin-top: 60px;
-}
-
-.voffset7 {
-    margin-top: 80px;
-}
-
-.voffset8 {
-    margin-top: 100px;
-}
-
-.voffset9 {
-    margin-top: 150px;
-}
+.voffset  { margin-top: 2px; }
+.voffset1 { margin-top: 5px; }
+.voffset2 { margin-top: 10px; }
+.voffset3 { margin-top: 15px; }
+.voffset4 { margin-top: 30px; }
+.voffset5 { margin-top: 40px; }
+.voffset6 { margin-top: 60px; }
+.voffset7 { margin-top: 80px; }
+.voffset8 { margin-top: 100px; }
+.voffset9 { margin-top: 150px; }
 
 .readonly {
     background-color: #eee;
@@ -215,11 +154,7 @@ Generic styles
 /* ==========================================================================
 make sure browsers use the pointer cursor for anchors, even with no href
 ========================================================================== */
-a:hover {
-    cursor: pointer;
-}
-
-.hand {
+a:hover, .hand, [jh-sort-by] {
     cursor: pointer;
 }
 
@@ -245,23 +180,23 @@ Metrics and Health styles
 start Password strength bar style
 ========================================================================== */
 ul#strength {
-    display: inline;
-    list-style: none;
-    margin: 0;
-    margin-left: 15px;
-    padding: 0;
-    vertical-align: 2px;
+    display:inline;
+    list-style:none;
+    margin:0;
+    margin-left:15px;
+    padding:0;
+    vertical-align:2px;
 }
 
 .point {
-    background: #DDD;
-    border-radius: 2px;
-    display: inline-block;
-    height: 5px;
-    margin-right: 1px;
-    width: 20px;
+    background:#DDD;
+    border-radius:2px;
+    display:inline-block;
+    height:5px;
+    margin-right:1px;
+    width:20px;
     &:last {
-        margin: 0 !important;
+        margin:0 !important;
     }
 }
 
@@ -271,7 +206,7 @@ Custom alerts for notification
 .alerts {
     .alert {
         text-overflow: ellipsis;
-        pre {
+        pre{
             background: none;
             border: none;
             font: inherit;
@@ -324,7 +259,6 @@ entity tables helpers
         }
     }
 }
-
 @include no-padding("left");
 @include no-padding("right");
 @include no-padding("top");
@@ -333,24 +267,22 @@ entity tables helpers
 
 /* bootstrap 3 input-group 100% width
    http://stackoverflow.com/questions/23436430/bootstrap-3-input-group-100-width */
-.width-min {
-    width: 1% !important;
-}
+.width-min { width: 1% !important; }
 
 /* Makes toolbar not wrap on smaller screens
    http://www.sketchingwithcss.com/samplechapter/cheatsheet.html#right */
 .flex-btn-group-container {
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-direction: row;
-    flex-direction: row;
-    -webkit-justify-content: flex-end;
-    justify-content: flex-end;
+   display: -webkit-flex;
+   display: flex;
+   -webkit-flex-direction: row;
+   flex-direction: row;
+   -webkit-justify-content: flex-end;
+   justify-content: flex-end;
 }
 
 .jh-table > {
     tbody > tr > td {
-        /* Align text in td verifically (top aligned by Bootstrap) */
+        /* Align text in td vertically (top aligned by Bootstrap) */
         vertical-align: middle;
     }
     thead > tr > th > {
@@ -396,12 +328,12 @@ ui bootstrap tweaks
 }
 
 .datetime-picker-dropdown > li.date-picker-menu div > table .btn-default,
-.uib-datepicker-popup > li > div.uib-datepicker > table .btn-default {
+.uib-datepicker-popup  > li > div.uib-datepicker > table .btn-default {
     border: 0;
 }
 
 .datetime-picker-dropdown > li.date-picker-menu div > table:focus,
-.uib-datepicker-popup > li > div.uib-datepicker > table:focus {
+.uib-datepicker-popup  > li > div.uib-datepicker > table:focus {
     outline: none;
 }
 

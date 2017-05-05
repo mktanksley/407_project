@@ -1,33 +1,69 @@
 package cz.cvut.fel.karolan1.tidyup.web.rest;
 
-import cz.cvut.fel.karolan1.tidyup.config.JHipsterProperties;
+import cz.cvut.fel.karolan1.tidyup.config.DefaultProfileUtil;
+
+import io.github.jhipster.config.JHipsterProperties;
+
 import org.springframework.core.env.Environment;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+/**
+ * Resource to return information about the currently running Spring profiles.
+ */
 @RestController
 @RequestMapping("/api")
 public class ProfileInfoResource {
 
-    @Inject
-    Environment env;
+    private final Environment env;
 
-    @Inject
-    private JHipsterProperties jHipsterProperties;
+    private final JHipsterProperties jHipsterProperties;
 
-    @RequestMapping("/profile-info")
-    public ProfileInfoResponse getActiveProfiles() {
-        return new ProfileInfoResponse(env.getActiveProfiles());
+    public ProfileInfoResource(Environment env, JHipsterProperties jHipsterProperties) {
+        this.env = env;
+        this.jHipsterProperties = jHipsterProperties;
     }
 
-    class ProfileInfoResponse {
+    @GetMapping("/profile-info")
+    public ProfileInfoVM getActiveProfiles() {
+        String[] activeProfiles = DefaultProfileUtil.getActiveProfiles(env);
+        return new ProfileInfoVM(activeProfiles, getRibbonEnv(activeProfiles));
+    }
 
-        public String[] activeProfiles;
+    private String getRibbonEnv(String[] activeProfiles) {
+        String[] displayOnActiveProfiles = jHipsterProperties.getRibbon().getDisplayOnActiveProfiles();
+        if (displayOnActiveProfiles == null) {
+            return null;
+        }
+        List<String> ribbonProfiles = new ArrayList<>(Arrays.asList(displayOnActiveProfiles));
+        List<String> springBootProfiles = Arrays.asList(activeProfiles);
+        ribbonProfiles.retainAll(springBootProfiles);
+        if (!ribbonProfiles.isEmpty()) {
+            return ribbonProfiles.get(0);
+        }
+        return null;
+    }
 
-        ProfileInfoResponse(String[] activeProfiles) {
+    class ProfileInfoVM {
+
+        private String[] activeProfiles;
+
+        private String ribbonEnv;
+
+        ProfileInfoVM(String[] activeProfiles, String ribbonEnv) {
             this.activeProfiles = activeProfiles;
+            this.ribbonEnv = ribbonEnv;
+        }
+
+        public String[] getActiveProfiles() {
+            return activeProfiles;
+        }
+
+        public String getRibbonEnv() {
+            return ribbonEnv;
         }
     }
 }

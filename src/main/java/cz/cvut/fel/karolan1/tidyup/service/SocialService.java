@@ -4,7 +4,9 @@ import cz.cvut.fel.karolan1.tidyup.domain.Authority;
 import cz.cvut.fel.karolan1.tidyup.domain.User;
 import cz.cvut.fel.karolan1.tidyup.repository.AuthorityRepository;
 import cz.cvut.fel.karolan1.tidyup.repository.UserRepository;
-import org.apache.commons.lang.RandomStringUtils;
+import cz.cvut.fel.karolan1.tidyup.repository.search.UserSearchRepository;
+
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +17,6 @@ import org.springframework.social.connect.UserProfile;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Optional;
@@ -23,22 +24,32 @@ import java.util.Set;
 
 @Service
 public class SocialService {
+
     private final Logger log = LoggerFactory.getLogger(SocialService.class);
 
-    @Inject
-    private UsersConnectionRepository usersConnectionRepository;
+    private final UsersConnectionRepository usersConnectionRepository;
 
-    @Inject
-    private AuthorityRepository authorityRepository;
+    private final AuthorityRepository authorityRepository;
 
-    @Inject
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @Inject
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Inject
-    private MailService mailService;
+    private final MailService mailService;
+
+    private final UserSearchRepository userSearchRepository;
+
+    public SocialService(UsersConnectionRepository usersConnectionRepository, AuthorityRepository authorityRepository,
+            PasswordEncoder passwordEncoder, UserRepository userRepository,
+            MailService mailService, UserSearchRepository userSearchRepository) {
+
+        this.usersConnectionRepository = usersConnectionRepository;
+        this.authorityRepository = authorityRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
+        this.mailService = mailService;
+        this.userSearchRepository = userSearchRepository;
+    }
 
     public void deleteUserSocialConnection(String login) {
         ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(login);
@@ -56,14 +67,18 @@ public class SocialService {
         }
         UserProfile userProfile = connection.fetchUserProfile();
         String providerId = connection.getKey().getProviderId();
-        User user = createUserIfNotExist(userProfile, langKey, providerId);
+        String imageUrl = connection.getImageUrl();
+        User user = createUserIfNotExist(userProfile, langKey, providerId, imageUrl);
         createSocialConnection(user.getLogin(), connection);
         mailService.sendSocialRegistrationValidationEmail(user, providerId);
     }
 
-    private User createUserIfNotExist(UserProfile userProfile, String langKey, String providerId) {
+    private User createUserIfNotExist(UserProfile userProfile, String langKey, String providerId, String imageUrl) {
         String email = userProfile.getEmail();
-        String userName = userProfile.getUsername().toLowerCase(Locale.ENGLISH);
+        String userName = userProfile.getUsername();
+        if (!StringUtils.isBlank(userName)) {
+            userName = userName.toLowerCase(Locale.ENGLISH);
+        }
         if (StringUtils.isBlank(email) && StringUtils.isBlank(userName)) {
             log.error("Cannot create social user because email and login are null");
             throw new IllegalArgumentException("Email and login cannot be null");
@@ -72,10 +87,12 @@ public class SocialService {
             log.error("Cannot create social user because email is null and login already exist, login -> {}", userName);
             throw new IllegalArgumentException("Email cannot be null with an existing login");
         }
-        Optional<User> user = userRepository.findOneByEmail(email);
-        if (user.isPresent()) {
-            log.info("User already exist associate the connection to this account");
-            return user.get();
+        if (!StringUtils.isBlank(email)) {
+            Optional<User> user = userRepository.findOneByEmail(email);
+            if (user.isPresent()) {
+                log.info("User already exist associate the connection to this account");
+                return user.get();
+            }
         }
 
         String login = getLoginDependingOnProviderId(userProfile, providerId);
@@ -92,13 +109,15 @@ public class SocialService {
         newUser.setActivated(true);
         newUser.setAuthorities(authorities);
         newUser.setLangKey(langKey);
+        newUser.setImageUrl(imageUrl);
 
+        userSearchRepository.save(newUser);
         return userRepository.save(newUser);
     }
 
     /**
      * @return login if provider manage a login like Twitter or Github otherwise email address.
-     * Because provider like Google or Facebook didn't provide login or login like "12099388847393"
+     *         Because provider like Google or Facebook didn't provide login or login like "12099388847393"
      */
     private String getLoginDependingOnProviderId(UserProfile userProfile, String providerId) {
         switch (providerId) {

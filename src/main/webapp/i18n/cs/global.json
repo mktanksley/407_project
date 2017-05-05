@@ -4,18 +4,9 @@
         "browsehappy": "Používáte <strong>zastaralý</strong> prohlížeč. Prosím <a href=\"http://browsehappy.com/?locale=en\">aktualizujte svůj prohlížeč</a> pro zlepšení použitelnosti.",
         "menu": {
             "home": "Domů",
-            "about": "O nás",
-            "flat": "Byt",
-            "chores": "Úklidy",
-            "contest": "Soutěž",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entity",
-                "typeOfBadge": "Typ odznáčku",
-                "flat": "Flat",
-                "badge": "Badge",
-                "choreType": "Typ úklidu",
-                "choreEvent": "Chore Event",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -49,9 +40,8 @@
             "newpassword.placeholder": "Nové heslo",
             "confirmpassword": "Potvrzení nového hesla",
             "confirmpassword.placeholder": "Potvrzení nového hesla",
-            "email": "E-mail",
-            "email.placeholder": "Váš e-mail",
-            "avatar": "Avatar"
+            "email": "Email",
+            "email.placeholder": "Váš email"
         },
         "messages": {
             "info": {
@@ -74,15 +64,18 @@
                     "maxlength": "Vaše potvrzení hesla nemůže být delší než 50 znaků."
                 },
                 "email": {
-                    "required": "E-mail je povinný.",
-                    "invalid": "Zadaný e-mail není validní.",
-                    "minlength": "Váš e-mail musí mít alespoň 5 znaků.",
-                    "maxlength": "Váš e-mail nemůže být delší než 50 znaků."
+                    "required": "Email je povinný.",
+                    "invalid": "Zadaný email není validní.",
+                    "minlength": "Váš email musí mít alespoň 5 znaků.",
+                    "maxlength": "Váš email nemůže být delší než 50 znaků."
                 }
             }
         },
         "field": {
             "id": "ID"
+        },
+        "ribbon": {
+            "dev":"Development"
         }
     },
     "entity": {
@@ -118,13 +111,14 @@
         }
     },
     "error": {
+        "internalServerError": "Internal server error",
         "server.not.reachable": "Server je nedostupný",
         "url.not.found": "Not found",
         "NotNull": "Pole {{ fieldName }} nemůže být prázdné!",
         "Size": "Pole {{ fieldName }} nesplňuje požadavek minimální nebo maximální velikosti!",
         "userexists": "Zadané uživatelské jméno je již použito!",
-        "emailexists": "Zadaný e-mail je již použitý!",
+        "emailexists": "Zadaný email je již použitý!",
         "idexists": "Nová entita {{ entityName }} ještě nemůže mít ID"
     },
-    "footer": "karolan1@fel.cvut.cz"
+    "footer": "Toto je vaše zápatí"
 }
